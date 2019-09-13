@@ -1,0 +1,28 @@
+---
+title: "Individual Experimentation"
+author: "Jacob Boeckenstedt"
+date: "9/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+source("http://www.openintro.org/stat/data/cdc.R")
+cdc <- as_tibble(cdc)
+```
+###**Research Question:** 
+####- How do the general health responses of non-smokers compare to the general health responses of smokers? (General health responses = excellent, very good, good, fair, and poor)
+
+```{r cars}
+cdc <- cdc %>% mutate(smoke100 = as.character(smoke100))
+ggplot(data = cdc) +
+  geom_bar(mapping = aes(x = smoke100, fill = genhlth), position = "dodge") +
+  labs(
+    title = "Non-Smokers vs. Smokers Response to Personal Health",
+    caption = "0 = Non-Smoker | 1 = Smoker"
+  )
+```
+
+### **Conclustion Statement and Contribution to the Team**
+
+#### - I, Jacob Boeckenstedt, created a plot showing how general health responses of non-smokers compare to the general health responses of smokers. It is not surprising to see that a significantly larger amount of respondents who have NOT smoked reported excellent health. However, it is surprising to see that respondents who smoke, report a higher count of "good" overall health. This lead me to believe that some people who smoke are either blinded by the effects or distort their helath for a snese of affirmation for themselves. I used the geom_bar function and adjusted the postiion and fill of the mapping to optimize the visual aspect and make it quick and easy to readIn addition I used a position adjustment to <<>> and changed the default labels to make the plot easier to read. In addition I had to use the mutate as. character function to make the x asis easy to read. This removed values like -.5, .75, 1.5 that were irrelevant. This contributed to the foundation of our group project where we then filtered and seperated male and females to see the differnces in responses there.

@@ -120,7 +120,7 @@ geom_bar(mapping = aes(x = smoke100, fill = gender), position = "fill") +
 Based on the bar graph, of non-smokers population Females make up about 60% of it while Males make up the rest 40%, Of the smokers Males roughly makeup 49% of the population and Females makeup the other 51%. 
 
 ### Contributions
-
+For this project I created a bar graph that relates gender and smoking population, to answer which gender makes up thoes that smoked 100 packs and those that haven’t smoked population. I, first differentiated the two geneders and created 2 separate bar graphs for those that smoked 100 cigarettes and those that haven’t and that helped answer the percentage of the genders that smoked 100 packs and those that haven’t.
 
 
 

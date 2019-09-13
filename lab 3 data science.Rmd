@@ -1,0 +1,35 @@
+---
+title: "lab 3"
+author: "Fin"
+date: "9/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+source("http://www.openintro.org/stat/data/cdc.R")
+cdc <- as_tibble(cdc)
+
+ggplot (data=cdc)+
+  geom_histogram(mapping=aes(x=age),fill="grey")+
+  geom_freqpoly(mapping=aes(x=age), color="black")+
+  facet_grid(~smoke100)+
+  theme_minimal()+
+  labs(
+    title="Effect of Smoking on Age"
+  )
+```
+ 
+ 
+ The findings generated from this plot show that on average the age of smokers is centered around 50 with a large sharp drop off at around 60. This would indicate a shorter life expectancy for smokers. It can also be seen that a greater amount of young people do not smoke and it is may be a generational change that sees further decline with more time.
+ 
+ 
+ For this project I created a plot comparing smoking and age and found that smoking is much more common among older people but is also a result that leads to earlier deaths.
+ 
+ 
+ 
+

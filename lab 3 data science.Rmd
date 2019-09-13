@@ -49,10 +49,8 @@ ggplot(data = cdc) +
        caption = "0 = Non-Smoker | 1 = Smoker")
 ```
 
-### Findings
-From the two differnt plots, I have found that while less smokers will report excellent health, the proption that report the rest of the categories is very simmilar whether or not you smoke. This could be a result of lying among those surveyed as it is unlikely that they are as healthy as non-smokers. My recomendation is for the callers to reiterate to the respondents "you can be completely honest as your responses are closed." This might make a responder give more thought to their answer and not sub-contiously blurt out what they want to hear.
-
-### Contributions
+### Findings and Contributions
+I, Jacob Boeckenstedt, created a plot showing how general health responses of non-smokers compare to the general health responses of smokers. It is not surprising to see that a significantly larger amount of respondents who have NOT smoked reported excellent health. However, it is surprising to see that respondents who smoke, report a higher count of "good" overall health. This lead me to believe that some people who smoke are either blinded by the effects or distort their helath for a snese of affirmation for themselves. I used the geom_bar function and adjusted the postiion and fill of the mapping to optimize the visual aspect and make it quick and easy to readIn addition I used a position adjustment to <<>> and changed the default labels to make the plot easier to read. In addition I had to use the mutate as. character function to make the x asis easy to read. This removed values like -.5, .75, 1.5 that were irrelevant. This contributed to the foundation of our group project where we then filtered and seperated male and females to see the differnces in responses there. 
 
 ----------------------------------
 
@@ -92,7 +90,7 @@ ggplot(data=cdc)+
 
 ### Contributions 
 
-  For this lab assignment I created a plot that explored the relationship between age and whether a person was a smoker. I started by creating a simple histogram that I then wrapped to show the differences between those who smoke and those who do not. I wanted to better see the overall change in my distribution and added a frequency polygon plot to better visualize this change. I was presented with an error in the default size of my binwidth and as result had to manually set for both plots. I also looked through the theme() function and decided on minimal for my plots. I also formatted our final Rmarkdown by compling everyones work from github and organizing it while trying to check everyones work for mistakes.
+  For this lab assignment I created a plot that explored the relationship between age and whether a person was a smoker. I started by creating a simple histogram that I then wrapped to show the differences between those who smoke and those who do not. I wanted to better see the overall change in my distribution and added a frequency polygon plot to better visualize this change. I was presented with an error in the default size of my binwidth and as result had to manually set for both plots. I also looked through the theme() function and decided on minimal for my plots. The final task I completed was organzing all of our work into a single Rmarkdown and making sure it could knit before turning it in.
 
 ----------------------------------------------------------------
 

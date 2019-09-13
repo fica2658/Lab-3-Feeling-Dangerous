@@ -4,13 +4,34 @@ author: "Fin,Nahom,Chun,Jake"
 date: "9/12/2019"
 output: html_document
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+source("http://www.openintro.org/stat/data/cdc.R")
+cdc <- as_tibble(cdc)
+```
 # Team Section
 
 ### Overall Question 
+How does gender affect the health repsonses among non-smokers and smokers? (General health responses = excellent, very good, good, fair, and poor)
 
 ### Team Plot
 
+```{r}
+ggplot(data = cdc)+
+  geom_bar(mapping = aes(x = smoke100, fill = genhlth), position = "dodge") + 
+  facet_wrap(~gender)+
+  labs(title = "Male Vs. Female Responses on Personal Health", 
+       subtitle = "Non-Smokers vs. Smokers",
+       caption = "0 = Non-Smoker | 1 = Smoker")
+```
+
 ### Conclusion
+From the two differnt plots, we have found that male smokers percieve themselves to have better health than female smokers. Interesting enough, we made the conclusion that **men** will manipulate or lie about their personal health more often than women. We can make this assumption due to the fact that **male smokers** respond with a higher frequency of "very good"" and "good" than male non-nonsmoker. **Female smokers** have an overall lower health response in every category. Our recomendation is for sampling to occur without requiring personal information such that people feel inclined to anwser although this problem will likely always exist. 
+
 
 
 # Individual Section 
@@ -18,10 +39,18 @@ output: html_document
 #### Jake
 
 ### Individual Question
+How are general health responses affected by smoking cigarettes ? 
 
 ### Plots 
+```{r}
+ggplot(data = cdc) +
+  geom_bar(mapping = aes(x = smoke100, fill = genhlth), position = "dodge") + 
+  labs(title = "Smoker vs. Non-Smoker Responses on Personal Health", 
+       caption = "0 = Non-Smoker | 1 = Smoker")
+```
 
-### Findings 
+### Findings
+From the two differnt plots, I have found that while less smokers will report excellent health, the proption that report the rest of the categories is very simmilar whether or not you smoke. This could be a result of lying among those surveyed as it is unlikely that they are as healthy as non-smokers. My recomendation is for the callers to reiterate to the respondents "you can be completely honest as your responses are closed." This might make a responder give more thought to their answer and not sub-contiously blurt out what they want to hear.
 
 ### Contributions
 
@@ -63,7 +92,7 @@ ggplot(data=cdc)+
 
 ### Contributions 
 
-  For this lab assignment I created a plot that explored the relationship between age and whether a person was a smoker. I started by creating a simple histogram that I then wrapped to show the differences between those who smoke and those who do not. I wanted to better see the overall change in my distribution and added a frequency polygon plot to better visualize this change. I was presented with an error in the default size of my binwidth and as result had to manually set for both plots. I also looked through the theme() function and decided on minimal for my plots.
+  For this lab assignment I created a plot that explored the relationship between age and whether a person was a smoker. I started by creating a simple histogram that I then wrapped to show the differences between those who smoke and those who do not. I wanted to better see the overall change in my distribution and added a frequency polygon plot to better visualize this change. I was presented with an error in the default size of my binwidth and as result had to manually set for both plots. I also looked through the theme() function and decided on minimal for my plots. I also formatted our final Rmarkdown by compling everyones work from github and organizing it while trying to check everyones work for mistakes.
 
 ----------------------------------------------------------------
 

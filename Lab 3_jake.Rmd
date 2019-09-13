@@ -1,0 +1,36 @@
+---
+title: "Lab3_Jake"
+author: "Jacob Boeckenstedt"
+date: "9/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+source("http://www.openintro.org/stat/data/cdc.R")
+cdc <- as_tibble(cdc)
+```
+#Team Lab Report
+## General Health Responses by Gender for Non-Smokers Vs. Smokers
+
+### Research Question: 
+##### -How are general health responses affected by smoking cigarettes ? In particular, how does gender afftect the health repsonses by comparing non-smokers to smokers? (General health responses = excellent, very good, good, fair, and poor)
+
+### Why?
+##### -This question is interesting to our team because we are eager to examine how male non-smokers and smokers **percieve** their health opposed to female smokers and female non-smokers. Most importantly, we want to see the differences in perception of persnal health among the four different groups.(male non-smoker, male smoker, female non-smoker, female smoker). It will be interessting to find out the  proportion of smokers who percieve their helath as excellent vs. poor. For all the respondents that answered poor, it will be interesing to see the frequency of smokeres vs the frequency of non-smokers. 
+```{r cars}
+male <- cdc %>% filter(gender == 'm')
+female <- cdc %>% filter(gender == 'f')
+
+male <- male %>% mutate(smoke100 = as.character(smoke100))
+ggplot(data = cdc) +
+  geom_bar(mapping = aes(x = smoke100, fill = genhlth), position = "dodge") + 
+  facet_wrap(~gender) +
+  labs(title = "Male Vs. Female Responses on Personal Health", 
+       subtitle = "Non-Smokers vs. Smokers",
+       caption = "0 = Non-Smoker | 1 = Smoker")
+```
+
+## Findings, Conclusions, and Recommendation
+
+#####- From the two differnt plots, I have found that men smokers percieve themselves to have better health than women smokers. Interesting enough, I can make the conclusion that **men** will manipulate or lie about their personal health more often than women will. I can make this assumption due to the fact that **male smokers** respond with a higher frequency of "very good"" and "good" than male non-nonsmoker. **Female smokers** have an overall lower health response in every category. My recomendation is for the callers to reiterate to the respondents "you can be completely honest as your responses are closed." This might make a responder give more thought to their answer and not sub-contiously blurt out what they want to hear.

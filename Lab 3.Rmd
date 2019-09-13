@@ -32,7 +32,11 @@ geom_bar(mapping = aes(x = smoke100, fill = gender), position = "fill") +
 ```
 
 
-
-
-
-
+###Do smokers usually have a health plan?
+```{r, echo=FALSE, message=FALSE}
+ggplot(data=cdc)+
+  geom_bar(mapping=aes(x=smoke100,fill=hlthplan))+
+  facet_grid(~hlthplan)
+  
+```
+###According to the bar chart, most smokers have a health plan. Also, for those who have a health plan，less people smokes over 100 cigarettes.

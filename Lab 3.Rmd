@@ -1,0 +1,38 @@
+---
+title: "lab 3"
+author: "Nahom Taye"
+date: "9/11/2019"
+output: html_document
+---
+
+#### Overall Qusetion
+
+What is the percentage that makes up the smoker and non smoker population of each gender?
+
+#### Answer to question
+
+Based on the bar graph, of non-smokers population Females make up about 60% of it while Males make up the rest 40%, Of the smokers Males roughly makeup 49% of the population and Females makeup the other 51%. 
+
+#### Team Plot
+```{r}
+library(tidyverse)
+source("http://www.openintro.org/stat/data/cdc.R")
+cdc <- as_tibble(cdc)
+```
+
+#### Recommendation
+
+Recommendation to CDC
+#### Series of Plots and Findings
+
+```{r, echo=FALSE, message=FALSE}
+ggplot(data =cdc) +
+geom_bar(mapping = aes(x = smoke100, fill = gender), position = "fill") + 
+  facet_grid(~smoke100) + ggtitle("Percentage of Smokers and Non-smokers between Male and Female")
+```
+
+
+
+
+
+

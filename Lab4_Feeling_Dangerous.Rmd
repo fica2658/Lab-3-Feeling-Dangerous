@@ -1,0 +1,85 @@
+---
+title: "lab # Feeling Dangerous"
+author: "Fin,Nahom,Chun,Jake"
+date: "A/B/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+babies <- read_csv("https://raw.githubusercontent.com/ervance1/Sp2018-Data-Science-repo/master/babies2a.dat")
+babies <- rename(babies, bwtoz = `bwt/oz`)
+
+```
+# Team Section
+
+### Overall Questions 
+
+### Why it Matters
+
+### Team Plots
+
+### Conclusions
+
+### Recommendations
+
+### Preliminary Question and Awnser
+
+
+# Individual Section 
+
+#### Jake
+
+### Individual Questions
+
+### Plots 
+
+### Findings and Contributions
+
+
+----------------------------------
+
+#### Fin Carlson
+
+### Individual Questions
+
+### Plots 
+```{r}
+ggplot(data=babies)+
+  geom_histogram(mapping=aes(x=bwtoz))+
+  facet_wrap(~smoke)
+
+```
+
+
+### Findings
+
+### Contributions 
+
+----------------------------------------------------------------
+
+#### Nahom
+
+### Individual Questions
+
+### Plots
+
+### Findings
+
+### Contributions
+
+-----------------------------------
+
+
+#### Chun
+
+### Individual Question
+
+### Plots  
+
+### Findings
+
+### Contributions
+ 
+

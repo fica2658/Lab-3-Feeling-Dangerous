@@ -86,9 +86,12 @@ ggplot(data=babies)+
 #### Chun
 
 ### Individual Question
-
+Is mother's weights affects Premature when she smokes based on her race.
 ### Plots  
-
+ggplot(babies)+
+  geom_jitter(mapping = aes(x=Premature, y=mpregwt, alpha=smoke) )+
+  facet_wrap(~mrace)+
+  ggtitle("Mother's Weight VS. Premature if she smoke or not based on Mother's race ")
 ### Findings
 
 ### Contributions

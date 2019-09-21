@@ -16,6 +16,10 @@ babies <- rename(babies, bwtoz = `bwt/oz`)
 
 ### Overall Questions 
 
+#### Does smoking increase the rate of premature births in pregnant women?
+
+#### Does smoking in pregnant mother cause overall lower birth weights for newborns at every gestitational age?
+
 ### Why it Matters
 
 ### Team Plots
@@ -47,8 +51,15 @@ babies <- rename(babies, bwtoz = `bwt/oz`)
 ### Plots 
 ```{r}
 ggplot(data=babies)+
-  geom_histogram(mapping=aes(x=bwtoz))+
+  geom_bar(mapping=aes(x=Premature), fill="blue")+
   facet_wrap(~smoke)
+
+ggplot(data=babies)+
+  geom_point(mapping=aes(y=bwtoz, x=gestation, color=smoke))+
+  facet_grid(~smoke)
+
+
+  
 
 ```
 

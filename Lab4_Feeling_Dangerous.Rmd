@@ -102,6 +102,9 @@ While white women are the median for both of women that have exprienced Prematur
 Is mother's race affects Premature when she smokes.
 ### Plots 
 ```{r} 
+babies$mrace <- as.factor(babies$mrace)
+babies$Premature <- as.factor(babies$Premature)
+babies$smoke <- as.factor(babies$smoke)
 ggplot(babies)+
   geom_bar(mapping = aes(x=Premature, fill=smoke), position = "fill" )+
   facet_grid(~mrace)+

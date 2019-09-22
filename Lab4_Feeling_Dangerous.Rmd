@@ -70,7 +70,7 @@ ggplot(data=babies)+
 
 ----------------------------------------------------------------
 
-#### Nahom
+#### Nahom Taye
 
 ### Individual Questions
 Does the mother's race affect a newborn to be Premature?

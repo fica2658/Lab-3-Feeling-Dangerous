@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 babies <- read_csv("https://raw.githubusercontent.com/ervance1/Sp2018-Data-Science-repo/master/babies2a.dat")
 babies <- rename(babies, bwtoz = `bwt/oz`)
+babies <- na.omit(babies)
+
 
 ```
 # Team Section
@@ -97,14 +99,19 @@ While white women are the median for both of women that have exprienced Prematur
 #### Chun
 
 ### Individual Question
-Is mother's weights affects Premature when she smokes based on her race.
-### Plots  
+Is mother's race affects Premature when she smokes.
+### Plots 
+```{r} 
 ggplot(babies)+
-  geom_jitter(mapping = aes(x=Premature, y=mpregwt, alpha=smoke) )+
-  facet_wrap(~mrace)+
-  ggtitle("Mother's Weight VS. Premature if she smoke or not based on Mother's race ")
+  geom_bar(mapping = aes(x=Premature, fill=smoke), position = "fill" )+
+  facet_grid(~mrace)+
+  ggtitle(" Smoking VS. Premature based on Mother's race ")
+ggplot(babies)+
+  geom_bar(mapping = aes(x=Premature, fill=smoke), position = "fill" )+
+  facet_grid(~mrace)+
+  ggtitle(" Smoking VS. Premature based on Mother's race ")
 ### Findings
-
+From the graph we can see that some white females'(from chart 2, 3 and 4) and  mixed races females' babies where born early mainly becaused they were still smoking when they were pregnant.  However, for example, in chart 1 we see that none of the mothers were smoking but still had premature babies.  Also from chart 0-4, we can see that lots of white mothers were still smoking when they were pregnant and from chart 5 - 8, most of white(or rest of the white), black, mexican ,  and asia mothers were not smoking( or never smoked before).  However, it is really hard to say if it is smoking that caused the premature babies.
 ### Contributions
  
 

@@ -73,10 +73,21 @@ ggplot(data=babies)+
 #### Nahom
 
 ### Individual Questions
+Does the mother's race affect a newborn to be Premature?
 
 ### Plots
+```{r, echo=FALSE, message=FALSE}
+ggplot(babies, aes(mrace,inc))+
+geom_boxplot(aes(mrace,inc))+
+facet_wrap(~Premature)+
+theme(legend.position = "top")+
+ggtitle("Income vs Premature birth")
+```
 
 ### Findings
+
+While white women are the median for both of women that have exprienced Premature birth or have not, they have same income for the minimum and median income to those that either had premature birth or not, while there is a noticeable difference in the maximum income to those women that have exprienced premature birth and women that have not exprienced Prematuer birth have 1 more maximum point income differce from those that have exprineced Premature birth. This helps better understand that income affects Premature birth as women with high income can better her chances of prevent Premature birth.  
+
 
 ### Contributions
 

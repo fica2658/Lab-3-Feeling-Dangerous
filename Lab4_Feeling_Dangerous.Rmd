@@ -109,12 +109,9 @@ ggplot(babies)+
   geom_bar(mapping = aes(x=Premature, fill=smoke), position = "fill" )+
   facet_grid(~mrace)+
   ggtitle(" Smoking VS. Premature based on Mother's race ")
-ggplot(babies)+
-  geom_bar(mapping = aes(x=Premature, fill=smoke), position = "fill" )+
-  facet_grid(~mrace)+
-  ggtitle(" Smoking VS. Premature based on Mother's race ")
 ### Findings
 From the graph we can see that some white females'(from chart 2, 3 and 4) and  mixed races females' babies where born early mainly becaused they were still smoking when they were pregnant.  However, for example, in chart 1 we see that none of the mothers were smoking but still had premature babies.  Also from chart 0-4, we can see that lots of white mothers were still smoking when they were pregnant and from chart 5 - 8, most of white(or rest of the white), black, mexican ,  and asia mothers were not smoking( or never smoked before).  However, it is really hard to say if it is smoking that caused the premature babies.
+
 ### Contributions
- 
+ I created a chart with geom_bar to show the relation between smoker and premature with mother's races effected.  I use color to seperated if they are smoker or not.  Although most white women smoke and rest of the mothers from other races don't smoke but it is really hard to tell if smoking cause premature babies.
 

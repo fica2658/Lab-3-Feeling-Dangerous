@@ -1,7 +1,7 @@
 ---
-title: "lab # Feeling Dangerous"
+title: "lab 4 Feeling Dangerous"
 author: "Fin,Nahom,Chun,Jake"
-date: "A/B/2019"
+date: "9/20/2019"
 output: html_document
 ---
 
@@ -23,14 +23,42 @@ babies <- na.omit(babies)
 #### Does smoking in pregnant mother cause overall lower birth weights for newborns at every gestitational age?
 
 ### Why it Matters
+A mothers habits and decisions during pregancy impact her child long after birth. Understanding the relationships between smoking and pregancy are very important to insure people can make educated descisons to protect their childern. The surgeon general released his report over twenty years ago and with new tecnology we can better understand the data that he was presented with to evaluate his claims. We will be able to use our conclusions to help the new surgeon general. This will make sure people are educated and help them make descisons that do not impact their childern.
 
 ### Team Plots
+```{r}
+ggplot(data=babies)+
+  geom_bar(mapping=aes(x=Premature), fill="blue", color="black")+
+  facet_wrap(~smoke)+
+  labs(
+    title="Relationship between Smoking among Pregeant Woman and Premature Birth"
+  )+
+  ylab("Count")+
+  xlab("Premature")+
+  theme_light()
+
+ggplot(data=babies)+
+  geom_point(mapping=aes(y=bwtoz, x=gestation, color=smoke))+
+  facet_grid(~smoke)+
+  labs(
+    title="Distribution of Gestation length vs. Birthweight for Non-smokers and Smokers"
+  )+
+  ylab("Birth Weight (Ounces)")+
+  xlab("Gestation Length")+
+  theme_minimal()
+
+```
 
 ### Conclusions
+From these two plots it can be concluded that mothers who smoke during pregancy are more likely to have premature birth as well as smaller babies in general. For mothers who smoked during pregancy it can be seen that they have a higher perctange of premature births than non-smokers even though the overall count is slightly smaller which means it makes up a larger percentage of the population. Looking at birthweight it can be easily seen that woman who smoke in general have babies that weigh less. This is true regardles of the gesation length as the babies that non-smokers have even prematurally will generally weigh more than those of smokers. As a team we agree with the surgeon generals original recommendations
 
 ### Recommendations
+Our group recommends that the new surgeon general affirms previous conclusions on smoking and pregnancy. They should make a plan to increase the general education of mothers and fathers so they are aware of the dangers of smoking while pregnant. We also think new data should be collected as all the data being analyzed in this report was over 20 years old and may be less applicable to current populations. It seems unlikely that new data would change any of the conclusions in this report however it would increase credibility and relevance. Along with this new data collection we also think the CDC should collect data related to vaping and pregnancy as it is related issue that has seen little study.
+
 
 ### Preliminary Question and Awnser
+
+Which variables are simmilar for smokers and non-smokers? Which are different?
 
 
 # Individual Section 
@@ -49,26 +77,53 @@ babies <- na.omit(babies)
 #### Fin Carlson
 
 ### Individual Questions
+Is their a relationship between smoking and total number of births including fetal death?
+
+Is their a relationship between a mothers education level and if she smokes while pregeant?
 
 ### Plots 
 ```{r}
 ggplot(data=babies)+
-  geom_bar(mapping=aes(x=Premature), fill="blue")+
-  facet_wrap(~smoke)
+  geom_jitter(mapping=aes(y=parity, x=mage, color=smoke))+
+  theme_bw()+
+  labs(
+    title="Mothers Age vs. Number of births for Non-smokers and Smokers"
+  )+
+  ylab("Parity")+
+  xlab("Mothers Age")
+
+cor(babies$parity, babies$smoke)
 
 ggplot(data=babies)+
-  geom_point(mapping=aes(y=bwtoz, x=gestation, color=smoke))+
-  facet_grid(~smoke)
+  geom_smooth(mapping=aes(x=med, y=ded))+
+  facet_wrap(~smoke)+
+labs(
+    title="Mothers Education vs. Fathers Education for Non-smokers and Smokers"
+  )+
+  ylab("Mothers Education")+
+  xlab("Fathers Education")
 
+ggplot(data=babies)+
+  geom_jitter(mapping=aes(x=med, y=ded, alpha=smoke))+
+  theme_minimal()+
+labs(
+    title="Mothers Education vs. Fathers Education for Non-smokers and Smokers"
+  )+
+  ylab("Mothers Education")+
+  xlab("Fathers Education")
 
-  
+cor(babies$med,babies$smoke)
+cor(babies$ded,babies$smoke)
+cor(babies$med,babies$ded)
 
 ```
 
 
 ### Findings
+In investigating the relationship between parity, the total number of births including fetal deaths, and whether a mother smoked I found their to be no relationship. The graph I generated to answer this showed little correlation as parity was highly affected by the mothers age but smoking's effects where unnoticeable. Calculating the correlation between parity and smoking came out to .04 and so I concluded my investigation on these variables. In looking at the effect of education on smoking I saw a much clearer picture that indicated education level  was positively correlated with smoking. It also showed a positive correlation between father and mother education level. Using a dot plot I explored this relationship closer and it can be seen that there is a clustering of data points for non smokers at an education level of 5. The opposite clustering can be seen at an education level of 2 as there is a large amount of smokers. Calculating the correlations for education level and smoking gives -.22 which indicates that as education level goes up likelihood of smoking goes down. This correlation is fairly low but that can be explained by the fact that a fair amount of lower educated people did not smoke. It is important to note though that as education rose the amount of smokers drastically dropped so it can be concluded that smoking and education level are related.
 
 ### Contributions 
+For this lab I started by creating a template for everyone in the team to use for our final document. I then looked into the relationship between smoking and parity as well as education level of the parents. In doing this I made sure to use unique geom functions in both jitter and smooth. I investigated themes for my graphs as well as general aesthics and used the facet function to better show the difference in groups. I also anwsered the why it matters section, conclusion, reccomandation, and created the two plots for our team.
 
 ----------------------------------------------------------------
 
@@ -100,6 +155,7 @@ While white women are the median for both of women that have exprienced Prematur
 
 ### Individual Question
 Is mother's race affects Premature when she smokes.
+
 ### Plots 
 ```{r} 
 babies$mrace <- as.factor(babies$mrace)
@@ -109,9 +165,13 @@ ggplot(babies)+
   geom_bar(mapping = aes(x=Premature, fill=smoke), position = "fill" )+
   facet_grid(~mrace)+
   ggtitle(" Smoking VS. Premature based on Mother's race ")
+ggplot(babies)+
+  geom_bar(mapping = aes(x=Premature, fill=smoke), position = "fill" )+
+  facet_grid(~mrace)+
+  ggtitle(" Smoking VS. Premature based on Mother's race ")
+```
 ### Findings
 From the graph we can see that some white females'(from chart 2, 3 and 4) and  mixed races females' babies where born early mainly becaused they were still smoking when they were pregnant.  However, for example, in chart 1 we see that none of the mothers were smoking but still had premature babies.  Also from chart 0-4, we can see that lots of white mothers were still smoking when they were pregnant and from chart 5 - 8, most of white(or rest of the white), black, mexican ,  and asia mothers were not smoking( or never smoked before).  However, it is really hard to say if it is smoking that caused the premature babies.
-
 ### Contributions
  I created a chart with geom_bar to show the relation between smoker and premature with mother's races effected.  I use color to seperated if they are smoker or not.  Although most white women smoke and rest of the mothers from other races don't smoke but it is really hard to tell if smoking cause premature babies.
 

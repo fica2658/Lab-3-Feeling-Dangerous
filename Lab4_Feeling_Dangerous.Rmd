@@ -113,9 +113,9 @@ p + scale_fill_brewer(palette="Blues")
 
 ```{r pressure, echo=FALSE}
 babies <- na.omit(babies)
-babies <- babies %>% filter(Premature == 0)
-#babies <- babies %>% mutate(smoke = as.character(smoke))
-p <-ggplot(data = babies) +
+mature <- babies %>% filter(Premature == 0)
+mature <- mature %>% mutate(smoke = as.character(smoke))
+p <-ggplot(data = mature) +
   geom_bar(mapping = aes(x = smoke ,fill = smoke), color = "black", position = "dodge") +
   labs(
     title = "Mature Babies",

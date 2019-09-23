@@ -55,10 +55,35 @@ From these two plots it can be concluded that mothers who smoke during pregancy 
 ### Recommendations
 Our group recommends that the new surgeon general affirms previous conclusions on smoking and pregnancy. They should make a plan to increase the general education of mothers and fathers so they are aware of the dangers of smoking while pregnant. We also think new data should be collected as all the data being analyzed in this report was over 20 years old and may be less applicable to current populations. It seems unlikely that new data would change any of the conclusions in this report however it would increase credibility and relevance. Along with this new data collection we also think the CDC should collect data related to vaping and pregnancy as it is related issue that has seen little study.
 
-
 ### Preliminary Question and Awnser
-
 Which variables are simmilar for smokers and non-smokers? Which are different?
+   - Income and parity have about the same proportions of smoker and non-smokers. Education, race, and marital status       all have different proportions of smokers. It is important to know thes background variables have different             proptions of somokers and non-smokers becuase that has a great effect on the premature and mature births. This could show simpsons paradox.
+   
+```{r cars}
+babies <- na.omit(babies)
+
+married <- babies %>% filter(marital == 1)
+married <- married %>% mutate(smoke = as.character(smoke))
+
+p <-ggplot(data = married) +
+  geom_bar(mapping = aes(x = smoke ,fill = smoke), color = "black", position = "dodge") +
+  labs(
+    title = "Married",
+    caption = "0 = Never smoked | 1 = Somokes now"
+  )
+p + scale_fill_brewer(palette="Reds")
+
+divorced <- babies %>% filter(marital == 2)
+divorced <- divorced %>% mutate(smoke = as.character(smoke))
+p <-ggplot(data = divorced) +
+  geom_bar(mapping = aes(x = smoke ,fill = smoke), color = "black", position = "dodge") +
+  labs(
+    title = "Legally Sperated",
+    caption = "0 = Never smoked | 1 = Somokes now"
+  )
+p + scale_fill_brewer(palette="Blues")
+
+```
 
 
 # Individual Section 
@@ -69,7 +94,41 @@ Which variables are simmilar for smokers and non-smokers? Which are different?
 
 ### Plots 
 
-### Findings and Contributions
+```{r pressure, echo=FALSE}
+cor(babies$Premature, babies$smoke)
+```
+
+```{r cars}
+babies <- na.omit(babies)
+babies <- babies %>% filter(Premature == 1)
+babies <- babies %>% mutate(smoke = as.character(smoke))
+p <-ggplot(data = babies) +
+  geom_bar(mapping = aes(x = smoke ,fill = smoke), color = "black", position = "dodge") +
+  labs(
+    title = "Premature Babies",
+    caption = "0 = Never smoked | 1 = Somokes now"
+  )
+p + scale_fill_brewer(palette="Blues")
+```
+
+```{r pressure, echo=FALSE}
+babies <- na.omit(babies)
+babies <- babies %>% filter(Premature == 0)
+#babies <- babies %>% mutate(smoke = as.character(smoke))
+p <-ggplot(data = babies) +
+  geom_bar(mapping = aes(x = smoke ,fill = smoke), color = "black", position = "dodge") +
+  labs(
+    title = "Mature Babies",
+    caption = "0 = Never smoked | 1 = Smokes now"
+  )
+p + scale_fill_brewer(palette="Blues")
+```
+
+### Findings
+In my personal investigation, I found out the group of women who had premature babies had a higher count of "smokes now". For the 92 women who had a premature baby, 48 of them smoke now, while 44 of them have never smoked. For the group of women that had mature babies, a significantlly higher percentage of them have never smoked. There was about 415 women who had a mature baby and about 245 of them have never smoked and about 170 of them smoke now. With the proportionatly higher amount of smokers in the premature group of women, it's safe to say that there is a positive correlation between having a premature baby and smoking cigarettes, though, a very weak correlation of just 0.0877491. With that being said, I would recommend that much more data is collected before making the conclusion that smoking cigarettes increases the liklihood for a women to have a premature baby. I also found that married women have a larger proportion if women who never smoke, whereas legally seperated women have a higher proportion of smokers. This plot is in the preliminary question section.
+
+### Contributions
+For this lab I looked into the realtionship between premature babies and the smoking tendencies of mothers. In doing this I made sure to use unique geom bar functions where I investigated new mapping techinques. I was able to mutate the data and create seperated graphs for premature babies and the mature babies. In doing this I came across the problem wiith the position-"dodge"" and fill within the bar charts. This was super frustraing for the split side-by-side bar charts. I was able to use new colors and borders in my graphs to make them more aesthetically pleasing. I wasn't sure how to do this for the previous lab so it felt nice to implement that feature into these plots. In addition, I was able to show my team how to use those features. I also showed them some shortcuts with commenting, running code, and useful aspects within the console and manipulating datasets. I also anwsered the preliminary question, brainstormed for team plots, commmunicated with my team over text to ensure diverse functions and fufillment of requirements. Lastly, I put the r markdown together and knited te final piece and turned it in.
 
 
 ----------------------------------

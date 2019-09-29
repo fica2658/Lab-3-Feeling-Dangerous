@@ -1,0 +1,125 @@
+---
+title: "lab 3 Feeling Dangerous"
+author: "Fin,Nahom,Chun,Jake"
+date: "9/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+# Load and view the data
+milk <- read.csv("/Users/fin/Desktop/tidytuesday-master/data/2019/2019-01-29/state_milk_production.csv")
+head(milk)
+
+milk <- milk %>%
+  mutate(milk_million = milk_produced/1000000)
+```
+# Team Section
+
+### Overall Question 
+
+
+### Team Plot
+
+```{r}
+
+```
+
+### Conclusion
+
+
+
+# Individual Section 
+
+#### Jake
+
+### Individual Question
+
+
+### Plots 
+```{r}
+
+```
+
+### Findings and Contributions
+
+
+----------------------------------
+
+#### Fin Carlson
+
+### Individual Question
+
+
+
+### Plots 
+
+```{r echo=FALSE, message=FALSE }
+
+
+```
+ 
+```{r}
+
+```
+ 
+### Findings
+
+
+### Contributions 
+
+ 
+
+----------------------------------------------------------------
+
+#### Nahom
+
+### Individual Question
+
+
+
+```{r echo=FALSE, message=FALSE}
+
+```
+
+### Plots
+
+```{r}
+
+```
+
+### Findings
+
+
+
+### Contributions
+
+
+
+-----------------------------------
+
+
+#### Chun
+
+### Individual Question
+
+
+
+### Plots  
+
+```{r}
+
+  
+```
+
+### Findings
+
+
+
+### Contributions
+ 
+ 
+

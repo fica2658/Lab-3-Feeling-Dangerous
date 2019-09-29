@@ -159,9 +159,34 @@ For this lab I first started by completing the individual section to get a bette
 
 ### Plots and Findings 
 
+
+Q.1
 ```{r}
 
+milk2000 <- milk %>%
+  filter(year == 2000)
+  ggplot(data = milk2000, aes( x= milk_million)) +
+  geom_dotplot()
+  ggtitle('Milk produced in the year 2000')
 ```
+
+Q.2
+```{r}
+summary(milk2000)
+```
+
+Q.3
+
+```{r}
+summary= milk2000 %>% group_by(state)%>%
+summarise(
+            median = median(milk_produced),
+            average = mean(milk_produced), 
+            tot_milk = sum(milk_produced))%>%
+as_tibble()
+arrange(summary,desc(tot_milk))
+```
+For my birth year, I created a data frame using "as_tibble" function after I filtered my birth year ,2000, and calculated the median, mean/average and sum as shown above and arragned it by state and the sum in my table which showed me that California produced the most milk in pounds while Alask Produced the least amount of milk.
 
 ### Contributions
 

@@ -77,7 +77,7 @@ Alabama, Arkansas, Hawaii, Rhode Island, Alaska
 
 # Individual Sections 
 
-#### Jake
+## Jake
 
 ### Plots and Findings
 Part 1
@@ -135,7 +135,7 @@ minMilk
 
 ----------------------------------
 
-#### Fin Carlson
+## Fin Carlson
 
 ### Plots and Findings
 Part 1
@@ -200,7 +200,7 @@ min_milk
 
 ----------------------------------------------------------------
 
-#### Nahom
+## Nahom
 
 ### Plots and Findings 
 
@@ -240,7 +240,7 @@ arrange(summary,desc(tot_milk))
 -----------------------------------
 
 
-#### Chun
+## Chun
 
 
 ### Plots and Findings   

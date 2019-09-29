@@ -80,13 +80,58 @@ Alabama, Arkansas, Hawaii, Rhode Island, Alaska
 #### Jake
 
 ### Plots and Findings
+Part 1
 ```{r}
+milk <- milk %>%
+  mutate(milk_million = milk_produced/1000000)
 
+milk_birth_year <- milk %>%
+  filter(year == 1998)
+
+ggplot(data= milk_birth_year, aes(x = milk_million)) +
+  geom_density(fill = "#ff4d4d", alpha = 0.5)
+  ggtitle('Distribution estimate of the the milk produced in 1998')+
+  xlab('Milk Produced (Millions lb)')
+```
+
+Part 2
+```{r}
+summary(milk2000)
+```
+Part 3
+```{r, echo=FALSE}
+milk <- milk %>%
+  mutate(milk_million = milk_produced/1000000)
+
+milk_birth_year <- milk %>%
+  filter(year == 1998)
+
+avrMilk <- milk_birth_year %>%
+   summarise(Mean = mean(milk_million)) %>%
+   as_tibble()
+ avrMilk
+
+medMilk <- milk_birth_year %>%
+  summarise(Median = median(milk_million)) %>%
+  as_tibble()
+medMilk
+
+maxMilk <- milk_birth_year %>%
+  summarise(Max = max(milk_million)) %>%
+  as_tibble()
+maxMilk
+
+minMilk <- milk_birth_year %>%
+  summarize(Min = min(milk_million)) %>%
+  as_tibble()
+minMilk
 ```
 
 
-###Contributions
 
+### Contributions 
+
+##### I, Jacob Boeckenstedt, first started by completing the individual section to get a better understanding of the data. After doing several practice problems in the lab, I was able to get a better understanding for tidying this data set, as well as manipulating the data set. I then mutated the data to create a new variable (milk produced per million pounds) and filtered for my birth year 1998. I did a density plot for the distribution of milk produced in 1998. I was able to provide clear titles and nice looking fill making it  simple and easy on the viewers eye. After completing my individual section, I helped create our team plot to show the milk production over the years for some of states we chose as a group. Additionally, I looked over the plots and provided some of my key takeaways for the team. Finally, before fin was about to submit or final lab markdown, I added echo=FALSE in each of the indivisual sections containing the average/median summaries. This took away tedious code that doesn't need to be seen.
 
 ----------------------------------
 
@@ -116,7 +161,7 @@ summary(milk2000)
 
 
 Part 3
-```{r}
+```{r, echo=FALSE}
 milk_mean <- milk2000 %>%
       group_by(state) %>%
       summarise(mean_milk = mean(milk_million)) %>%      
@@ -146,10 +191,10 @@ min_milk
   filter(milk_million==32245 | milk_million==13))
 ```
  
-For my birth year (2000), I found the mean and median amounts of milk produced for each state as seen above and used the summarise function for both max and min to find that California produced the most and Alaska the least. My code for determining this is a little messy and could likely be cleaned into one step. I would still get the same answer either way as I first checked to see what the largest and smallest values were and then filtered by those values to find the state. I plotted my graph using the regions to show the overall difference on a broad scale in milk production around the country.
+##### For my birth year (2000), I found the mean and median amounts of milk produced for each state as seen above and used the summarise function for both max and min to find that California produced the most and Alaska the least. My code for determining this is a little messy and could likely be cleaned into one step. I would still get the same answer either way as I first checked to see what the largest and smallest values were and then filtered by those values to find the state. I plotted my graph using the regions to show the overall difference on a broad scale in milk production around the country.
 
 ### Contributions 
-For this lab I first started by completing the individual section to get a better understanding of the data through EDA. After completing my individual section I created our team plot to show the milk production over the years for the 5 states we chose as a group. It took me a while to be able to add the line for the national average as this is the result of all states and as such is a different data set. Through this I learned how to combine two plots even if they don't have the same data. I then looked over the graph and provided some of my key takeaways. I was also responsible for compiling the final Markdown file and turning it in.
+##### For this lab I first started by completing the individual section to get a better understanding of the data through EDA. After completing my individual section I created our team plot to show the milk production over the years for the 5 states we chose as a group. It took me a while to be able to add the line for the national average as this is the result of all states and as such is a different data set. Through this I learned how to combine two plots even if they don't have the same data. I then looked over the graph and provided some of my key takeaways. I was also responsible for compiling the final Markdown file and turning it in.
 
  
 
@@ -186,9 +231,9 @@ summarise(
 as_tibble()
 arrange(summary,desc(tot_milk))
 ```
-For my birth year, I created a data frame using "as_tibble" function after I filtered my birth year ,2000, and calculated the median, mean/average and sum as shown above and arragned it by state and the sum in my table which showed me that California produced the most milk in pounds while Alask Produced the least amount of milk.
 
 ### Contributions
+##### For my birth year, I created a data frame using "as_tibble" function after I filtered my birth year ,2000, and calculated the median, mean/average and sum as shown above and arragned it by state and the sum in my table which showed me that California produced the most milk in pounds while Alask Produced the least amount of milk.
 
 
 
@@ -214,7 +259,7 @@ milk1995 <- milk %>%
 summary(milk1995)
 ```
 3rd
-```{r}
+```{r, echo=FALSE}
 Summarize=milk %>% group_by(state) %>%
   summarise(Med = median(milk_million), Avg = mean(milk_million), Sum=sum(milk_million)) %>%
   as_tibble()
@@ -222,7 +267,7 @@ arrange(Summarize, desc(Sum))
 ```
 
 ### Contributions
-I completed my individual section and came up with code to answer the team questions.
+##### I completed my individual section and came up with code to answer the team questions.
  
  
 

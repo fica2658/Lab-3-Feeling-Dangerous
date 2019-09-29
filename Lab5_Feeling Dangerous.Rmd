@@ -1,7 +1,7 @@
 ---
-title: "lab 3 Feeling Dangerous"
+title: "Lab 5 Feeling Dangerous"
 author: "Fin,Nahom,Chun,Jake"
-date: "9/12/2019"
+date: "9/29/2019"
 output: html_document
 ---
 
@@ -19,81 +19,137 @@ milk <- milk %>%
 ```
 # Team Section
 
-### Overall Question 
-##The year when the most milk was produced in the United States.
-##The year when the least milk was produced in the United States.
+### Team Plot
+
+```{r}
+milkstate <- milk %>%
+  filter(state %in% c('Colorado','Montana','New Mexico','Oregon','Wyoming')) %>%
+  group_by(year, state) %>%
+  as_tibble()
+
+
+milk1 <- milk %>%
+  group_by(year) %>%
+  summarise(milk_million = mean(milk_million)) %>%      
+  as_tibble()
+
+
+ggplot(mapping= aes(x=year , y=milk_million))+
+  geom_point(data=milkstate, aes(color=state))+
+  geom_line(data=milk1)+
+  ggtitle('Production of Milk in Western States compared to the National Average')+
+  xlab('Year')+
+  ylab('Milk Produced (Million lb)')
+  
+```
+
+### Take Aways 
+This plot shows that the chosen states typically produce less milk than the national average. It also shows that in general, milk production has risen over the years as the national average has seen steady increase. This does not mean all states saw equal changes in production as places like Wyoming and Montana are not suitable for large milk operations and have seen very little change. New Mexico on the other hand started at the same production level of the previously mentioned states and yet today it is double that of the national average. It would be interesting to further analyze the data for New Mexico and try to identify the reasons for the sharp increase. 
+
+### Follow Up Questions
 ```{r}
 SumUS=milk%>% group_by(year) %>%summarise(Sum=sum(milk_million))%>% as_tibble()
-NS1=arrange(SumUS, desc(Sum))
-head(NS1, 1)
-tail(NS1, 1)
-```
-# US produced most milk in 2017. US produced least milk in 1975
-##In 2017, report the 5 states that produced the most milk.
-##In 2017, report the 5 states that produced the least milk.
-```{r}
+  NS1=arrange(SumUS, desc(Sum))
+  head(NS1, 1)
+  tail(NS1, 1)
+
 milk2017 <- milk %>% filter(year == 2017)
 SumState=milk2017%>% group_by(state) %>%summarise(milk_million)%>% as_tibble()
 NS2=arrange(SumState, desc(milk_million))
 head(NS2, 5)
 tail(NS2, 5)
+  
 ```
 
-### Team Plot
+#### What year was the most milk produced in the United States?
+2017
 
-```{r}
-milkMI <- milk %>%
-  filter(state == "Michigan")
-ggplot(data = milkMI, aes(x = year, y = milk_million, color = state)) +
-  geom_point() +
-  geom_smooth()+
-  ggtitle('Pounds of milk over time in MI') +
-  xlab('Year') +
-  ylab('Milk Produced (Million lb)')
-```
+#### What year was the least milk  produced in the United States?
+1975
 
-### Conclusion
+#### In 2017, what 5 states produced the most milk?
+California, Wisconsin, New York, Idaho, Texas
+
+#### In 2017, what 5 states produced the least milk?
+Alabama, Arkansas, Hawaii, Rhode Island, Alaska
 
 
 
-# Individual Section 
+# Individual Sections 
 
 #### Jake
 
-### Individual Question
-
-
-### Plots 
+### Plots and Findings
 ```{r}
 
 ```
 
-### Findings and Contributions
+
+###Contributions
 
 
 ----------------------------------
 
 #### Fin Carlson
 
-### Individual Question
-
-
-
-### Plots 
-
-```{r echo=FALSE, message=FALSE }
-
-
-```
- 
+### Plots and Findings
+Part 1
 ```{r}
+milk2000 <- milk %>%
+  filter(year == 2000)
 
+ggplot(data= milk2000, aes(x=region , y=milk_million, fill=region))+
+  geom_bar(stat="identity")+
+  ggtitle('Pounds of Milk by Region for the Year 2000')+
+  xlab('Region')+
+  ylab('Milk Produced (Million lb)')+
+  scale_fill_discrete(name="Region") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+
+Part 2
+```{r}
+summary(milk2000)
+```
+
+
+Part 3
+```{r}
+milk_mean <- milk2000 %>%
+      group_by(state) %>%
+      summarise(mean_milk = mean(milk_million)) %>%      
+    as_tibble()
+milk_mean
+
+median_milk <- milk2000 %>%
+  group_by(state) %>%
+  summarise(milk_median = median(milk_million)) %>%
+  as_tibble()
+median_milk
+
+max_milk <- milk2000 %>%
+  group_by(year) %>%
+  summarise(milk_max = max(milk_million)) %>%
+  as_tibble()
+max_milk
+
+
+min_milk <- milk2000 %>%
+  group_by(year) %>%
+  summarise(milk_min = min(milk_million)) %>%
+  as_tibble()
+min_milk
+
+(max_min <- milk2000 %>%
+  filter(milk_million==32245 | milk_million==13))
 ```
  
-### Findings
-
+For my birth year (2000), I found the mean and median amounts of milk produced for each state as seen above and used the summarise function for both max and min to find that California produced the most and Alaska the least. My code for determining this is a little messy and could likely be cleaned into one step. I would still get the same answer either way as I first checked to see what the largest and smallest values were and then filtered by those values to find the state. I plotted my graph using the regions to show the overall difference on a broad scale in milk production around the country.
 
 ### Contributions 
+For this lab I first started by completing the individual section to get a better understanding of the data through EDA. After completing my individual section I created our team plot to show the milk production over the years for the 5 states we chose as a group. It took me a while to be able to add the line for the national average as this is the result of all states and as such is a different data set. Through this I learned how to combine two plots even if they don't have the same data. I then looked over the graph and provided some of my key takeaways. I was also responsible for compiling the final Markdown file and turning it in.
 
  
 
@@ -101,23 +157,11 @@ ggplot(data = milkMI, aes(x = year, y = milk_million, color = state)) +
 
 #### Nahom
 
-### Individual Question
-
-
-
-```{r echo=FALSE, message=FALSE}
-
-```
-
-### Plots
+### Plots and Findings 
 
 ```{r}
 
 ```
-
-### Findings
-
-
 
 ### Contributions
 
@@ -129,8 +173,7 @@ ggplot(data = milkMI, aes(x = year, y = milk_million, color = state)) +
 #### Chun
 
 
-### Plots  
-
+### Plots and Findings   
 ```{r}
 milk1995 <- milk %>%
   filter(year == 1995)
@@ -152,5 +195,9 @@ Summarize=milk %>% group_by(state) %>%
   as_tibble()
 arrange(Summarize, desc(Sum))
 ```
-### Findings
-From the the plot for MI, we can see that milk produced rate increases significiently from the year 2000 and it is increasing linearly from year to year. Probrably because the rate of birth increased or more and more people moved into MI.
+
+### Contributions
+I completed my individual section and came up with code to answer the team questions.
+ 
+ 
+

@@ -7,11 +7,11 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(ggplot2)
-library(dplyr)
+# Load tidyverse
 library(tidyverse)
+
 # Load and view the data
-milk <- read.csv("/Users/fin/Desktop/tidytuesday-master/data/2019/2019-01-29/state_milk_production.csv")
+milk <- read.csv('state_milk_production.csv')
 head(milk)
 
 milk <- milk %>%
@@ -77,9 +77,7 @@ Alabama, Arkansas, Hawaii, Rhode Island, Alaska
 
 # Individual Sections 
 
-## Jake
-
-### Plots and Findings
+### Jake's Plots and Findings
 Part 1
 ```{r}
 milk <- milk %>%
@@ -90,7 +88,7 @@ milk_birth_year <- milk %>%
 
 ggplot(data= milk_birth_year, aes(x = milk_million)) +
   geom_density(fill = "#ff4d4d", alpha = 0.5) +
-  ggtitle('Distribution estimate of the the milk produced in 1998') +
+  ggtitle('Distribution estimate of the the milk produced in 1998')+
   xlab('Milk Produced (Millions lb)')
 ```
 

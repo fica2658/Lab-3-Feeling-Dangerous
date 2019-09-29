@@ -89,8 +89,8 @@ milk_birth_year <- milk %>%
   filter(year == 1998)
 
 ggplot(data= milk_birth_year, aes(x = milk_million)) +
-  geom_density(fill = "#ff4d4d", alpha = 0.5)
-  ggtitle('Distribution estimate of the the milk produced in 1998')+
+  geom_density(fill = "#ff4d4d", alpha = 0.5) +
+  ggtitle('Distribution estimate of the the milk produced in 1998') +
   xlab('Milk Produced (Millions lb)')
 ```
 

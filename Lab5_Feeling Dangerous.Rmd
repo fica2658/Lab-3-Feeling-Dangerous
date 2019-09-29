@@ -79,6 +79,7 @@ Alabama, Arkansas, Hawaii, Rhode Island, Alaska
 
 ### Jake's Plots and Findings
 Part 1
+
 ```{r}
 milk <- milk %>%
   mutate(milk_million = milk_produced/1000000)
@@ -88,15 +89,15 @@ milk_birth_year <- milk %>%
 
 ggplot(data= milk_birth_year, aes(x = milk_million)) +
   geom_density(fill = "#ff4d4d", alpha = 0.5) +
-  ggtitle('Distribution estimate of the the milk produced in 1998')+
-  xlab('Milk Produced (Millions lb)')
+  ggtitle('Distribution of Milk Produced in 1998')+
+  xlab('Milk Produced (millions)')
 ```
 
 Part 2
 ```{r}
 summary(milk_birth_year)
 ```
-Part 3
+Part 3 (Mean, Median, Max, and Min)
 ```{r, echo=FALSE}
 milk <- milk %>%
   mutate(milk_million = milk_produced/1000000)

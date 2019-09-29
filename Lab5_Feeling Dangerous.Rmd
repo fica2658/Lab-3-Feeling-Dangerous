@@ -96,7 +96,7 @@ ggplot(data= milk_birth_year, aes(x = milk_million)) +
 
 Part 2
 ```{r}
-summary(milk2000)
+summary(milk_birth_year)
 ```
 Part 3
 ```{r, echo=FALSE}

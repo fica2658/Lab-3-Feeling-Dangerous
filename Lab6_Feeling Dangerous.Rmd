@@ -1,0 +1,75 @@
+---
+title: "lab # Feeling Dangerous"
+author: "Fin,Nahom,Chun,Jake"
+date: "#/#/2019"
+output: html_document
+---
+
+
+# Team Section
+
+### Overall Questions
+
+What factors increase and decrease the probablitly that a flight is delayed?
+
+How does weather, security, carrier, AirTraffic controllers, and other delayed flights impact the chance a flight is delayed leaving Denver?  
+
+### Team Plots
+
+### Conclusions
+
+### Recommendations  
+
+----------------------------------
+
+# Individual Section 
+
+#### Jake
+
+### Individual Question
+
+### Plots 
+
+### Findings
+
+### Contributions
+
+----------------------------------
+
+#### Fin Carlson
+
+### Individual Question
+
+### Plots 
+
+### Findings
+
+### Contributions 
+
+-----------------------------------
+#### Nahom
+
+### Individual Question
+
+### Plots
+
+### Findings
+
+### Contributions
+
+
+-----------------------------------
+
+
+#### Chun
+
+### Individual Question
+
+### Plots  
+
+### Findings
+
+### Contributions
+ 
+ 
+

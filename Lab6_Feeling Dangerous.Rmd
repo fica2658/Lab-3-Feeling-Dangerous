@@ -130,7 +130,7 @@ delay_dataframe
 ```
 
 ### Overall Questions
-How do delays affect the probability that a flight is delayed?
+How do delays affect the probability that a flight is late?
 
 What factors increase and decrease the probablitly that a flight is delayed?
 

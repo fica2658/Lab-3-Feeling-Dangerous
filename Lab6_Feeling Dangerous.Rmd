@@ -7,13 +7,137 @@ output: html_document
 
 
 # Team Section
+```{r setup, include=FALSE}
+library(tidyverse)
+COflights <- read_csv("https://files.osf.io/v1/resources/3z5as4pej8/providers/osfstorage/5a8ca28f57103100104584db")
+
+
+#Filtering flights that came or left denver as this is what we need for lab
+DENflights <- COflights %>% filter(ORIGIN=="DEN" | DEST=="DEN" )
+DENflights
+
+missed_flights <- DENflights %>% filter(ARR_DELAY>=15)
+missed_flights  
+
+winter <- missed_flights %>% filter(MONTH==12 | MONTH==1 | MONTH==2)
+winter
+winter_n <- DENflights %>% filter(MONTH==12 | MONTH==1 | MONTH==2)
+winter_n
+
+spring <- missed_flights %>% filter(MONTH==3 | MONTH==4 | MONTH==5)
+spring
+spring_n <- DENflights %>% filter(MONTH==3 | MONTH==4 | MONTH==5)
+spring_n
+
+summer <- missed_flights %>% filter(MONTH==6 | MONTH==7 | MONTH==8 | MONTH==9)
+summer
+summer_n <- DENflights %>% filter(MONTH==6 | MONTH==7 | MONTH==8 | MONTH==9)
+summer_n
+
+fall <- missed_flights %>% filter(MONTH==10 | MONTH==11 )
+fall
+fall_n <- DENflights %>% filter(MONTH==10 | MONTH==11 )
+fall_n
+
+nrow(winter) / nrow(winter_n)
+nrow(spring) / nrow(spring_n)
+nrow(summer) / nrow(summer_n)
+nrow(fall) / nrow(fall_n)
+
+season <- c("Winter", "Spring", "Summer", "Fall")
+season_prob <- c(.198, .168, .179, .121)
+season_data <- data.frame(season, season_prob)
+season_data
+
+united <- missed_flights %>% filter(CARRIER=="UA")
+united
+united_n <- DENflights %>% filter(CARRIER=="UA")
+united_n
+
+southwest <- missed_flights %>% filter(CARRIER=="WN")
+southwest
+southwest_n <- DENflights %>% filter(CARRIER=="WN")
+southwest_n
+
+american <- missed_flights %>% filter(CARRIER=="AA")
+american
+american_n <- DENflights %>% filter(CARRIER=="AA")
+american_n
+
+frontier <- missed_flights %>% filter(CARRIER=="F9")
+frontier
+frontier_n <- DENflights %>% filter(CARRIER=="F9")
+frontier_n
+
+skywest <- missed_flights %>% filter(CARRIER=="OO")
+skywest
+skywest_n <- DENflights %>% filter(CARRIER=="OO")
+skywest_n
+
+delta <- missed_flights %>% filter(CARRIER=="DL")
+delta
+delta_n <- DENflights %>% filter(CARRIER=="DL")
+delta_n
+
+nrow(united) / nrow(united_n)
+nrow(southwest) / nrow(southwest_n)
+nrow(american) / nrow(american_n)
+nrow(frontier) / nrow(frontier_n)
+nrow(skywest) / nrow(skywest_n)
+nrow(delta) / nrow(delta_n)
+
+carrier <- c("United", "Southwest", "American", "Frontier", "Skywest", "Delta")
+carrier_prob <- c(.130, .203, .186, .202, .160, .138)
+carrier_data <- data.frame(carrier, carrier_prob)
+carrier_data
+
+security <- DENflights %>% filter(ARR_DELAY>=30 & SECURITY_DELAY>0)
+security
+security1 <- DENflights %>% filter(SECURITY_DELAY>0)
+security1
+
+weather <- DENflights %>% filter(ARR_DELAY>=30 & WEATHER_DELAY>0)
+weather
+weather1 <- DENflights %>% filter(WEATHER_DELAY>0)
+weather1
+
+airdelay <- DENflights %>% filter(ARR_DELAY>=30 & NAS_DELAY>0)
+airdelay
+airdelay1 <- DENflights %>% filter (NAS_DELAY>0)
+airdelay1
+
+latedelay <- DENflights %>% filter(ARR_DELAY>=30 & LATE_AIRCRAFT_DELAY>0)
+latedelay
+latedelay1 <- DENflights %>% filter(LATE_AIRCRAFT_DELAY>0)
+latedelay1
+
+cardelay <- DENflights %>% filter(ARR_DELAY>=30 & CARRIER_DELAY>0)
+cardelay
+cardelay1 <- DENflights %>% filter(CARRIER_DELAY>0)
+cardelay1
+
+nrow(security) / nrow(security1)
+nrow(weather) / nrow(weather1)
+nrow(airdelay) / nrow(airdelay1)
+nrow(latedelay) / nrow(latedelay1)
+nrow(cardelay) / nrow(cardelay1)
+
+delay_data <- c("Security", "Weather", "Air Traffic", "Other Plane", "Carrier")
+delay_prob <- c(.528, .790, .569, .682, .620)
+delay_dataframe <- data.frame(delay_data, delay_prob)
+delay_dataframe
+
+```
 
 ### Overall Questions
 How do other delays affect whether a flight is late or not?
 
 What factors increase and decrease the probablitly that a flight is delayed?
+
 ### Team Plots
 ```{r}
+library(tidyverse)
+
 ggplot(data= delay_dataframe, aes(x=delay_data , y=delay_prob, fill=delay_data))+
   geom_bar(stat="identity")+
   ggtitle('Probability of a Flight Being Late by More Than Thirty Minutes by Delay Type')+
@@ -26,12 +150,14 @@ ggplot(data= delay_dataframe, aes(x=delay_data , y=delay_prob, fill=delay_data))
 
 
 ### Conclusions
-Looking at the data for other types of delay it can be concluded that any flight that had any one of these delays will be late. There were no instances in the data set of flights having another delay and not having an overall delay that was greater than 15 (AKA late). This does not mean the delays are created equally however and I next investigated the probability that flight is delayed longer than thirty minutes for the types of delays. I found that weather has the highest probability of causing delays greater than thirty minutes (.790) while security delays have the lowest probability of causing a delay over thirty minutes (.528). In general this will mean that if a flight is to experiences any delay it can be expected to be late, however if the delay is due to weather there is very high chance the delay will extend past thirty minutes.
+Looking at the data for other types of delay it can be concluded that any flight that had any one of these delays will be late. There were no instances in the data set of flights having another delay and not having an overall delay that was greater than 15 (AKA late). This does not mean the delays are created equally however and I next investigated the probability that flight is delayed longer than thirty minutes for the types of delays. I found that weather has the highest probability of causing delays greater than thirty minutes (.790) while security delays have the lowest probability of causing a delay over thirty minutes (.528). In general, this will mean that if a flight is to experience any delay it can be expected to be late, however if the delay is due to the weather there is very high chance the delay will extend past thirty minutes.
 
 ### Recommendations  
-To decrease the number of flights that are late I would focus on reducing the delays caused in other areas, as these delays have far reaching consquences. Weather delays are almost inevetiable in a area like Colorado and may be hard to reduce however there is still a high probaility that another plane or air traffic is responsible for a delay greater than thirty minutes. To remedy this I would focus on changing the times in which a lot of planes are landing. DIA could also look to change their taxing prodcedure to ensure planes are taking off quickly and not delaying other arrivals or depatures.
+To decrease the number of flights that are late I would focus on reducing the delays caused in other areas, as these delays have far reaching consequences. Weather delays are almost inevitable in an area like Colorado and may be hard to reduce however there is still a high probability that another plane or air traffic is responsible for a delay greater than thirty minutes. To remedy this I would focus on changing the times in which a lot of planes are landing. DIA could also look to change their taxiing procedure to ensure planes are taking off quickly and not delaying other arrivals or departures.
 
 ### Why This Matters
+This is important for the managers of DIA as only a few late flights can lead to much greater effects on the airport as a whole. Keeping passengers moving happily and quickly to their desentations is key as DIA can only hold so many people and with more people comes more chance of delay. As we have seen with the graph on delay causes, if any sort of delay occurs the flight is practically guaranteed to be late. By now understanding the cause of the majority of these late flights, DIA supervisors can work to reduce them. In more broad terms this is important for the safety and health of the United States as our airports keep both people and business on the move. Stagnation in a major airport could have effects on local economies as goods and service would have a harder time being transferred.
+
 
 ----------------------------------
 
@@ -57,13 +183,13 @@ Which season has the highest probability that a flight is late?
 season_data
 ```
 
-Of the  Airline's that service Denver, Which airline has the highest probability of a flight being late?
+Of the  Airline's that service Denver, which airline has the highest probability of a flight being late?
 ```{r}
 carrier_data
 ```
 
 ### Work
-```{r}
+```{r, include=FALSE}
 missed_flights <- DENflights %>% filter(ARR_DELAY>=15)
 missed_flights  
 
@@ -204,35 +330,36 @@ ggplot(data= carrier_data, aes(x=carrier , y=carrier_prob, fill=carrier))+
 
 
 ### Findings
-By looking at the number of late flights for each season it quickly stood out that their were many more in the winter and summer than the rest of the year. I orignally belived this to be a result of the winter and summer seasons having a greater sample size however after finding the probability that a flight is late in any given season this trend still remains. For this reason it can be concluded that flights during the winter have the highest chance of being late while those in the fall will have the lowest. Reasons for this could include harsher weather that is more frequent in the winter as well a greater general amount of flights that causes delays for other reasons related to the airport.
+By looking at the number of late flights for each season it quickly stood out that there were many more in the winter and summer than the rest of the year. I originally believed this to be a result of the winter and summer seasons having a greater sample size however after finding the probability that a flight is late in any given season this trend still remains. For this reason it can be concluded that flights during the winter have the highest chance of being late while those in the fall will have the lowest. Reasons for this could include harsher weather that is more frequent in the winter as well a greater general amount of flights that causes delays for other reasons related to the airport.
 
-I performed a very simmialr anaylsis to determine the effects of carrier on the likelhood a flight is late. For this I limited my carriers to the five largest nationally as well as one local airline (Skywest) that still had a signifagant amount of flights. In calculating the probability that a flight is late for each carrier I found Southwest and Frontier to be most likely to have a late flight in Denver while United was least.
+I performed a very similar analysis to determine the effects of carrier on the likelihood a flight is late. For this I limited my carriers to the five largest nationally as well as one local airline (Skywest) that still had a significant amount of flights. In calculating the probability that a flight is late for each carrier I found Southwest and Frontier to be most likely to have a late flight in Denver while United was least. The probability I calculalated was conditional as it was the total late flights for each carrier divided by the total flights for each carrier.
 
 ### Contributions 
-For this lab I started by looking at the effect of season on the probability of a flight being late. In doing this I found the amount of flights that were late in each season and divided this number by the total flights in that season to find the probability that a flight was late given that it occured within a certain season. I then looked into the effects of carrier on probability that a flight is late. I did this by taking the total amount of late flights for each carrier divided by the total flights for each carrier. This is a conditional probability that express the chance that a flight opperated by a carrier is late. I then looked at the causes of delays to determine which caused the most number of late flights although this was incoculsive as any flight that expierienced a delay had an overall delay that was greater than 15 (AKA late). I then increased my parameters to look at flights that had a delay of thirty or more minutes. Doing this I calculated the conditional probability that a flight is more than thirty minutes late for each type of delay. This allowed me to better awnser the team question as it was clear that while all delay's caused late flights, the severity of the delay varried by type.
+For this lab I started by looking at the effect of season on the probability of a flight being late. In doing this I found the amount of flights that were late in each season and divided this number by the total flights in that season to find the probability that a flight was late given that it occured within a certain season. I then looked into the effects of carrier on probability that a flight is late. I did this by taking the total amount of late flights for each carrier divided by the total flights for each carrier. This is a conditional probability that express the chance that a flight operated by a carrier is late. I then looked at the causes of delays to determine which caused the most number of late flights although this was inconclusive as any flight that experienced a delay had an overall delay that was greater than 15 (AKA late). I then increased my parameters to look at flights that had a delay of thirty or more minutes. Doing this I calculated the conditional probability that a flight is more than thirty minutes late for each type of delay. This allowed me to better answer the team question as it was clear that while all delays caused late flights, the severity of the delay varied by type. With all of my probabilities calculated I created three graphs, one of which was used for our team graph. I also wrote the conclusion, reccomandation, and why it matters sections. Jake and I then worked to compile everyone's work and knit the document before turning it in.
+
 -----------------------------------
 #### Nahom
+```{r}
+# # DENflights <- COflights %>% filter(DEST =="DEN" )
+# DENflights <- mutate(DENflights, ARR_DELAY_LATE = ARR_DELAY >= 15)
+# DENflights %>% mutate(ARR_DELAY_LATE = ARR_DELAY >=15)
+# ARR_DELAY_LATE <- DENflights %>% filter(ARR_DELAY>=15)
+# SHORT_DISTANCE <- ARR_DELAY_LATE %>% filter(DISTANCE>=1138)
+# MEDIUM_DISTANCE<- ARR_DELAY_LATE%>% filter(between(DISTANCE, 1138, 2276) )
+# LONG_DISTANCE <- ARR_DELAY_LATE%>% filter(between(DISTANCE, 2276,3414))
+# nrow(SHORT_DISTANCE)/ nrow(DISTANCE)
+# nrow(MEDIUM_DISTANCE)/ nrow(DISTANCE)
+# nrow(LONG_DISTANCE)/ nrow(DISTANCE)
+# DENflights <- COflights %>% filter(DEST =="DEN" )
+# DENflights <- mutate(DENflights, ARR_DELAY_LATE = ARR_DELAY >= 15)
+# DENflights %>% mutate(ARR_DELAY_LATE = ARR_DELAY >=15)
+# ARR_DELAY_LATE <- DENflights %>% filter(ARR_DELAY>=15)
+# united <- ARR_DELAY_LATE %>% filter(CARRIER=="UA")
+# american <- ARR_DELAY_LATE %>% filter(CARRIER=="AA")
 
-```{r}
-DENflights <- COflights %>% filter(DEST =="DEN" )
-DENflights <- mutate(DENflights, ARR_DELAY_LATE = ARR_DELAY >= 15)
-DENflights %>% mutate(ARR_DELAY_LATE = ARR_DELAY >=15)
-ARR_DELAY_LATE <- DENflights %>% filter(ARR_DELAY>=15)
-SHORT_DISTANCE <- ARR_DELAY_LATE %>% filter(DISTANCE>=1138)
-MEDIUM_DISTANCE<- ARR_DELAY_LATE%>% filter(between(DISTANCE, 1138, 2276) )
-LONG_DISTANCE <- ARR_DELAY_LATE%>% filter(between(DISTANCE, 2276,3414))
-nrow(SHORT_DISTANCE)/ nrow(DISTANCE)
-nrow(MEDIUM_DISTANCE)/ nrow(DISTANCE)
-nrow(LONG_DISTANCE)/ nrow(DISTANCE)
+##Nahoms code did not run and the error seemed to be on his end so I, Finlay Carlson, commented it out so that the document would run.
 ```
-```{r}
-DENflights <- COflights %>% filter(DEST =="DEN" )
-DENflights <- mutate(DENflights, ARR_DELAY_LATE = ARR_DELAY >= 15)
-DENflights %>% mutate(ARR_DELAY_LATE = ARR_DELAY >=15)
-ARR_DELAY_LATE <- DENflights %>% filter(ARR_DELAY>=15)
-united <- ARR_DELAY_LATE %>% filter(CARRIER=="UA")
-american <- ARR_DELAY_LATE %>% filter(CARRIER=="AA")
-```
+
 
 ### Individual Question
 How does distance travlled affect the probability of the flight being delayed? 

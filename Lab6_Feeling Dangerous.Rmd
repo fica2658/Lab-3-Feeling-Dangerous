@@ -7,7 +7,10 @@ output: html_document
 
 
 # Team Section
-
+```{r}
+library(tidyverse)
+COflights <- read_csv("https://files.osf.io/v1/resources/3z5as4pej8/providers/osfstorage/5a8ca28f57103100104584db")
+```
 ### Overall Questions
 
 What factors increase and decrease the probablitly that a flight is delayed?
@@ -169,14 +172,33 @@ I performed a very simmialr anaylsis to determine the effects of carrier on the 
 
 
 #### Chun
-
+```{r}
+DEN=COflights%>%filter(ORIGIN == "DEN" | DEST == "DEN")
+DELAY=DEN%>%select(ends_with("DELAY"))%>%filter(DEP_DELAY>=15 | ARR_DELAY>=15 | CARRIER_DELAY>=15 | WEATHER_DELAY>=15 | NAS_DELAY>=15)
+Carrier=DEN%>%filter(CARRIER_DELAY>=15)
+```
 ### Individual Question
-
+What is the possibility that carrier is the reason that cause the delay?
+```{r}
+20741/93507
+```
+What is the possibility that delay is a carrier delay and caused by WN?
+```{r}
+CWN=Carrier%>%filter(CARRIER=="WN")
+7106/93507
+```
+What is the possibility that WN is delay given by it was caused by carrier delay?
+```{r}
+0.0759943/0.2218123
+```
 ### Plots  
-
+```{r}
+ggplot(data=Carrier)+
+  geom_boxplot(mapping = aes(x=CARRIER, y=CARRIER_DELAY))
+```
 ### Findings
+In all the reasons that cause delay of a flight, carrier delay only happened in a small possibility. However, if carrier delay happened, there is a very big chance(arround 1/3) is that WN causes the delay.
 
-### Contributions
  
  
 

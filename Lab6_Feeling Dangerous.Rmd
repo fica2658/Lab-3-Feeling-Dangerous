@@ -159,7 +159,9 @@ I performed a very simmialr anaylsis to determine the effects of carrier on the 
 -----------------------------------
 #### Nahom
 
-```{r}DENflights <- COflights %>% filter(DEST =="DEN" )
+```{r}
+
+DENflights <- COflights %>% filter(DEST =="DEN" )
 DENflights <- mutate(DENflights, ARR_DELAY_LATE = ARR_DELAY >= 15)
 DENflights %>% mutate(ARR_DELAY_LATE = ARR_DELAY >=15)
 ARR_DELAY_LATE <- DENflights %>% filter(ARR_DELAY>=15)

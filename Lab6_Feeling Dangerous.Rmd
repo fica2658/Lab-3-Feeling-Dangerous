@@ -159,11 +159,51 @@ I performed a very simmialr anaylsis to determine the effects of carrier on the 
 -----------------------------------
 #### Nahom
 
-### Individual Question
+```{r}DENflights <- COflights %>% filter(DEST =="DEN" )
+DENflights <- mutate(DENflights, ARR_DELAY_LATE = ARR_DELAY >= 15)
+DENflights %>% mutate(ARR_DELAY_LATE = ARR_DELAY >=15)
+ARR_DELAY_LATE <- DENflights %>% filter(ARR_DELAY>=15)
 
+SHORT_DISTANCE <- ARR_DELAY_LATE %>% filter(DISTANCE>=1138)
+MEDIUM_DISTANCE<- ARR_DELAY_LATE%>% filter(between(DISTANCE, 1138, 2276) )
+LONG_DISTANCE <- ARR_DELAY_LATE%>% filter(between(DISTANCE, 2276,3414))
+
+
+nrow(SHORT_DISTANCE)/ nrow(DISTANCE)
+nrow(MEDIUM_DISTANCE)/ nrow(DISTANCE)
+nrow(LONG_DISTANCE)/ nrow(DISTANCE)
+```
+```{r}
+DENflights <- COflights %>% filter(DEST =="DEN" )
+DENflights <- mutate(DENflights, ARR_DELAY_LATE = ARR_DELAY >= 15)
+DENflights %>% mutate(ARR_DELAY_LATE = ARR_DELAY >=15)
+ARR_DELAY_LATE <- DENflights %>% filter(ARR_DELAY>=15)
+
+united <- ARR_DELAY_LATE %>% filter(CARRIER=="UA")
+american <- ARR_DELAY_LATE %>% filter(CARRIER=="AA")
+```
+
+### Individual Question
+How does distance travlled affect the probability of the flight being delayed? 
+What are the probability of flying with United to be delayed compared to American?  
 ### Plots
 
+ggplot(DISTANCE_SET)+ 
+geom_point(aes(DISTANCE_PER,DISTANCE))+
+ggtitle("The probability of flight being delayed by short, medium and long distance"
+
 ### Findings
+nrow(SHORT_DISTANCE)/ nrow(DISTANCE)= 0.169989
+nrow(MEDIUM_DISTANCE)/ nrow(DISTANCE)= 0.08527755
+nrow(LONG_DISTANCE)/ nrow(DISTANCE)= 0.02040816
+
+From the calculation we can see that as the distance increased the probility of the flight being delayed decreases. 
+
+nrow(united) / nrow(ARR_DELAY_LATE)=0.1970932
+nrow(american)/nrow(ARR_DELAY_LATE)=0.06322776
+
+Flying with American Airlines has lesser probability of delayes compared to United.
+
 
 ### Contributions
 

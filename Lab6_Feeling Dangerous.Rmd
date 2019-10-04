@@ -130,14 +130,13 @@ delay_dataframe
 ```
 
 ### Overall Questions
-How do other delays affect whether a flight is late or not?
+How do delays affect the probability that a flight is delayed?
 
 What factors increase and decrease the probablitly that a flight is delayed?
 
 ### Team Plots
 ```{r}
 library(tidyverse)
-
 ggplot(data= delay_dataframe, aes(x=delay_data , y=delay_prob, fill=delay_data))+
   geom_bar(stat="identity")+
   ggtitle('Probability of a Flight Being Late by More Than Thirty Minutes by Delay Type')+

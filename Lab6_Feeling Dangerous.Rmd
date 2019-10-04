@@ -1,7 +1,7 @@
 ---
-title: "lab # Feeling Dangerous"
+title: "lab 6 Feeling Dangerous"
 author: "Fin,Nahom,Chun,Jake"
-date: "#/#/2019"
+date: "10/3/2019"
 output: html_document
 ---
 
@@ -12,7 +12,7 @@ output: html_document
 
 What factors increase and decrease the probablitly that a flight is delayed?
 
-How does weather, security, carrier, AirTraffic controllers, and other delayed flights impact the chance a flight is delayed leaving Denver?  
+How does weather, security, carrier, AirTraffic controllers, and other factors impact the chance a flight is delayed servicing Denver?  
 
 ### Team Plots
 
@@ -38,12 +38,119 @@ How does weather, security, carrier, AirTraffic controllers, and other delayed f
 
 #### Fin Carlson
 
-### Individual Question
+### Individual Question 
+Which season has the highest probability that a flight is late?
+
+Of the  Airline's that service Denver, Which has the highest probability of a flight being late?
+### Work
+```{r}
+missed_flights <- DENflights %>% filter(ARR_DELAY>=15)
+missed_flights  
+  
+
+winter <- missed_flights %>% filter(MONTH==12 | MONTH==1 | MONTH==2)
+winter
+winter_n <- DENflights %>% filter(MONTH==12 | MONTH==1 | MONTH==2)
+winter_n
+
+spring <- missed_flights %>% filter(MONTH==3 | MONTH==4 | MONTH==5)
+spring
+spring_n <- DENflights %>% filter(MONTH==3 | MONTH==4 | MONTH==5)
+spring_n
+
+summer <- missed_flights %>% filter(MONTH==6 | MONTH==7 | MONTH==8 | MONTH==9)
+summer
+summer_n <- DENflights %>% filter(MONTH==6 | MONTH==7 | MONTH==8 | MONTH==9)
+summer_n
+
+fall <- missed_flights %>% filter(MONTH==10 | MONTH==11 )
+fall
+fall_n <- DENflights %>% filter(MONTH==10 | MONTH==11 )
+fall_n
+
+nrow(winter) / nrow(winter_n)
+nrow(spring) / nrow(spring_n)
+nrow(summer) / nrow(summer_n)
+nrow(fall) / nrow(fall_n)
+
+season <- c("Winter", "Spring", "Summer", "Fall")
+season_prob <- c(.198, .168, .179, .121)
+season_data <- data.frame(season, season_prob)
+season_data
+
+
+
+united <- missed_flights %>% filter(CARRIER=="UA")
+united
+united_n <- DENflights %>% filter(CARRIER=="UA")
+united_n
+
+southwest <- missed_flights %>% filter(CARRIER=="WN")
+southwest
+southwest_n <- DENflights %>% filter(CARRIER=="WN")
+southwest_n
+
+american <- missed_flights %>% filter(CARRIER=="AA")
+american
+american_n <- DENflights %>% filter(CARRIER=="AA")
+american_n
+
+frontier <- missed_flights %>% filter(CARRIER=="F9")
+frontier
+frontier_n <- DENflights %>% filter(CARRIER=="F9")
+frontier_n
+
+skywest <- missed_flights %>% filter(CARRIER=="OO")
+skywest
+skywest_n <- DENflights %>% filter(CARRIER=="OO")
+skywest_n
+
+delta <- missed_flights %>% filter(CARRIER=="DL")
+delta
+delta_n <- DENflights %>% filter(CARRIER=="DL")
+delta_n
+
+nrow(united) / nrow(united_n)
+nrow(southwest) / nrow(southwest_n)
+nrow(american) / nrow(american_n)
+nrow(frontier) / nrow(frontier_n)
+nrow(skywest) / nrow(skywest_n)
+nrow(delta) / nrow(delta_n)
+
+carrier <- c("United", "Southwest", "American", "Frontier", "Skywest", "Delta")
+carrier_prob <- c(.130, .203, .186, .202, .160, .138)
+carrier_data <- data.frame(carrier, carrier_prob)
+carrier_data
+
+```
+
 
 ### Plots 
+```{r}
+ggplot(data= carrier_data, aes(x=carrier , y=carrier_prob, fill=carrier))+
+  geom_bar(stat="identity")+
+  ggtitle('Probability of a Flight Being Late by Carrier for Flights Servicing Denver')+
+  xlab('Carrier')+
+  ylab('Probability')+
+  scale_fill_discrete(name="Carrier") +
+  theme(axis.ticks.x=element_blank())+
+  theme_minimal()
+
+ggplot(data= season_data, aes(x=season , y=season_prob, fill=season))+
+  geom_bar(stat="identity")+
+  ggtitle('Probability of a Flight Being Late by Season for Flights Servicing Denver')+
+  xlab('Season')+
+  ylab('Probability')+
+  scale_fill_discrete(name="Season") +
+  theme(axis.ticks.x=element_blank())+
+  theme_light()
+```
+
 
 ### Findings
+By looking at the number of late flights for each season it quickly stood out that their were many more in the winter and summer than the rest of the year. I orignally belived this to be a result of the winter and summer seasons having a greater sample size however after finding the probability that a flight is late in any given season this trend still remains. For this reason it can be concluded that flights during the winter have the highest chance of being late while those in the fall will have the lowest. Reasons for this could include harsher weather that is more frequent in the winter as well a greater general amount of flights that causes delays for other reasons related to the airport.
 
+I performed a very simmialr anaylsis to determine the effects of carrier on the likelhood a flight is late. For this I limited my carriers to the five largest nationally as well as one local airline (Skywest) that still had a signifagant amount of flights. In calculating the probability that a flight is late for each carrier I found Southwest and Frontier to be most likely to have a late flight in Denver while United was least.
 ### Contributions 
 
 -----------------------------------

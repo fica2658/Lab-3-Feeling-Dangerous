@@ -8,11 +8,18 @@ output: html_document
 ```{r setup, include=FALSE}
 
 ```
-# Team Section
 
 ### Introduction
 
 The data being worked with in this report was obtained from the UC Irvine Machine Learning Repo. and shows the electricity use for a household in France over many years. The data contained many NA values and they were left in the data for the analysis and treated as data points because they little to no noticeable effect on the voltage variable which was primarily used.
+
+# Team Section
+All of us eliminate the the missing data set just by using na.rm=TRUE when we are calculating the mean fro summarise.
+Jake's question is about if this house hold take a vaction monthly. This findings could help to save more energy while people are on vacation. By doing so, Jake created a Histogram for Global_active_power while this household is out of town.
+Fin's question is about if the electricity use differently by seasons.  This findings especially helps the power company to calculate and analysis the overuse electricity during winter time. By doing so, Fin seperate all the data by seasons. And then, he calculated the average of Voltage for all four seasons.
+Chun's question is about if the household would rather stay at home or go out for dinner during holiday. This findings can help those restaurant around that area to analysis if there will be any people want to go out for food during holidays. By doing so, Chun calculated the average of Voltage in kitchen during holidays at night by hours and compare it to the everyday life at night.
+Nahom's question is about  the average energy consumption vary monthly. By doing so, Nahom showed the point plot(month vs mean voltage uses). And the result showed that their is a rather high electricity uses in Dec.
+
 
 # Individual Section 
 

@@ -197,5 +197,55 @@ To generate my question I first started by tidying the data and looking at a few
 
 ### Contributions
  
- 
+ ---------------------------------------------------------------
+### Nahom
+
+### Individual Question
+How does the average energy consumption vary monthly?
+
+### Plots  
+
+```{r}
+library(tidyverse)
+path <- "/Users/olio/Downloads/Data Science 2019/lab 7/household_power_consumption.txt"
+
+
+data1 <- read_delim(file = path, delim=';', na = c('', '?'),
+                    col_types = cols(
+                      Date = col_date(format="%d/%m/%Y"),
+                      Time = col_time(format="%H:%M:%S"),
+                      Global_active_power = col_double(),
+                      Global_reactive_power = col_double(),
+                      Voltage = col_double(),
+                      Global_intensity = col_double(),
+                      Sub_metering_1 = col_double(),
+                      Sub_metering_2 = col_double(),
+                      Sub_metering_3 = col_double()
+                    ))  
+
+data1 <- data1 %>% mutate(year=substr(Date,1,4), month=substr(Date, 6,7), day=substr(Date, 9,10))
+data1 <- data1 %>% mutate(hour=substr(Time,1,2), minute=substr(Time, 4,5), second=substr(Time, 7,8))
+data1 <- data1 %>% mutate( day=as.integer(day),
+                           month=as.integer(month),
+                           year=as.integer(year),
+                           hour=as.integer(hour),
+                           minute=as.integer(minute),
+                           second=as.integer(second))
+
+```
+
+```{r}
+library(lubridate)
+data1 <- data1 %>% mutate(datetime=make_datetime(year, month, day, hour, minute, second))
+data_by_month <- data1 %>% select(month, Voltage) %>% 
+  
+  group_by(month) %>% summarise(mean.voltage=mean(Voltage, na.rm=TRUE))
+  ggplot(data_by_month)+ 
+  geom_point(aes(month, mean.voltage))+
+  scale_x_continuous(breaks=seq(1,12,1))
+```
+
+### Findings
+Based on the graph we can say that Decmeber see the most energy use on average which makes sense due to the fact that its the beging of the winter season, while May is the month with the lowest energy consumption as it is the end of the spring it is logical that the house hold uses the least amount of energy in spring.
+
 

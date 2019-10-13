@@ -1,0 +1,201 @@
+---
+title: "lab 7 Feeling Dangerous"
+author: "Fin,Chun,Jake"
+date: "10/13/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+```
+# Team Section
+
+### Introduction
+
+The data being worked with in this report was obtained from the UC Irvine Machine Learning Repo. and shows the electricity use for a household in France over many years. The data contained many NA values and they were left in the data for the analysis and treated as data points because they little to no noticeable effect on the voltage variable which was primarily used.
+
+# Individual Section 
+
+#### Jake
+
+### Individual Question
+
+### Plots 
+```{r}
+```
+
+### Findings and Contributions
+
+----------------------------------
+
+#### Fin Carlson
+
+### Individual Question
+How does electricty use vary by season?
+```{r}
+Season <- c("Winter", "Spring", "Summer", "Fall")
+Avg_Electricty <- c(242,241,240,241 )
+Electricty_dataframe <- data.frame(Season, Avg_Electricty)
+Electricty_dataframe
+
+```
+
+Which season is most likely to use more than the expected amount of power?
+```{r}
+Greater_than_data <- c("Winter", "Spring", "Summer", "Fall")
+Greater_than_prob <- c(.630, .483, .397, .473)
+Greater_than_dataframe <- data.frame(Greater_than_data, Greater_than_prob)
+Greater_than_dataframe
+
+```
+
+
+### Work
+
+```{r}
+library(tidyverse)
+
+data1 <- read_delim(file.choose(), delim=';', na = c('', '?'),
+                    col_types = cols(
+                      Date = col_date(format="%d/%m/%Y"),
+                      Time = col_time(format="%H:%M:%S"),
+                      Global_active_power = col_double(),
+                      Global_reactive_power = col_double(),
+                      Voltage = col_double(),
+                      Global_intensity = col_double(),
+                      Sub_metering_1 = col_double(),
+                      Sub_metering_2 = col_double(),
+                      Sub_metering_3 = col_double()
+                    ))
+
+ggplot(data1) + geom_histogram(aes(Voltage))
+ggplot(data1) + geom_point(aes(Date, Voltage))
+
+data1 <- data1 %>% mutate(year=substr(Date,1,4), month=substr(Date, 6,7), day=substr(Date, 9,10))
+
+data1 <- data1 %>% mutate(hour=substr(Time,1,2), minute=substr(Time, 4,5), second=substr(Time, 7,8))
+
+data1 <- data1 %>% mutate( day=as.integer(day),
+                           month=as.integer(month),
+                           year=as.integer(year),
+                           hour=as.integer(hour),
+                           minute=as.integer(minute),
+                           second=as.integer(second))
+library(lubridate)
+data1 <- data1 %>% mutate(datetime=make_datetime(year, month, day, hour, minute, second))
+
+#### 
+
+###
+
+data_by_month <- data1 %>% select(month, Voltage) %>% 
+  group_by(month) %>% summarise(mean.voltage=mean(Voltage, na.rm=TRUE))
+
+
+avg_volts <- data_by_month %>% summarise(total.voltage=mean(mean.voltage, na.rm =TRUE))
+avg_volts
+
+
+#####
+
+winter_data <- data1 %>% filter(month==12 | month==1 | month==2)
+winter_data
+
+larger_than_winter <- winter_data %>% filter(Voltage>241)
+larger_than_winter
+
+winter_avg <- data_by_month %>% filter(month==12 | month==1 | month==2) %>% summarise(winter.avg.voltage=mean(mean.voltage, na.rm =TRUE))
+winter_avg
+
+#######
+
+summer_data <- data1 %>% filter(month==6 | month==7 | month==8)
+summer_data
+
+larger_than_summer <- summer_data %>% filter(Voltage>241)
+larger_than_summer
+
+summer_avg <- data_by_month %>% filter(month==6 | month==7 | month==8) %>% summarise(summer.avg.voltage=mean(mean.voltage, na.rm =TRUE))
+summer_avg
+
+#######
+
+spring_data <- data1 %>% filter(month==3 | month==4 | month==5)
+spring_data
+
+larger_than_spring <- spring_data %>% filter(Voltage>241)
+larger_than_spring
+
+spring_avg <- data_by_month %>% filter(month==3 | month==4 | month==5) %>% summarise(spring.avg.voltage=mean(mean.voltage, na.rm =TRUE))
+spring_avg
+
+########
+
+fall_data <- data1 %>% filter(month==9 | month==10 | month==11)
+fall_data
+
+larger_than_fall <- fall_data %>% filter(Voltage>241)
+larger_than_fall
+
+fall_avg <- data_by_month %>% filter(month==9 | month==10 | month==11) %>% summarise(fall.avg.voltage=mean(mean.voltage, na.rm =TRUE))
+fall_avg
+
+########
+
+nrow(larger_than_winter) / nrow(winter_data)
+nrow(larger_than_spring) / nrow(spring_data)
+nrow(larger_than_summer) / nrow(summer_data)
+nrow(larger_than_fall) / nrow(fall_data)
+
+
+Greater_than_data <- c("Winter", "Spring", "Summer", "Fall")
+Greater_than_prob <- c(.630, .483, .397, .473)
+Greater_than_dataframe <- data.frame(Greater_than_data, Greater_than_prob)
+Greater_than_dataframe
+
+Season <- c("Winter", "Spring", "Summer", "Fall")
+Avg_Electricty <- c(242,241,240,241 )
+Electricty_dataframe <- data.frame(Season, Avg_Electricty)
+Electricty_dataframe
+```
+
+### Plots 
+
+```{r}
+ggplot(data= Greater_than_dataframe, aes(x=Greater_than_data , y=Greater_than_prob))+
+  geom_bar(stat="identity")+
+  ggtitle('Probability that Voltage Use is Greater than Average By Season')+
+  xlab('Season')+
+  ylab('Probability')+
+  theme(axis.ticks.x=element_blank())+
+  theme_minimal()
+
+```
+ 
+### Findings
+
+To generate my question I first started by tidying the data and looking at a few simple graphs that showed general relationships (geom_point and geom_histogram). These graphs showed general differences for each part of the year but the trend continued at the same time each year which led me to investigate seasonal use of electricity. I generated two questions and found the avg voltage use to be 241 across the entire year. I then calculated the average use for each season and found that winter had the highest average, slightly above the yearly average, at 242 volts. I further investigated this to find the probability that average voltage use was greater than the yearly average for each season. I then discovered that again winter had the highest probability of using more electricity with a probability of .63 which is significant as none of the other probabilities are greater than .5 showing a distinct jump in chance. This question is interesting because while it would seem obvious that seasonal factors such as weather would have an effect on heating and cooling thus increasing electricity use, it is unknown which season has the greatest effect and because the data comes from a foreign country my experience with their climate and seasonal variation is much different. These findings could benefit the family as they now know their electricity use is higher during the winter and as such they will be able to budget their finances to prepare for this or adapt and try to use less electricity. It could also benefit electricity companies as they would be able to plan for higher overall usage among their systems during winter time to prevent outages.
+
+
+
+----------------------------------------------------------------
+
+
+#### Chun
+
+### Individual Question
+
+
+### Plots  
+
+```{r}
+
+```
+
+### Findings
+
+
+### Contributions
+ 
+ 
+

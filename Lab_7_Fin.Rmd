@@ -19,12 +19,59 @@ The data being worked with in this report was obtained from the UC Irvine Machin
 #### Jake
 
 ### Individual Question
+What month did the family take a vaction?
+### Plots 
+```{r, include=FALSE}
+library(tidyverse)
+file_path <- "/Users/jacobboeckenstedt/Desktop/Data Science/Week 7/household_power_consumption.txt"
+
+file_path
+
+electricity_data <- read_delim(file = file_path, delim=';', na = c('', '?'),
+                    col_types = cols(
+                      Date = col_date(format="%d/%m/%Y"),
+                      Time = col_time(format="%H:%M:%S"),
+                      Global_active_power = col_double(),
+                      Global_reactive_power = col_double(),
+                      Voltage = col_double(),
+                      Global_intensity = col_double(),
+                      Sub_metering_1 = col_double(),
+                      Sub_metering_2 = col_double(),
+                      Sub_metering_3 = col_double()
+                    ))
+#ggplot(electricity_data) + geom_histogram(aes(Voltage))
+#ggplot(electricity_data) + geom_point(aes(Date, Voltage))
+
+electricity_data <- electricity_data %>% mutate(year=substr(Date,1,4), month=substr(Date, 6,7), day=substr(Date, 9,10))
+
+electricity_data <- electricity_data %>% mutate(hour=substr(Time,1,2), minute=substr(Time, 4,5), second=substr(Time, 7,8))
+
+electricity_data <- electricity_data %>% mutate( day=as.integer(day),
+                           month=as.integer(month),
+                           year=as.integer(year),
+                           hour=as.integer(hour),
+                           minute=as.integer(minute),
+                           second=as.integer(second))
+
+out_of_town <- electricity_data %>% filter(Global_active_power < 0.1)
+
+data_by_month <- electricity_data %>% select(month, Global_active_power) %>% 
+  group_by(month) %>% summarise(mean.active=mean(Global_active_power, na.rm=TRUE))
+
+```
 
 ### Plots 
+
 ```{r}
+p <- ggplot(out_of_town) + geom_histogram(aes(Global_active_power)) + facet_wrap(~month)+
+  ggtitle('Histograms of each Month with Active Power Less than 0.1') +
+  xlab('Global Active Power')
+p + scale_color_grey()+scale_fill_grey() +
+  theme_classic()
 ```
 
 ### Findings and Contributions
+I first started by tidying the data and looking at a few simple graphs to see basic reltionship. I realized that a lot of the questions I was brainstorming, I already knew the answer to. For example, what season used the most energy? So I asked the question: When did the family go on vacation? I found that this happend in the month of August becuase August has the highest fequency of low Global Active Power rates. To go further I would break down August by day to see the exact time period or week when the family was not home and on vaction. This question is important to ask because these findings could help the family save more energy while they are on vacation. Energy rates may be higher than expected while being absent from the house.
 
 ----------------------------------
 

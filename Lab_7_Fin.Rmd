@@ -184,18 +184,65 @@ To generate my question I first started by tidying the data and looking at a few
 #### Chun
 
 ### Individual Question
-
+Does this household likes to have  go outsides or just normal stay at home for the dinner during the holiday(new year, christmas and thanks giving)?
 
 ### Plots  
 
 ```{r}
+library(tidyverse)
+IHEP = read_delim("household_power_consumption.txt", delim=';', na = c('', '?'),
+                    col_types = cols(
+                      Date = col_date(format="%d/%m/%Y"),
+                      Time = col_time(format="%H:%M:%S"),
+                      Global_active_power = col_double(),
+                      Global_reactive_power = col_double(),
+                      Voltage = col_double(),
+                      Global_intensity = col_double(),
+                      Sub_metering_1 = col_double(),
+                      Sub_metering_2 = col_double(),
+                      Sub_metering_3 = col_double()
+                    ))
 
+IHEP1 = IHEP%>%mutate(year=as.integer(substr(Date,1,4)), month=as.integer(substr(Date, 6,7)), day=as.integer(substr(Date, 9,10)), hour=as.integer(substr(Time, 1,2)))
+NIGHT = IHEP1%>%filter(hour>=18)%>%group_by(hour)
+Night =NIGHT%>%filter(Sub_metering_1!="na")
+NIGHT_cal = NIGHT%>%summarise(mean_kit_Volt=mean(Sub_metering_1, na.rm=TRUE))
+ggplot(Night)+
+  geom_smooth(aes(Date, Sub_metering_1))
+christmas = NIGHT%>%filter(month==12)%>%filter(day==24)%>%group_by(hour)
+christmas_cal = christmas%>%summarise(mean_chris_Volt = mean(Sub_metering_1, na.rm=TRUE))
+
+new_year = NIGHT%>%filter(month==1)%>%filter(day==1)%>%group_by(hour)
+new_year_cal=new_year%>%summarise(mean_new_Volt=mean(Sub_metering_1, na.rm = TRUE))
+thanksgiving = NIGHT%>%filter(month==11)%>%filter(day==28)%>%group_by(hour)
+thanksgiving_cal=thanksgiving%>%summarise(mean_thanks_Volt=mean(Sub_metering_1, na.rm = TRUE))
 ```
 
-### Findings
+### Answer
+##AVG
+```{r}
+NIGHT_cal
+```
+##New years
+```{r}
+new_year_cal
+```
+From this data, we can see that they are not using the kitchen at all from 6-9 p.m.. We can  conclude that they are probabily not eating at home
 
+##Christmas
+```{r}
+christmas_cal
+```
+From this data, we can see that from 7-9 p.m. there are huge electricity used during that period which is way bigger than the average uses of electricity in the kitchen. We can conclude that this house hold is probabily throwing a party.
 
-### Contributions
+##thanksgiving
+```{r}
+thanksgiving_cal
+```
+From this data, we can see that form 8 -10 p.m, there is a higher electricity used then usual. But at the rest of the periods, the electricity uses is significantly low. We can guess that they are having a small party at 8-10 p.m. but then they went out for fun.
+
+###Findings
+I think this question is interesting is because although they are all holidays but this household treated them differently. We can see this differences from how they deal with the dinner time.  I work this out by finding the mean of every hour's electricity used at night during holiday compare to the everyday's night hour uses. I think restaurant will benefit from this analysis.
  
  ---------------------------------------------------------------
 ### Nahom

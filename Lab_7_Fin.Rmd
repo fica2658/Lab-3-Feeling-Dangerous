@@ -54,8 +54,8 @@ Greater_than_dataframe
 
 ```{r}
 library(tidyverse)
-
-data1 <- read_delim(file.choose(), delim=';', na = c('', '?'),
+macpath <- "/Users/fin/Desktop/Data_Science/household_power_consumption.txt"
+data1 <- read_delim(file = macpath, delim=';', na = c('', '?'),
                     col_types = cols(
                       Date = col_date(format="%d/%m/%Y"),
                       Time = col_time(format="%H:%M:%S"),

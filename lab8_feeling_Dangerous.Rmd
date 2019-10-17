@@ -1,0 +1,23 @@
+---
+title: "Untitled"
+author: "Fin"
+date: "10/17/2019"
+output: html_document
+---
+# Team Section
+## Who is hiring 
+
+## Overall Goal
+
+## Dataset Description
+
+# Individual Section
+## Fin
+
+## Chun 
+
+## Jake
+
+## Nahom
+
+

@@ -1,18 +1,71 @@
 ---
-title: "Untitled"
+title: "Lab8_FeelingDangerous"
 author: "Fin"
 date: "10/17/2019"
 output: html_document
 ---
 # Team Section
 ## Who is hiring 
+For this project, we are being hired by a NBA general manager who want us to look at indivual data for the 2017-2018 NBA season. Doing this will allow the team to better understand both their own players as well as their opponents.
 
 ## Overall Goal
+Our main team objective is to determine the most overvalued and undervalued players based on salary. This information will then allow teams to see the current value of their own players to help in contract and trade decisions. An even greater consquence of this research will be that it allows teams to have a better idea of what makes a player over/under valued. With a broad set of traits to represent valuation, teams can asses draft talent, as well other players in the league in a way that ensures they are getting the most bang for their buck.
 
 ## Dataset Description
+The dataset being anaylzed contains the 2017-2018 season averages for each player in the NBA. In addition to traditional box scores, the data also includes many advanced statistics as well salary for the year. These two factors will be very important in our research and the dataset was picked with this in mind. All data comes from the NBA offical website however it has been scraped into and excel file for usability.
 
 # Individual Section
+
 ## Fin
+```{r,  include=FALSE}
+library(tidyverse)
+library(dplyr)
+library(readxl)
+library(ggplot2)
+
+#Tidying 
+data <- read_excel("East Africa lake data.xlsx", sheet = 8)
+
+data1 <- data %>% gather(key="Month", value="Rainfall", 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+
+data2 <- data1 %>% select(1, 4, 5)
+data2 <- data2 %>% arrange(Year)
+data2 <- data2 %>% drop_na()
+
+#manipulating 
+average_year <- data2 %>% group_by(Year) %>% summarise(mean_rainfall= mean(Rainfall))
+
+average_month <- data2 %>% group_by(Month) %>% summarise(mean_rainfall= mean(Rainfall)) %>% arrange(mean_rainfall)
+
+#changing month name to number equivalent so it graphs in chronological order
+month_data1 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+rain_data <- c(340, 283, 790, 908, 294, 57, 31, 59, 142, 270, 1094, 1225)
+average_month_data <- data.frame(month_data1, rain_data)
+month_final <-as.tibble(average_month_data)
+month_final
+```
+
+### East Africa Graphs
+
+```{r}
+
+ggplot(data=average_year)+
+  geom_point(mapping=aes(x=Year, y=mean_rainfall))+
+  geom_smooth(mapping=aes(x=Year, y=mean_rainfall))+
+  ggtitle('Average amount of Rainfall per Year (collected at VOI Station)')+
+  xlab('Year')+
+  ylab('Average Rainfall')
+
+ggplot(data=month_final)+
+  geom_smooth(mapping=aes(x=month_data1, y=rain_data))+
+ ggtitle('Average amount of Rainfall Throughout the Year (collected at VOI Station)')+
+  xlab('Month')+
+  ylab('Average Rainfall')
+
+```
+
+### Indivual Questions
+I would like to focus my questions on player efficiency and will be looking mostly at shooting perctanges as well as some advanced statistics.I hope to find the most and least  efficent players. I also would like to investigate the relationship between age and salary to determine if there are any ages that lead to large jumps in salary. Finally, Ill look into the relationship between minutes played and salary as well as games played and salary. 
 
 ## Chun 
 

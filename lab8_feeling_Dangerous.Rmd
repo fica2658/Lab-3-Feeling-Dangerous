@@ -70,6 +70,7 @@ I would like to focus my questions on player efficiency and will be looking most
 ## Chun 
 
 ## Jake
+For this project I am going to focus my attention on double double efficency and triple double efficency. A large part of fantasy basketball is geared towards the players that can produce double doubles and triple doubles; so it will be interesting gain a good prediction of who is going to produce those kinds of stats this year. I also want to do some reseach will salary and its reltionship with various stats. I also want to answer the domain experts question: which teams are the wealthiest across the National Basketball Association.
 
 ## Nahom
 

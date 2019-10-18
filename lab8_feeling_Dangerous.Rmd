@@ -74,6 +74,23 @@ For this project I am going to focus my attention on double double efficency and
 
 ## Nahom
 One question I want to look at is Who was the best player based on ppg and wins_rpm? With this question fans can say who was the best player in the 2017 nba season, this is an interesting question becasue it is comparing players who scored the most points per game while helping their team win games by the wins_rpm while filtering out players like Devin Booker and Isaiah Thomas who either scored a lot of points on teams with bad record and scored points in junk minutes when games are big points blow-out. Also I would like to look at which point gaurd is most efficent while playing 20 or less minutes, this question can answer of the Point Gaurds which point gaurd is the best back up point gaurd or which pg makes the most of with less given chance.  
+
+```{r}
+library(tidyverse)
+library(readxl)
+Tang <- read_excel("East Africa lake data.xlsx", sheet = 6)
+
+Tang <- select(Tang,`Year AD...1`,`Year AD...4`,`Year`,`BSi (normalized)`,`Charcoal (normalized)`,TEX86)
+Tang <- rename(Tang, year1=`Year AD...1`,BSi=`BSi (normalized)`,year2=`Year AD...4`,Charcoal=`Charcoal (normalized)`,year3=`Year`)
+
+Tang2<- Tang%>% select(year2,Charcoal)
+Tang2$year2<-round(Tang2$year2)
+
+ggplot(Tang2)+
+geom_point(aes(year2,Charcoal))+ 
+ggtitle("Charcaol Levels by each Year") +
+xlab("Year") + ylab("Charcaol Level")
+```
  
  
 

@@ -1,0 +1,194 @@
+---
+title: "lab9_FeelingDangerous"
+author: "Fin"
+date: "10/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+
+#loading and tidying data
+data <- read.csv("nba_2017_nba_players_with_salary.csv")
+data <- data %>% select(2:39)
+data1 <- data %>% rename_at(vars(starts_with("X")), 
+                                        funs(str_remove(., "X")))
+data1 <-as_tibble(data1)
+
+
+```
+# Team Section
+
+### Overall Questions and Their Importance
+Our main team objective is to determine the most overvalued and undervalued players based on salary.
+
+### Dataset Description
+The dataset being anaylzed contains the 2017-2018 season averages for each player in the NBA. In addition to traditional box scores, the data also includes many advanced statistics as well salary for the year. These two factors will be very important in our research and the dataset was picked with this in mind. All data comes from the NBA offical website however it has been scraped into and excel file for usability.
+
+### Team Findings
+
+```{r}
+```
+
+### Conclusion and Recommendation
+
+### Ethical Implications
+ 
+# Individual Section 
+
+#### Jake
+
+### Individual Question
+
+### Plots 
+```{r}
+```
+
+### Findings and Contributions
+
+----------------------------------
+
+#### Fin Carlson
+
+### Individual Question
+Which players are most undervalued for their minutes played?
+
+### Plots
+
+```{r include=FALSE}
+#EDA for Games Played vs. salary
+ggplot(data=data1)+
+  geom_point(mapping=aes(x=GP, y=SALARY_MILLIONS))+
+  geom_smooth(mapping=aes(x=GP, y=SALARY_MILLIONS))
+  
+  ##data is to clumped to make assumptions, GP not a good factor
+  summary(data1$GP)
+```
+
+```{r, include=FALSE}
+#EDA for minutes per game vs. salary
+ggplot(data=data1)+
+  geom_point(mapping=aes(x=MPG, y=SALARY_MILLIONS))+
+  geom_smooth(mapping=aes(x=MPG, y=SALARY_MILLIONS))
+
+#code for anaylzing value based on mpg  
+  
+  ##avg salary 7.3
+  ##avg mpg 21.5
+  ##avg wins 2.86
+  ##med wins 1.4
+summary(data1$MPG)
+summary(data1$SALARY_MILLIONS)
+summary(data1$WINS_RPM)
+
+  ##avg salary= 10.5 if mpg>21
+min_above <-data1 %>% filter(MPG>= 21.57)
+
+data1 %>% filter(MPG>= 21.57) %>% summarise(mean_data=mean(SALARY_MILLIONS))
+
+  ##creates group of players who play more than average and are paid less than average
+minutesSalary <-data1 %>% filter(MPG>= 21.57 & SALARY_MILLIONS<=10.5) 
+
+
+  
+  ##visualization of group
+ggplot(data=minutesSalary)+
+  geom_point(mapping=aes(x=MPG, y=SALARY_MILLIONS))+
+  geom_smooth(mapping=aes(x=MPG, y=SALARY_MILLIONS))
+
+  ##further filtering based on graph results
+
+summary(minutesSalary$MPG) #avg mpg for this group is 27.8
+summary(minutesSalary$SALARY_MILLIONS) #avg salary for this group is 4.85
+
+#creating even smaller group based on group average
+Finalminutes1<- minutesSalary %>% 
+  filter(MPG>= 27.78 & SALARY_MILLIONS<=4.851) %>% arrange(MPG) 
+
+
+##filters out truly worse than avg players using group avg of holistic stat 
+Finalminutes2<- Finalminutes1 %>% filter(WINS_RPM>=2.86) 
+
+
+##seeing who makes the most, and who is most benefitial 
+leastPaid <- Finalminutes2 %>% 
+  select(PLAYER, POSITION, MPG, SALARY_MILLIONS, WINS_RPM) %>% 
+  arrange(SALARY_MILLIONS)
+leastPaid
+
+Best <- leastPaid %>% arrange(desc(WINS_RPM))
+Best
+
+
+## Further filtering undervalued group to show the top 3
+min_above %>% filter(WINS_RPM>10)  #10/342 .03 percent of players have winshare>10 
+Finalminutes3<- leastPaid %>% filter(WINS_RPM>10) 
+Finalminutes3
+
+```
+
+
+```{r, echo=FALSE}
+  ##visualization of undervalued group vs. total (mpg>21)
+ggplot(min_above,aes(x=SALARY_MILLIONS,y=MPG))+
+  geom_point() +
+  geom_smooth() +
+  geom_point(data=Finalminutes2,colour='red') 
+
+    ##visualization of undervalued group with top 3 highlited (mpg>21)
+ggplot(Finalminutes2,aes(x=SALARY_MILLIONS,y=MPG))+
+  geom_point() +
+  geom_point(Finalminutes3, mapping=aes(x=SALARY_MILLIONS,y=MPG, color=PLAYER))
+   
+
+#Under Valued Players are mostly younger.
+ggplot(min_above,aes(x=AGE,y=MPG))+
+  geom_point() +
+  geom_smooth() +
+  geom_point(data=Finalminutes2,colour='red') 
+
+```
+
+### Findings
+
+### Contributions 
+
+----------------------------------------------------------------
+
+#### Nahom
+
+### Individual Question
+
+### Plots
+
+```{r}
+
+```
+
+### Findings
+
+
+### Contributions
+
+
+-----------------------------------
+
+
+#### Chun
+
+### Individual Question
+
+
+### Plots  
+
+```{r}
+
+```
+
+### Findings
+
+
+### Contributions
+ 

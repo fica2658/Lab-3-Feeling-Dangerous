@@ -66,20 +66,23 @@ p <- ggplot(data= Tseven, aes(x=PLAYER , y=SALARY_MILLIONS, fill=PLAYER))+
 p + scale_fill_brewer(palette="Blues")
 
 points <- ggplot(data=pos)+
-  geom_point(mapping=aes(x=POINTS, y=MP, colour=POSITION))+
-  geom_smooth(mapping=aes(x=POINTS, y=MP, colour=POSITION))
-print(points + ggtitle("Points vs Minutes Players (averaging 10PPG+)"))
+  geom_point(mapping=aes(x=MP, y=POINTS, colour=POSITION))+
+  geom_smooth(mapping=aes(x=MP, y=POINTS, colour=POSITION))
+print(points + labs(title="Points vs Minutes Players (averaging 10PPG+)",
+                    y="Points per game", x = "Minutes Played"))
 
 age <- ggplot(data=pos)+
-  geom_point(mapping=aes(x=AGE, y=MP, colour=POSITION))+
-  geom_smooth(mapping=aes(x=AGE, y=MP, colour=POSITION))
-print(age + ggtitle("Age vs. Minutes Players (averaging 10PPG+)"))
-
+  geom_point(mapping=aes(x=MP, y=AGE, colour=POSITION))+
+  geom_smooth(mapping=aes(x=MP, y=AGE, colour=POSITION))
+print(age + labs(title="Age vs. Minutes Players (averaging 10PPG+)",
+                    y="Age", x = "Minutes Played"))
 
 ```
 
 ### Findings and Contributions
 To begin, I wanted to narrow the scope of my individual findings towards the best players is in the NBA; the players who are scoring 10 points or more per game. Then I filtered for different sizes of NBA player including the samllest, medium and the largest. To be more specific, point gaurd, small forward, and  center. I then ran minutes played aginst the age of those players and points per game in the 2017 season. I easily see the correlation I set color for position a geom to the position.
+
+I found that Isiah Thomas is highly under paid compared to the 5 other players who average more than 6 points per game. I also found that as minutes played increases centers points increases but for point gaurds there is diminishing returns on points. Finally I found that when age is higher for centers their minutes played drops significantly compared to the smaller point gaurds and small forwards, which is what I would expect for the big guys.
 
 ----------------------------------
 

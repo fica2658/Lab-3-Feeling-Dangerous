@@ -196,16 +196,36 @@ My first graph highlights the group of players I determined as undervaluled as s
 #### Nahom
 
 ### Individual Question
+How does the point gaurd position compare to other positions based on eFG%?
 
 ### Plots
 
 ```{r}
+PGnba<- nba %>% filter(POSITION== "PG") %>% filter(MPG >=25)%>% arrange(`eFG%`) #PGs that played more than 25 minutes 
+mean<-mean(PGnba$`eFG%`) #= 0.5029 eFG% of point gaurds that played more than 25 minutes
+
+meanTotal<- mean(nba$`eFG%`)#= 0.4993 average of the nba eFG%
+
+SGnba<- nba %>% filter(POSITION== "SG") %>% filter(MPG >=25)%>% arrange(`eFG%`) #SGs that played more than 25 minutes
+mean2<-mean(SGnba$`eFG%`) #= 0.514 eFG% of shooting gaurds that played more than 25 minutes
+
+SFnba<- nba %>% filter(POSITION== "SF") %>% filter(MPG >=25)%>% arrange(`eFG%`) #SFs that played more than 25 minutes
+mean3<-mean(SFnba$`eFG%`) #= 0.511 eFG% of small forwards that played more than 25 minutes
+
+PFnba<- nba %>% filter(POSITION== "PF") %>% filter(MPG >=25)%>% arrange(`eFG%`) #PFs that played more than 25 minutes
+mean4<-mean(PFnba$`eFG%`) #= 0.515 eFG% of power forwards that played more than 25 minutes
+
+Cnba<- nba %>% filter(POSITION== "C") %>% filter(MPG >=25)%>% arrange(`eFG%`) #Cs that played more than 25 minutes
+mean5<-mean(Cnba$`eFG%`) #= 0.552 eFG% of Centers that played more than 25 minutes
+
+ggplot(nba, aes(x=POSITION, y= `eFG%`))+
+geom_boxplot() 
+
 
 ```
 
 ### Findings
-
-
+Based on calculations and the graph fans can conclude that the point gaurd position is the least efficent positions as on averge point gaurds have 50.29% eFGs which is the lowest of all 5 positions which is logical as point gaurds have higher player useage and dominate the ball.
 ### Contributions
 
 

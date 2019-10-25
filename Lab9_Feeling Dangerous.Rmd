@@ -21,13 +21,14 @@ data1 <-as_tibble(data1)
 ```
 # Team Section
 
-### Overall Questions and Their Importance
-Our main team objective is to determine the most overvalued and undervalued players based on salary.
+### Overall Question and Its Importance
+Our teams objective is to determine the most overvalued and undervalued players for the 2017 NBA Regular Season. We will examine a number of box score statistics to better inform Front Office decisons for NBA franchises. This information will allow general managers to better understand the current value of their players for upcoming contract negoitation. Even more importantly, the information can be used when assesing both trade and draft talent.
 
 ### Dataset Description
-The dataset being anaylzed contains the 2017-2018 season averages for each player in the NBA. In addition to traditional box scores, the data also includes many advanced statistics as well salary for the year. These two factors will be very important in our research and the dataset was picked with this in mind. All data comes from the NBA offical website however it has been scraped into and excel file for usability.
+The dataset being anaylzed contains the 2017-2018 season averages for each player in the NBA. In addition to traditional box scores, the data also includes many advanced statistics as well salary for the year. These two factors will be very important in our research and the dataset was picked with this in mind. All data comes from the NBA offical website however it has been scraped into a csv file for usability.
 
 ### Team Findings
+It was determined
 
 ```{r}
 ```
@@ -53,7 +54,7 @@ The dataset being anaylzed contains the 2017-2018 season averages for each playe
 #### Fin Carlson
 
 ### Individual Question
-Which players are most undervalued for their minutes played?
+Which players are most undervalued as measured by their minutes played?
 
 ### Plots
 
@@ -129,7 +130,6 @@ Finalminutes3
 
 ```
 
-
 ```{r, echo=FALSE}
   ##visualization of undervalued group vs. total (mpg>21)
 ggplot(min_above,aes(x=SALARY_MILLIONS,y=MPG))+
@@ -152,6 +152,7 @@ ggplot(min_above,aes(x=AGE,y=MPG))+
 ```
 
 ### Findings
+My first graph highlights the group of players I determined as undervaluled as shown by the red clustering. I determined this by finding average levels for players and filtering by those who were above the average. While my analysis was focused on Salary and minutes played I also filtered by Wins by RPM as a means of assessing the talent of my smaller groups. I found 10 Wins by RPM to be the 97 percentile for the overall data and used this as my benchmark for the most undervalued of those seen in red. This is shown in my second graph and from this I determined Giannis Antentokounmpo, Nikola Jokic, and Rudy Gobert as the most undervalued players for the 2017 NBA season. My final graph shows that those in the undervalue group tend to be younger. This is likely due to the salary rules in the NBA that prevent large contracts for newer players.
 
 ### Contributions 
 

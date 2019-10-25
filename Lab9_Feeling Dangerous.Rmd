@@ -180,16 +180,48 @@ My first graph highlights the group of players I determined as undervaluled as s
 #### Chun
 
 ### Individual Question
-
-
-### Plots  
-
+How to value the SG player?
+#Since I don't really watch basketball game, so, from what my understanding, SG is a position to get all the points. To see if it is correct, I want to compare FG., 3P., 2P., FT. and POINTS between SG and overall players.
 ```{r}
+SG=data1%>%filter(POSITION=='SG')%>%arrange(SALARY_MILLIONS)
+summary(SG$FG.)#mean=0.4123
+summary(SG$`3P.`)#mean=0.3531
+summary(SG$`2P.`)#mean=0.4553
+summary(SG$FT.)#mean=0.7896
+summary(SG$POINTS)#mean=9.625
 
+summary(data1$FG.)#mean=0.4461
+summary(data1$`3P.`)#mean=0.3070
+summary(data1$`2P.`)#mean=0.4867
+summary(data1$FT.)#mean=0.7485
+summary(data1$POINTS)#mean=9.446
+```
+#From the data above, we can see that SG should have a better 3-Point skill and ability to get points than the other players.
+
+#Next, I want to see what effect the value of a SG player. I will acreat a plot to compare multiple variables.
+```{r}
+###Plots
+ggplot(SG,aes(x=SALARY_MILLIONS,y=`3P.`))+
+  geom_point() +
+  geom_smooth()
+ggplot(SG,aes(x=SALARY_MILLIONS,y=`3P`))+
+  geom_point() +
+  geom_smooth()
+ggplot(SG,aes(x=SALARY_MILLIONS,y=`3PA`))+
+  geom_point() +
+  geom_smooth()
+
+ggplot(SG,aes(x=SALARY_MILLIONS,y=AGE))+
+  geom_point() +
+  geom_smooth()
+   
+
+ggplot(SG,aes(x=SALARY_MILLIONS,y=POINTS))+
+  geom_point() +
+  geom_smooth()
+ggplot(SG,aes(x=SALARY_MILLIONS,y=W))+
+  geom_point() +
+  geom_smooth()
 ```
 
-### Findings
-
-
-### Contributions
- 
+#From the chart above, we can see that most of the variables and the salary will increases linearly together. But ones these variables like 3P., Wins 3PA, 3P reach their threshold, the relation will break. However, from POINTS vs SALARY_MILLIONS plot, we can see that SG who has higher points gets higher salary.

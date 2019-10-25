@@ -43,11 +43,43 @@ It was determined
 
 ### Individual Question
 
-### Plots 
-```{r}
+How do the salaries vary for the six players who average the highest points per game? In addition, what is the relationship between minutes played per game and averaged points for different positions across the NBA?
+
+
+```{r, include=FALSE}
+point10 <- data1 %>% filter(POINTS >= 10)
+
+pos <- point10 %>% filter(POSITION=="C"  | POSITION == "PG" | POSITION == "SF")
+
+Tseven <- data1 %>% filter(POINTS >=27)
+```
+
+### Plots
+```{r, echo=FALSE}
+p <- ggplot(data= Tseven, aes(x=PLAYER , y=SALARY_MILLIONS, fill=PLAYER))+
+  geom_bar(stat="identity")+
+  ggtitle('Salaries for Players with 26PPG or more in 2017')+
+  xlab('Athletes')+
+  ylab('Salary in Millions')+
+  scale_fill_discrete(name="Delay") +
+  theme(axis.text.x = element_text(angle = 30))
+p + scale_fill_brewer(palette="Blues")
+
+points <- ggplot(data=pos)+
+  geom_point(mapping=aes(x=POINTS, y=MP, colour=POSITION))+
+  geom_smooth(mapping=aes(x=POINTS, y=MP, colour=POSITION))
+print(points + ggtitle("Points vs Minutes Players (averaging 10PPG+)"))
+
+age <- ggplot(data=pos)+
+  geom_point(mapping=aes(x=AGE, y=MP, colour=POSITION))+
+  geom_smooth(mapping=aes(x=AGE, y=MP, colour=POSITION))
+print(age + ggtitle("Age vs. Minutes Players (averaging 10PPG+)"))
+
+
 ```
 
 ### Findings and Contributions
+To begin, I wanted to narrow the scope of my individual findings towards the best players is in the NBA; the players who are scoring 10 points or more per game. Then I filtered for different sizes of NBA player including the samllest, medium and the largest. To be more specific, point gaurd, small forward, and  center. I then ran minutes played aginst the age of those players and points per game in the 2017 season. I easily see the correlation I set color for position a geom to the position.
 
 ----------------------------------
 

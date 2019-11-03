@@ -1,0 +1,74 @@
+---
+title: "lab 10 Feeling Dangerous"
+author: "Fin Carlson,Nahom,Chun,Jake"
+date: "11/1/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#Loading Data
+library(tidyverse)
+library(ggplot2)
+answers <- read_csv("Answers_trunc.csv")
+questions <- read_csv("Questions_trunc.csv")
+
+merged <- answers %>%
+  left_join(questions, c('ParentId' = 'Id')) 
+
+merged <- merged %>% 
+  mutate(total_time = CreationDate.x - CreationDate.y) %>%
+  filter(total_time>0)
+
+```
+# Team Section
+
+### Team Plots
+
+```{r}
+#timeliness of score
+ggplot(data = (merged)) + 
+  geom_point(mapping = aes(x = total_time, y = Score.x), size=0.1)+
+   xlim(c(0, 3000))+
+   ylim(c(0, 3000))
+
+#normal distribution?
+ggplot(merged) + geom_histogram(aes(Score.x), bins=100) +
+     xlim(c(0, 100))
+```
+
+### Conclusions
+ 
+# Individual Section 
+
+#### Jake
+
+### Individual Features
+
+### Contributions
+
+----------------------------------
+
+#### Fin Carlson
+
+### Individual Features
+
+### Contributions 
+
+----------------------------------------------------------------
+
+#### Nahom
+
+### Individual Features
+
+### Contributions
+
+-----------------------------------
+
+
+#### Chun
+
+### Individual Features
+
+### Contributions
+ 
+ 

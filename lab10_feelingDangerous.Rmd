@@ -121,10 +121,40 @@ For this lab I created my two features as well as our team plots to anwser the t
 
 ### Individual Features
 
-### Contributions
+```{r, echo = FALSE}
+Qmean<- mean(Questions$Score)
+Amean <- mean(Answers$Score)
+
+question_Python <- Questions %>%
+  mutate(Python = str_detect(Title, "Python")) %>%
+  mutate(result_Q = case_when((Score>= Qmean)~"high", ((Score< Qmean)~"low")))
+
+
+answer_Python <- Answers %>% 
+  mutate (Python = str_detect(Body, "Python")) %>%
+  mutate (result_a = case_when((Score >= Amean)~"HIGH",((Score< Amean)~"low")))
+
+```
+```{r, echo = FALSE}
+ggplot(data = question_Python) +
+  geom_bar(mapping = aes(result_Q, fill = result_Q)) +
+  facet_wrap(~ Python) +
+  labs(title = "Scores of Questions involving Python", 
+       x = "Scores", y = "Count") + scale_y_continuous(c(0, 6000))
+
+
+ggplot(data = answer_Python) +
+  geom_bar(mapping = aes(result_a, fill = result_a)) +
+  facet_wrap(~ Python) +
+  labs(title = "Scores of Answers involving Python", 
+       x = "Scores", y = "Count") + scale_y_continuous(c(0, 4000))
+```
+
+### Findings
+
+My feature for the Question is "Python" I think this is important becauses it helps better understand how much more or less difficult Questions involving or questions about Python compared to other questions , which it is based on my first graph, and knowing this can help people who are answering the questionnaire can be better prepared for alike questions to get a better result.
 
 -----------------------------------
-
 
 #### Chun
 

@@ -54,9 +54,44 @@ Looking over the results of our individual functions it should be realized that 
 
 #### Jake
 
-### Individual Features
+#### Question 1: How does an answer containing "python.org" affect the score of an answer?
+```{r, echo=FALSE}
+mean(questions$Score) #25.4
+sd(questions$Score) #123.5
+
+mean(answers$Score) #mean score in answers is 12.81 
+sd(answers$Score) # stdev for answers is 83.12
+
+a_python <- answers %>%
+  mutate(python.org = str_detect(Body, "python.org")) %>%
+  mutate(s = case_when((Score>=13)~"high", ((Score<13)~"low")))
+
+p <- ggplot(data = a_python) +
+  geom_bar(mapping = aes(s, fill = s)) +
+  facet_wrap(~ python.org) +
+  labs(title = "Does the response contatin <python.org>? How does it affect score?", 
+       x = "Score", y = "Count",
+       fill="Score")
+p + scale_fill_brewer(palette="Greens") + theme_dark()
+
+```
+My first question for this data set: How does an answer containing "python.org" affect the score of an answer? To answer this question I treated score as a continuous variable and calculated the mean score for all answers. The mean for score is 12.81. I then said that an answer is relatively "high"" if the score is above or equal to 13 and relativley low if it was below a score of 13. My findings show that when python.org was included in an answer the proportion of high scores was incresesed by a significant amount. When "python.org" was not included in the answer high scores were about 1/6 the amount of low scores. When "python.org" was included in the answer the proption rised to about 1/3 of the amount of low scores. Therefore when it was included in a response you can expect high scores to double in proption to low scores.
+
+
+#### Question 2: How does the the length of the question affect the score?
+```{r}
+p <- ggplot(data = questions) +
+  geom_line(mapping = aes(x = str_count(questions$Title), y = Score, color="#00FF00"))+
+  labs(title= "Question Length vs Score", x = "Question Length", y = "Score") 
+p + scale_fill_brewer(direction = -1) + theme_dark() +
+  theme(legend.position = "none")
+
+```
+My second question: How does the the length of the question affect the score for the quality of the question? I chose this question becasue I am interested to find out if the detailed adn longer questions have a higher score than the shorter question which probably don't contain as much detail. For this question I used the str_count function to count how many words were in the question. I also used this new dark thheme to switch the aesthetics of my graphs. Overall I found that there was not a strong trend between the length of a question and the quality(higher score). However, I did find that a portion of the question containing about 25 to 50 words had a higher averaging score. This leads me to believe that the questions with the a lot of words contatnied wither too much information for a responder and questions with less than 25 were too broad for the responder. It's good to know that there is a sweet spot in the length of the question for a high scored, quality question.
 
 ### Contributions
+
+For this lab I created two differnt features and was trying to communicate to my team so that we didnt use the same features in our measurements for various relationships. Other than that I provided two solid plots that communicate two important relationships within the python community. 
 
 ----------------------------------
 

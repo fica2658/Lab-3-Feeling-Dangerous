@@ -24,19 +24,32 @@ merged <- merged %>%
 
 ### Team Plots
 
-```{r}
+```{r, echo=FALSE}
 #timeliness of score
 ggplot(data = (merged)) + 
   geom_point(mapping = aes(x = total_time, y = Score.x), size=0.1)+
    xlim(c(0, 3000))+
-   ylim(c(0, 3000))
+   ylim(c(0, 3000))+
+  labs(title = "Time taken to Answer vs. Score of post", 
+       x = "Time", y = "Score")
+
 
 #normal distribution?
 ggplot(merged) + geom_histogram(aes(Score.x), bins=100) +
-     xlim(c(0, 100))
+     xlim(c(0, 100))+
+labs(title = "Checking if score is Normally Distributed ", 
+       x = "Score", y = "Count")
+
 ```
 
 ### Conclusions
+
+When looking at the timeliness of a post vs. its score, it can be noted that in general there is little relationship however the highest scores very rarely occur after a total time of 1000 minutes.
+
+When considering using Z-scores for scores it should be noted that the distribution does not appear normal and as a result z-scores should not be used for this data set.
+
+
+
  
 # Individual Section 
 
@@ -52,7 +65,55 @@ ggplot(merged) + geom_histogram(aes(Score.x), bins=100) +
 
 ### Individual Features
 
+```{r, echo=FALSE}
+#Question Function
+q_tried <- questions %>%
+  mutate(tried = str_detect(Title, "How do I")) %>%
+  mutate(s = case_when((Score>=41)~"high", ((Score<41)~"low")))
+
+q1_tried <- q_tried %>% 
+  mutate(s.num = ifelse(Score>=41, 1, 0))
+
+q1_tried %>% group_by(tried) %>% summarise(mean(s.num))
+
+
+#Anwser Function
+a_you <- answers %>%
+  mutate(you = str_detect(Body, "you")) %>%
+  mutate(s = case_when((Score>=20)~"high", ((Score<20)~"low")))
+
+a1_you <- a_you %>% 
+  mutate(s.num = ifelse(Score>=41, 1, 0))
+
+a1_you %>% group_by(you) %>% summarise(mean(s.num))
+```
+
+I designed my first feature to search the Title of the Questions data for any instance of "How do I". This would indicadte that the question is rather specfic and as a result can be more easily anwsered by a responder. I chose this feature because I often ask questions that are direct and refference a specfic topic and I wanted to see if this was in general mor effective. I belive there is a positive relationship between score and including this phrase as a higher proption of those that included the phrase had what was considered a high score (greater than 40). This would make sense as those responding can easily understand the problem.
+
+I designed my second feature to search the body of the Answers data for any instance of "you". I chose this word because it would indicate the answer is directly responding to the original poster which would likely make the answer better. After mutating the data however I do not belive there is a relationship between my feature and overall score as there are very simmialr porptions of high scores for anwsers that include and dont include "you". 
+
+### Plots
+
+```{r, echo=FALSE}
+ggplot(data = q_tried) +
+  geom_bar(mapping = aes(s, fill = s)) +
+  facet_wrap(~ tried) +
+  labs(title = "Effect of including How Do I on score for Questions", 
+       x = "Score", y = "Count",
+       fill="Score")
+
+ggplot(data = a_you) +
+  geom_bar(mapping = aes(s, fill = s)) +
+  facet_wrap(~ you) +
+  labs(title = "Effect of including You on Score for Answers", 
+       x = "Score", y = "Count",
+       fill="Score")
+```
+
+
 ### Contributions 
+
+For this lab I created my two features as well as our team plots to anwser the time and normality questions. I provided conclusions for our team section and complied all of our work into one document that I knitted and turned in.
 
 ----------------------------------------------------------------
 

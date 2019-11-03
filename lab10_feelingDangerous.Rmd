@@ -140,14 +140,14 @@ ggplot(data = question_Python) +
   geom_bar(mapping = aes(result_Q, fill = result_Q)) +
   facet_wrap(~ Python) +
   labs(title = "Scores of Questions involving Python", 
-       x = "Scores", y = "Count") + scale_y_continuous(c(0, 6000))
+  x = "Scores", y = "Count") + scale_y_continuous(c(0, 6000))
 
 
 ggplot(data = answer_Python) +
   geom_bar(mapping = aes(result_a, fill = result_a)) +
   facet_wrap(~ Python) +
   labs(title = "Scores of Answers involving Python", 
-       x = "Scores", y = "Count") + scale_y_continuous(c(0, 4000))
+  x = "Scores", y = "Count") + scale_y_continuous(c(0, 4000))
 ```
 
 ### Findings

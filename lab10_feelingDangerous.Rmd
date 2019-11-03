@@ -129,7 +129,28 @@ For this lab I created my two features as well as our team plots to anwser the t
 #### Chun
 
 ### Individual Features
+```{r, echo=FALSE}
 
-### Contributions
+Q = questions %>% mutate(feature = str_detect(Title, "What"))
+m1=mean(Q$Score, na.rm = FALSE)
+Q=Q%>%mutate(score = case_when((Score<m1)~"Low", ((Score>m1)~"High")))
+ggplot(data = Q) +
+  geom_bar(mapping = aes(score, fill = score)) +
+  facet_wrap(~ feature)
+Qm=Q%>%group_by(score)%>%summarise(mean(feature))
+```
+
+```{r, echo=FALSE}
+A = answers %>% mutate(feature = str_detect(Body, "This"))
+m2=mean(A$Score, na.rm = FALSE)
+A=A%>%mutate(score = case_when((Score<m2)~"Low", ((Score>m2)~"High")))
+ggplot(data = A) +
+  geom_bar(mapping = aes(score, fill = score)) +
+  facet_wrap(~ feature)
+Am=A%>%group_by(score)%>%summarise(mean(feature))
+```
+###Finding
+My feature for the question is "What" and I think it is rather important because usually, when people using "what" in the question, there are really don't understand the idea, definition or meaning of the problem or function they might use when coding.(And of course, this is the word I always use when I have a coding problem.) And I choose "This" as the feature for the answers since it is one of the most common way to answer the question starting with "What". I think question with these features usually earn a higher score since these are the basic knowledge for anyone who learn to code and these Q & A can save a lot of people.
+
  
  

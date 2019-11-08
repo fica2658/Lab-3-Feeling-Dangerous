@@ -1,0 +1,77 @@
+---
+title: "lab 11 Feeling Dangerous"
+author: "Fin,Nahom,Chun,Jake"
+date: "11/7/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+babynames18 <- read_csv("2018babynames.txt", 
+                        col_types = cols( Name = col_character(),
+                                          Gender = col_character(),
+                                          Count = col_double()))
+total2018 <- sum(babynames18$Count)
+
+babynames18 <- babynames18 %>% 
+  mutate(prop = Count/total2018, year = 2018) %>%
+  rename(n = Count, sex = Gender, name = Name) %>%
+  select(year, sex, name, n, prop)
+  
+babynames <- full_join(babynames18, babynames)
+
+```
+
+# Individual plots of our name’s popularity over time
+
+## Fin
+
+## Jake
+ 
+## Chun
+
+## Nahom
+
+
+#Ariel and Rachel regexs
+
+## Fin
+
+## Jake
+ 
+## Chun
+
+## Nahom
+
+
+# The Little Mermaid Effect
+
+## Fin
+
+## Jake
+ 
+## Chun
+
+## Nahom
+
+
+# Our names
+
+## Fin
+
+## Jake
+ 
+## Chun
+
+## Nahom
+
+
+## Our recommendation for a boy and girl name for the clients
+
+## Fin
+
+## Jake
+ 
+## Chun
+
+## Nahom
+ 

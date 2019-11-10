@@ -68,16 +68,16 @@ jac <- babynames %>%
   filter(str_detect(name, "^Jac"))
 
 jac <- jac %>% group_by(year) %>% 
-  summarise(prop = sum(prop))
+  summarise(proportion = sum(prop))
 
 Jacob <- babynames %>%
   filter(str_detect(name, "^Ja[cke]+ob*$"))
 
 Jacob <- Jacob %>% group_by(year) %>% 
-  summarise(prop = sum(prop))
+  summarise(proportion = sum(prop))
 
 ggplot(data= jacob, aes(x = year)) +
-  geom_density(fill = "#56B4E9", alpha = 0.7) +
+  geom_density(fill = "#56B4E9", alpha = 0.4) +
   ggtitle('Distribution of Jacob by year')+
   xlab('Year')
 
@@ -202,6 +202,28 @@ Ariel1
 The change of the name Ariel is in the 71 percentile. Overall the proporition of girls named Ariel rose after the release of "The Little Mermaid" both in terms of actual change and relative to other names. The change related to Ariel was greater than 71% of names and as a result can be thought of as significant. My plot shows the proporition for the name Ariel over the 3 year span along with the average proporition for all names. It can be seen that on average the proporition did not change much each year however Ariel saw drastic change. 
 
 ### Jake
+```{r, include=FALSE}
+allNames <- babynames %>% filter(sex=='F', year<=1990 & year>=1988) %>%
+   group_by(year)%>%
+   summarise(proportion = mean(prop))
+
+  
+ariel <- babynames %>% 
+  filter(str_detect(name, "^A[r]+[iy][ae]l[lae]*$")) %>%
+  filter(sex!='M') %>%
+  filter(year<=1990 & year>=1988)%>%
+  group_by(year) %>%
+  summarise(propition =(sum(prop)))
+
+ariel <- left_join(allNames, ariel, by= "year")
+
+p <- ggplot(data = ariel) +
+  geom_line(mapping = aes(x = year, y = proportion, color="#00FF00"))+
+  labs(title= "Change in Proportion for name Ariel") 
+p + scale_fill_brewer(direction = -1) + theme_dark() +
+  theme(legend.position = "none")
+
+```
  
 ### Chun
 

@@ -1,0 +1,291 @@
+---
+title: "lab 11 Feeling Dangerous"
+author: "Fin,Nahom,Chun,Jake"
+date: "11/7/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(babynames)
+library(stringr)
+
+babynames18 <- read_csv("2018babynames.txt", 
+                        col_types = cols( Name = col_character(),
+                                          Gender = col_character(),
+                                          Count = col_double()))
+total2018 <- sum(babynames18$Count)
+
+babynames18 <- babynames18 %>% 
+  mutate(prop = Count/total2018, year = 2018) %>%
+  rename(n = Count, sex = Gender, name = Name) %>%
+  select(year, sex, name, n, prop)
+  
+babynames <- full_join(babynames18, babynames)
+
+```
+
+# Individual plots of our name’s popularity over time
+
+### Fin
+
+```{r, echo=FALSE}
+Fin <- babynames %>%
+  filter(str_detect(name, "^Fin"))
+
+Fin_avg <- Fin %>% group_by(year) %>% 
+  summarize(total_prop = sum(prop))
+
+Finlay <- babynames %>%
+  filter(str_detect(name, "^Fin.*l[ae]y$"))
+
+Finlay_avg <- Finlay %>% group_by(year) %>% 
+  summarize(total_prop = sum(prop))
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = Finlay_avg)+
+  geom_point(mapping = aes(x=year, y=total_prop))+
+  geom_point(data = Fin_avg, mapping = aes(x=year, y=total_prop), color="red")+
+  labs(title = "Total Proporition of Names Simmilar to FINLAY", 
+       subtitle = "          Red shows all names starting with FIN",
+       y = "Proportion", x = "Year")+
+  theme(legend.position="right")+
+  ylim(0,.0025)
+```
+
+I used "^Fin" as the regular expression to search for names starting with same three letters as my name and I used "^Fin.*l[ae]y$" as the regular expression to find just my name.
+
+Since I was born, my name has increased in popularity. In the year 2000 my name made up less than .01 percent of names while now it represents around .1 percent of names with its peak popularity occuring in 2017 at .2 percent.
+
+For much of history, the popularity of my name vs. names starting with the same three letters was mostly the same. Since 2000 both have seen an increase although recently names starting with three letters are overall more popular than my name.
+
+
+### Jake
+ 
+### Chun
+
+### Nahom
+
+
+# Ariel and Rachel Regexs
+
+### Fin
+
+```{r, include=FALSE}
+ariel <- babynames %>%
+  filter(str_detect(name, "^A[r]+[iy][ae]l[lae]*"))
+
+ariel_Namecount <- ariel %>%
+  filter(sex=='F') %>%
+  filter(year %in% list(1973, 1988, 1990)) %>%
+  group_by(year) %>% 
+  summarise(name_variants_Ariel =(n()))
+
+
+rachel <- babynames %>%
+  filter(str_detect(name, "^R[aey]+ch[aey]+l[le]*$"))
+
+rachel_Namecount <- rachel %>%
+        filter(sex != 'M') %>%
+        filter(year %in% list(1973, 1988, 1990)) %>%
+        group_by(year) %>% 
+        summarise(name_variants_Rachel =(n()))
+
+
+AR_probability <- babynames %>%
+  filter(str_detect(name, "^A[r]+[iy][ae]l[lae]*") | str_detect(name, "^R[aey]+ch[aey]+l[le]*$"))%>%
+  filter(sex=='F') %>%
+  filter(year %in% list(1973, 1988, 1990, 2018)) %>%
+  group_by(year) %>% 
+  summarise(propition =(sum(prop))) %>%
+  mutate(probability= propition*100)
+
+```
+
+```{r, echo=FALSE}
+ariel_Namecount
+rachel_Namecount
+AR_probability
+
+```
+
+Charts above anwser questions on variations of name and probability.
+
+### Jake
+ 
+### Chun
+
+### Nahom
+
+
+# The Little Mermaid Effect
+
+### Fin
+
+```{r, include=FALSE}
+avg_Allnames <- babynames %>% filter(sex=='F', year<=1990 & year>=1988) %>%
+   group_by(year)%>%
+   summarise(avg_prop= mean(prop))
+
+ariel_count <- babynames %>%
+  filter(str_detect(name, "^A[r]+[iy][ae]l[lae]*"))  %>%
+  filter(sex=='F', year<=1990 & year>=1988) %>%
+  group_by(year) %>% 
+  summarise(propition =(sum(prop)))
+
+ariel_graph <- left_join(avg_Allnames, ariel_count, by= "year")
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+ggplot(data = ariel_graph)+
+  geom_smooth(mapping = aes(x=year, y=avg_prop), color="red") +
+  geom_smooth(mapping = aes(x=year, y=propition), color="black") +
+  labs(title = "Total Change in Proporition of Babies Named Ariel ", 
+       subtitle = "          Red shows average change for all names",
+       y = "Proportion", x = "Year")+ 
+  ylim(0,.0032)
+
+```
+
+```{r, echo=FALSE}
+ariel_change <- babynames %>% filter(sex=='F', year<=1990 & year>=1988)%>%
+  group_by(year, name) %>% summarise(avg_prop= mean(prop)) %>%
+  mutate(change_percent=
+           paste0(round(((avg_prop / dplyr::first(avg_prop,order_by=year))-1) *100),"%")) %>%
+  mutate(change=((avg_prop / dplyr::first(avg_prop,order_by=year))-1) *100)
+
+ariel_count1 <- ariel_count %>% 
+  mutate(change=((propition / dplyr::first(propition,order_by=year))-1) *100)
+ariel_count2 <- mean(ariel_count1$change)
+ariel_count2
+
+Ariel1<- quantile(ariel_change$change, c(.711,.715))
+Ariel1
+```
+
+The change of the name Ariel is in the 71 percentile. Overall the proporition of girls named Ariel rose after the release of "The Little Mermaid" both in terms of actual change and relative to other names. The change related to Ariel was greater than 71% of names and as a result can be thought of as significant. My plot shows the proporition for the name Ariel over the 3 year span along with the average proporition for all names. It can be seen that on average the proporition did not change much each year however Ariel saw drastic change. 
+
+### Jake
+ 
+### Chun
+
+### Nahom
+
+
+# Our Names
+
+### Fin
+
+```{r, include=FALSE}
+Finlay_prop <- Finlay %>% group_by(year) %>% 
+  summarize(total_prop = sum(prop)) %>%
+  filter(year>=2000 & year<=2018) %>%
+  mutate(change_percent=
+           paste0(round(((total_prop / dplyr::first(total_prop,order_by=year))-1) *100),"%")) %>%
+  mutate(change=((total_prop / dplyr::first(total_prop,order_by=year))-1) *100)
+
+all_change1 <- babynames %>% filter(year>=2000 & year<=2018) %>%
+  group_by(year, name) %>% summarise(avg_prop= mean(prop)) %>%
+  mutate(change_percent=
+           paste0(round(((avg_prop / dplyr::first(avg_prop,order_by=year))-1) *100),"%")) %>%
+  mutate(change=((avg_prop / dplyr::first(avg_prop,order_by=year))-1) *100)
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = Finlay_prop)+
+  geom_histogram(mapping = aes(x=change))+
+  labs(title = "Percent Change of Proportion of Babys Named Finlay from 2000-2018  ", 
+       y = "Count", x = "% Change from year 2000")
+
+ggplot(data = all_change1)+
+  geom_histogram(mapping = aes(x=change))+
+  xlim(0,1000)+
+    labs(title = "Percent Change of Proportion for all Baby Names from 2000-2018  ", 
+       y = "Count", x = "% Change from year 2000")
+```
+
+```{r, echo=FALSE}
+Finlay_hold<-mean(Finlay_prop$change)
+Finlay_hold
+
+Finlay1<- quantile(all_change1$change, c(.92663,.92664))
+Finlay1
+
+```
+
+Overall my name name has seen a signifacant increase in popularity since my birth (2000). It's total proporition has increased almost every year since my birth starting at around .01 percent of names while now it represents over  .1 percent of names. Relative to other names it is still seeing relative increase as my name is in the 92 percentile for change, meaning it has had a larger increase in popularity than 92% of names. Because my name is gender neutraul and often used for both sexes, I did not filter based on gender.
+
+### Jake
+ 
+### Chun
+
+### Nahom
+
+
+# Our Recommendation for a Boy and Girl Name 
+
+### Fin
+
+I would reccomend the names "Krish" and "Aida" as they are gender specfic, not commonly shortened, and trending upward while not being currently trendy. Both these names have propitions that are smaller than the average for all names while having change values that are above the 75% percentile.
+Once both names were found using these conditions, they were checked to ensure that they only were used for one sex and had no common nicknames. Both the checks for conditions and graphs showing the chosen names relative propition vs. change are given bellow.
+
+```{r, include=FALSE}
+client<- babynames %>% filter(year>=2000 & year<=2018) %>%
+  group_by(year, name) %>% summarise(avg_prop= mean(prop)) %>%
+  mutate(change_percent=
+           paste0(round(((avg_prop / dplyr::first(avg_prop,order_by=year))-1) *100),"%")) %>%
+  mutate(change=((avg_prop / dplyr::first(avg_prop,order_by=year))-1) *100)
+
+client_filter <- client %>% filter(year==2018) %>%
+filter(change>995, avg_prop<.0000499,) %>% arrange(desc(change))
+
+client_graph1 <- client_filter %>% 
+  filter(str_detect(name, "^Krish$")| str_detect(name, "^Aida$"))
+
+client_graph2 <- client %>% filter(year==2018)
+
+```
+
+```{r, echo=FALSE}
+boy_check <- babynames %>% filter(str_detect(name, "^Krish$"), year>=2010)
+girl_check <- babynames %>% filter(str_detect(name, "^Aida$"), year>=2010)
+
+boy_check
+girl_check
+
+```
+
+```{r, echo=FALSE}
+ggplot(data= client_graph2)+
+  geom_point(mapping=aes(x=avg_prop, y=change))+
+  geom_point(data=client_graph1, mapping = aes(x=avg_prop, y=change), color="red")+
+  labs(title = "Total Proporition vs. % Change for all names from 2000-2018", 
+       subtitle = "          Red shows names selected for client",
+       y = "% change", x = "Proporition")
+  
+```
+
+### Jake
+ 
+### Chun
+
+### Nahom
+
+
+# Contributions
+
+### Fin
+
+For this lab I found the additional data and joined it to the babynames data. I gave this code to my team along with a template for the lab. I then completed my indivudal sections. Due to problems already brought to the proffesor, Our lab does not include combinded histograms, but instead I created my own indivual as those in my group supplied their work too late for the graphs to be combined.
+ 
+### Jake
+ 
+### Chun
+
+### Nahom
+

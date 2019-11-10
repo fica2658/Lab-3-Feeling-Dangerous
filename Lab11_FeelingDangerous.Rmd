@@ -37,7 +37,23 @@ babynames <- full_join(babynames18, babynames)
 ## Fin
 
 ## Jake
- 
+```{r, include=FALSE}
+rachel <- babynames %>% 
+  filter(str_detect(name, "^R[aey]+ch[aey]+l[le]*$")) %>%
+  filter(sex!='M') %>%
+  filter(year %in% list(1973,1988,1990)) %>%
+  group_by(year) %>%
+  summarise(name_variants =n())
+
+ariel <- babynames %>% 
+  filter(str_detect(name, "^A[r]+[iy][ae]l[lae]*$")) %>%
+  filter(sex!='M') %>%
+  filter(year %in% list(1973,1988,1990)) %>%
+  group_by(year) %>%
+  summarise(name_variants =n())
+```
+In 1973 there were 13 variations of the name Rachel. In 1988 and 1990 there were 17 variations of the name Rachel. In 1973 there were 3 variations of the name Ariel.  In 1988 there were 11, and in 1990 there were 12 variations of the name Ariel.
+
 ## Chun
 
 ## Nahom

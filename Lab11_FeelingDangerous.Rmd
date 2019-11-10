@@ -36,6 +36,21 @@ Bob = babynames %>% filter(str_detect(name, "^Bob"))
 qplot(x = year, y = n,data = Bob)
 ## Nahom
 
+```{r}
+Nahom_3 <- babynames%>%
+  filter(str_detect(name, "^Nah"))
+nahom_prop <- Nahom %>% group_by(year) %>% 
+  summarize(total_prop = sum(prop))
+Nahom_comb <- babynames %>% 
+  filter(str_detect(name, "^Nah[ou]m$"))
+nahom_cprop <- Nahom %>% group_by(year) %>% 
+  summarize(total_prop = sum(prop))
+  
+  
+  ggplot(nahom_prop)+
+  geom_point(mapping= aes(year, total_prop))
+  geom_point(data=nahom_prop, mapping = aes(x=year, y=total_prop))
+  ```
 
 #Ariel and Rachel regexs
 
@@ -63,6 +78,22 @@ In 1973 there were 13 variations of the name Rachel. In 1988 and 1990 there were
 
 ## Nahom
 
+```{r, setup, echo=TRUE}
+a_r<- babynames %>% 
+  filter(str_detect(name, "^A[r]+[iy][ae]l[lae]*") | str_detect(name, "^R[aey]+ch[aey]+l[le]*$")) %>%
+  filter(sex=='F') %>%
+  filter(year %in% list(1973, 1988, 1990, 2018)) %>%
+  mutate(frist_letter = str_sub(name, 1, 1))
+ 
+a_r %>%
+   group_by(frist_letter, year)%>%
+  summarise(name_count=n())
+
+
+a_r %>% group_by(year) %>%
+  summarise(tot_prop = sum(prop))
+  
+```
 
 # The Little Mermaid Effect
 

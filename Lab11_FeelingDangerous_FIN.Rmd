@@ -63,7 +63,23 @@ For much of history, the popularity of my name vs. names starting with the same 
 
 
 ### Jake
- 
+jac <- babynames %>%
+  filter(str_detect(name, "^Jac"))
+
+jac <- jac %>% group_by(year) %>% 
+  summarise(prop = sum(prop))
+
+Jacob <- babynames %>%
+  filter(str_detect(name, "^Ja[cke]+ob*$"))
+
+Jacob <- Jacob %>% group_by(year) %>% 
+  summarise(prop = sum(prop))
+
+ggplot(data= jacob, aes(x = year)) +
+  geom_density(fill = "#56B4E9", alpha = 0.7) +
+  ggtitle('Distribution of Jacob by year')+
+  xlab('Year')
+
 ### Chun
 
 ### Nahom

@@ -63,6 +63,7 @@ For much of history, the popularity of my name vs. names starting with the same 
 
 
 ### Jake
+
 jac <- babynames %>%
   filter(str_detect(name, "^Jac"))
 
@@ -300,8 +301,6 @@ ggplot(data= client_graph2)+
        y = "% change", x = "Proporition")
   
 ```
-
-### Jake
  
 ### Chun
 

@@ -6,6 +6,10 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+library(readxl)
+library(tidyverse)
+library(ggplot2)
+library(babynames)
 babynames18 <- read_csv("2018babynames.txt", 
                         col_types = cols( Name = col_character(),
                                           Gender = col_character(),
@@ -28,7 +32,8 @@ babynames <- full_join(babynames18, babynames)
 ## Jake
  
 ## Chun
-
+Bob = babynames %>% filter(str_detect(name, "^Bob"))
+qplot(x = year, y = n,data = Bob)
 ## Nahom
 
 

@@ -9,7 +9,7 @@ output: html_document
 library(tidyverse)
 library(babynames)
 library(stringr)
-
+library(ggplot2)
 babynames18 <- read_csv("2018babynames.txt", 
                         col_types = cols( Name = col_character(),
                                           Gender = col_character(),
@@ -84,7 +84,13 @@ ggplot(data= jacob, aes(x = year)) +
 ```
 
 ### Chun
+Bob = babynames %>%
+  filter(str_detect(name, "^Fin"))
 
+Bob_avg <- Fin %>% group_by(year) %>% 
+  summarize(total_prop = sum(prop))
+
+ qplot(x = year, y = n, color = sex, data = Bob)
 ### Nahom
 
 
@@ -150,6 +156,7 @@ ariel <- babynames %>%
 In 1973 there were 13 variations of the name Rachel. In 1988 and 1990 there were 17 variations of the name Rachel. In 1973 there were 3 variations of the name Ariel.  In 1988 there were 11, and in 1990 there were 12 variations of the name Ariel.
  
 ### Chun
+
 
 ### Nahom
 
@@ -280,6 +287,13 @@ Overall my name name has seen a signifacant increase in popularity since my birt
  
 ### Chun
 
+Bob_prop <- Bob %>% group_by(year) %>% 
+  summarize(total_prop = sum(prop)) %>%
+  filter(year>=1995 & year<=2018)
+
+
+ggplot(data = Bob_prop)+
+  geom_histogram(mapping = aes(x=total_prop))
 ### Nahom
 
 

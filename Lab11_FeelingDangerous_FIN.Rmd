@@ -341,7 +341,11 @@ ggplot(data= client_graph2)+
 ```
  
 ### Chun
-
+name = inner_join(filter(babynames18, sex == "M"), filter(babynames, sex == "F"), by = c("year", "name"))
+name = mutate(name, total = n.x + n.y, bp=n.x/total, gp=n.y/total)
+bn=name%>%select("name", "bp")%>%arrange(desc(bp))
+gn=name%>%select("name", "gp")%>%arrange(desc(gp))
+#Individually, I recommend Olivia as a girl name and Anthony as a boy name. Personally, I believe that normal is the best. So I choose the most used baby name in 2018.
 ### Nahom
 
 

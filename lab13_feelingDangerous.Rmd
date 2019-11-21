@@ -1,0 +1,170 @@
+---
+title: "lab 13 Feeling Dangerous"
+author: "Fin Carlson,Nahom,Chun,Jake Boeck"
+date: "11/20/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+
+
+```
+# Team Section
+
+### Overall Question
+
+### Tests, Plots, and Conclusions
+
+```{r, echo=FALSE}
+
+```
+
+--------------------------------------------------------------
+
+# Individual Section 
+
+## Jake
+
+### Overall Question
+
+### Tests, Plots, and Conclusions
+
+### Map Function
+
+### Contributions
+
+----------------------------------
+
+## Fin Carlson
+
+```{r Fin_setup, include=FALSE}
+#loading in agriculture data
+agg_data <- read_csv("agricultural_land_percent_of_land_area.csv")
+#gathering agriculture data into 3 variables
+agg_data1 <- agg_data %>% gather(key = "Year", value = "%_agg_land ", -country)
+
+#loading in forrest data
+for_data <- read_csv("forest_coverage_percent.csv")
+#gathering forrest data into 3 variables
+for_data1 <- for_data %>% gather(key = "Year", value = "%_for_land ", -country)
+
+#joining data sets and filitering years with no data
+data <- left_join(agg_data1, for_data1, by = c("Year", "country"))
+data <- data %>% filter(Year >=1990)
+```
+
+### Overall Question
+
+For this lab, I looked at data sets concering % of territory covered in farm and forrest land. I thought it would it be interesting to see how these two variable have changed over the years around the world. I preproccessed the data by first using the gather function on the two data sets to properly represent year as a single variable instead of indivual columns. I then joined the two data set's together using a left_join and I filtered out all years before 1990 as there was no data before this for the forestry set. I focused my main question on determining if a correlation existed between % farm land and % forrest land. 
+
+### Tests, Plots, and Conclusions
+```{r perm_test, include=FALSE}
+
+perm_cor <- function(perms = 1000, x, y)
+{
+  ## Variables ##
+  # perms: The number of permutations 
+  # x: Vector of Variable 1 - for computing correlation
+  # y: Vector of Variable 2 - for computing correlation
+  ###############
+  
+  # Step 1:
+  # Create vector of zeroes of length "perms"
+  perm_cor_diffs <- numeric(perms)
+  
+  # Loop throught number of permutations
+  for (i in c(1:perms))
+  {
+    # Step 2:
+    # Randomly mix up the values in the vector "y"
+    y_shuffled <- sample(y)
+    x_shuffled <- sample(x)
+    
+    # Step 3:
+    # Compute the correlation between x and the randomly mixed
+    # up y-vector. Store this value in the vector from step 1.
+    perm_cor_diffs[i] <- cor(y_shuffled, x_shuffled, use="complete.obs")
+  }
+  
+  # Step 4:
+  # Return new updated vector, created in step 1
+  return(perm_cor_diffs)
+}
+
+#Creating vectors for Forrest and Agriculutre data to be used on permutation function
+for_vector <- data$`%_for_land `  
+agg_vector <- data$`%_agg_land `
+
+#Finding the real correlation between the two data sets (use is instead of na.rm)
+cor_real<- cor(for_vector, agg_vector, use="complete.obs") #-.466
+
+#running permutation function 
+cor_vector <- perm_cor(perms = 1000, for_vector, agg_vector) 
+
+#Changing permutation results from vector to tibble for graphing
+cor_graph <- as_tibble(cor_vector)
+
+#calculating percentile
+(sum(cor_real<cor_vector)/1000)*100
+
+```
+
+I conducted a two sample permutation test using correlation as my test statistic. My null hypothesis stated that the correlation was equal to 0 while my alternative hypothesis stated that correlation was not equal to 0. I found the correlation between % farm and % forest land to be -.45 which fell in the 100th percentile for the permutation data. This means the null hypotheis can be rejected as we can be confident that caluculated correlation was not found by random chance alone. A histogram showing the results of the permutation is given below.
+
+```{r, echo=FALSE}
+ggplot(data = cor_graph)+
+  geom_histogram(mapping= aes(x=value))+
+  labs(title = "Permutation Test for Correlation between % Farm land and % Forest land")+
+  xlab("Correlation")
+   
+  
+ggplot(data = cor_graph)+
+  geom_histogram(mapping= aes(x=value))+
+  geom_vline(xintercept = -.466, color="red") +
+  labs(title = "Permutation Test for Correlation between % Farm land and % Forest land",
+       subtitle = "                                     Red line represents actual correlation")+
+  xlab("Correlation")
+```
+
+### Map Function
+
+```{r, warning=FALSE}
+map_vector <- for_data[for_data$country == 'United States' |
+                         for_data$country == 'Mexico' |
+                         for_data$country == 'Canada', ]
+
+map_vector <- map(map_vector, mean)
+```
+
+Given above is my map function. I first created a vector with the forest data for all countries in North America. My map function then calculates the average % of forest land for all of North America for every year. I only used this function in my exploratory anaylsis.
+
+### Contributions
+
+For this lab I completed my indivual section and helped complete the team section. I then  created the final document for our team and organized our work before turning it in.
+
+----------------------------------
+
+## Nahom
+
+### Overall Question
+
+### Tests, Plots, and Conclusions
+
+### Map Function
+
+### Contributions
+
+----------------------------------
+
+## Chun
+
+### Overall Question
+
+### Tests, Plots, and Conclusions
+
+### Map Function
+
+### Contributions
+
+----------------------------------

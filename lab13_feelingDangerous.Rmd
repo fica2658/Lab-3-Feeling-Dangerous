@@ -26,13 +26,110 @@ library(tidyverse)
 
 ## Jake
 
+```{r setup, include=FALSE}
+library(tidyverse)
+library(gapminder)
+
+inflation <- read_csv("inflation_annual_percent.csv")
+gni <- read_csv("gnipercapita.csv")
+```
+
 ### Overall Question
 
+I chose to investigate the data sets under the economy tab, specifically, I chose the data set that measures inflation by annual percentge. I also choose to investigate the data set that measures gross national income per capita. I didn't realize that we had to investigate a data set on energy until after I finished but my major is economics so I found that to be the most interesting of all the data sets. 
+
+The data sets include anual inflation percentge for all of the countries in this world as well as gross national income per capita for all of the countries. I preprocessed it by filter the data from years 1990 and on and only looked at the United States and United Kindom because the currencies are comprable and highly valued.  
+
+```{r, include=FALSE}
+
+inflation1 <- inflation %>% filter(country=="United States"|country=="United Kingdom") 
+gni1 <- gni %>% filter(country=="United States"|country=="United Kingdom")
+
+inflation1 <- inflation1 %>% gather(key = "Year", value = "inflation", -country) %>% filter(Year>=1990)
+
+USinflation <- inflation %>% filter(country=="United States") %>% 
+  gather(key = "Year", value = "inflation", -country) %>%
+  filter(Year>=1990)
+
+USgni <- gni %>% filter(country=="United States") %>% 
+  gather(key = "Year", value = "gnipercapita", -country)
+
+UKinflation <- inflation %>% filter(country=="United Kingdom") %>% 
+  gather(key = "Year", value = "inflation", -country)
+
+perm_cor <- function(perms = 1000, x, y)
+{
+  ## Variables ##
+  # perms: The number of permutations 
+  # x: Vector of Variable 1 - for computing correlation
+  # y: Vector of Variable 2 - for computing correlation
+  ###############
+  
+  # Step 1:
+  # Create vector of zeroes of length "perms"
+  perm_cor_diffs <- numeric(perms)
+  
+  # Loop throught number of permutations
+  for (i in c(1:perms))
+  {
+    # Step 2:
+    # Randomly mix up the values in the vector "y"
+    y_shuffled <- sample(y)
+    x_shuffled <- sample(x)
+    
+    # Step 3:
+    # Compute the correlation between x and the randomly mixed
+    # up y-vector. Store this value in the vector from step 1.
+    perm_cor_diffs[i] <- cor(y_shuffled, x_shuffled)
+  }
+  
+  # Step 4:
+  # Return new updated vector, created in step 1
+  return(perm_cor_diffs)
+}
+
+USinflation_vector <- USinflation$inflation
+USgni_vector <- USgni$gnipercapita
+
+real_corr <- cor(USinflation_vector, USgni_vector) # -.404
+perm_corr <- perm_cor(perms = 1000, USinflation_vector, USgni_vector)
+perm_corr_tibble <- as_tibble(perm_corr)
+
+```
+
 ### Tests, Plots, and Conclusions
+I conducted a two sample permutation test using correlation as my test statistic. My null hypothesis: the correlation is equal to 0. Alternative hypothesis: the correlation was not equal to 0. I found the correlation between inflation and gross national income per capita is -.404 which fell in the 100th percentile for the permutation data. This means the null hypotheis can be rejected as we can be confident that caluculated correlation was not found by random chance alone. A histogram showing the results of the permutation is given below.
+
+I also created a graph exploring the differences in anual inflation between the US and the UK. I created a geom point for this exploration. I found a strong postive correlation between inflation rates for each country. The inflation rates folow similar trends.
+
+```{r}
+# Plot Code
+p <- ggplot(data = perm_corr_tibble) +
+  geom_histogram(mapping= aes(x=value, col='red'), bins=100) +
+  labs(title = "Permutaion Test for Correlation Between U.S. Inflation % and U.S. GNI") +
+  xlab("Correlation")
+p + scale_fill_brewer(direction = 0) + theme_dark() +
+  theme(legend.position = "none")
+
+ggplot(inflation1, aes(Year, inflation))+
+  geom_point(aes(colour = country)) +
+  theme(axis.text.x = element_text(angle = 90))+
+  labs(title = "Anual Inflation % for United States and United Kingdom") +
+  xlab("Year")
+```
 
 ### Map Function
 
+Below is my map function. I created a vector with infaltion for each country United States and United Kingdom. My map function calculates the average anual infaltion percentage.
+```{r, warning=FALSE}
+map_vector <- inflation[inflation1$country == "United States" |
+                         inflation1$country == "United Kingdom",]
+
+map_vecotr <- map(map_vector, mean)
+```
 ### Contributions
+
+For this lab I met up with Fin to dicuss the datasets and questions we wanted to investigate. Fin was able to walk me through the permutaion tests he created. I was only familiar with t tests and prop tests so Fin was of great help for me on this lab. From there I completed my section with Fin and dicusseded team plots with him.
 
 ----------------------------------
 

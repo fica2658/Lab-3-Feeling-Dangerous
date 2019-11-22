@@ -245,12 +245,62 @@ For this lab I completed my indivual section and helped complete the team sectio
 ## Nahom
 
 ### Overall Question
+How does the usage of electricity and coal usage per person compare to each other as the world is turning to clean enery
+living, to answer this question I first gathered my data sets as year and country variable and coal and electricity usage per
+person and cleaned it up even more by string dropping the 'X's in the year coloumn. 
 
 ### Tests, Plots, and Conclusions
+```{r}
+electricity <- read.csv(file="/Users/olio/Downloads/Data Science 2019/lab 13/electricity_use_per_person.csv")
+coal <- read.csv(file="coal_consumption_per_cap (1).csv")
 
+
+electricity_tidy <- electricity %>% gather(key="Year", value = "EPP", -country )
+electricity_tidy %>% mutate(Year = str_remove(Year, 'X'))
+coal_tidy <- coal %>% gather(key="Year", value = "CPP", -country)
+coal_tidy %>% mutate(Year = str_remove(Year, 'X'))
+
+joined <- left_join(electricity_tidy, coal_tidy, by =c("Year","country"))
+
+```
+```{r perm_test}
+perm_cor <- function(perms= 1000, x,y) 
+
+  {
+  perm_cor_diffs <- numeric(perms)
+  for(i in c(1:perms))
+    {
+    y_rand <- sample(y)
+    x_rand <- sample(x)
+    
+    perm_cor_diffs[i] <-  cor(y_rand, x_rand, use = "complete.obs") #== 0.3
+  }
+  return(perm_cor_diffs)
+}
+electricity_vector <- joined$ `EPP`
+coal_vector <- joined$ `CPP`
+
+cor_real<- cor(coal_vector, electricity_vector)
+cor_vector <- perm_cor(perms= 1000, electricity_vector, coal_vector)
+cor_data <- as.tibble(cor_vector)
+```
+```{r}
+
+ggplot(cor_data)+
+  geom_density(mapping = aes(x=value))+
+  labs(title = "Premutation Test for correlation between Coal usage and Electricity usage per person")+
+  xlabs("Correlation")
+```
 ### Map Function
+```{r}
+map_vector <- electricity[electricity$country =="China",
+                        electricity$country =="United States",]
+map_vector <- Map(map_vector, mean)
+
+```
 
 ### Contributions
+I completed my indiviual section and turing it in on time.
 
 ----------------------------------
 

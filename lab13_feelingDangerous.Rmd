@@ -304,14 +304,67 @@ I completed my indiviual section and turing it in on time.
 
 ----------------------------------
 
-## Chun
+###Chun Ni
 
+```{r setup, include=FALSE}
+library(tidyverse)
+library(gapminder)
+arms.o = read_csv("arms_imports_us_inflation_adjusted.csv")
+oil.o = read_csv("oil_production_total.csv")
+arms = arms.o %>% gather(key="Year", value = "AI", -country )
+
+oil = oil.o %>% gather(key="Year", value = "OP", -country)
+my.data = left_join(arms, oil, by = c("Year", "country"))
+my.data = my.data %>% filter(Year >=1990)
+my.data = na.omit(my.data)
+```
 ### Overall Question
+War always start with reasons. Resource conflict is often involved in it. In this lab, I want to know is oil really involved in it. To see the relation between them, I pick the oil production total as the data which represent the oil and weapon import as the possible area where war is going to happen. 
 
-### Tests, Plots, and Conclusions
+### Tests
+Null hypothesis: the correlation between oil production and weapon import is equal to 0. 
+Alternative hypothesis: the correlation between oil production and weapon import is not equal to 0.
+```{r perm_test}
+perm.cor <- function(perms= 1000, x,y) 
 
+  {
+  perm.cor.diffs <- numeric(perms)
+  for(i in c(1:perms))
+    {
+    r.x = sample(x)
+    r.y = sample(y)
+    
+    perm.cor.diffs[i] =  cor(r.x, r.y)
+  }
+  return(perm.cor.diffs)
+}
+arms.vector = my.data$ `AI`
+oil.vector = my.data$ `OP`
+
+cor.r = cor(arms.vector, oil.vector) #0.29
+cor.p = perm.cor(perms = 1000, arms.vector, oil.vector)
+cor.tibble = as.tibble(cor.p) 
+cor.r
+cor.tibble
+```
+So, reject the null hypothesis.
+###Plot
+```{r}
+ggplot(data = cor.tibble)+
+  geom_histogram(mapping= aes(x=value))+
+  geom_vline(xintercept = cor.r, color="red") +
+  labs(title = "Permutation Test for Oil and Arms")+
+  xlab("Correlation")
+```
 ### Map Function
+```{r, warning=FALSE}
+map.vector = oil[oil$country == "Iraq" |
+                         oil$country == "Iran",]
 
+map.vecotr = map(map.vector, mean)
+map.vecotr$OP
+```
 ### Contributions
+Finished my individual section.
 
 ----------------------------------

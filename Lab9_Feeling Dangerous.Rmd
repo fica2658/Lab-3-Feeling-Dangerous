@@ -1,0 +1,369 @@
+---
+title: "lab9_FeelingDangerous"
+author: "Fin, Jake, Chun"
+date: "10/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+
+#loading and tidying data
+data <- read.csv("nba_2017_nba_players_with_salary.csv")
+data <- data %>% select(2:39)
+data1 <- data %>% rename_at(vars(starts_with("X")), 
+                                        funs(str_remove(., "X")))
+data1 <-as_tibble(data1)
+
+
+```
+# Team Section
+
+### Overall Question and Its Importance
+
+Our teams objective is to determine the most overvalued and undervalued players for the 2017 NBA Regular Season. We will examine a number of box score statistics to better inform Front Office decisons for NBA franchises. This information will allow general managers to better understand the current value of their players for upcoming contract negoitation. Even more importantly, the information can be used when assesing both trade and draft talent.
+
+### Dataset Description
+
+The dataset being anaylzed contains the 2017-2018 season averages for each player in the NBA. In addition to traditional box scores, the data also includes many advanced statistics as well salary for the year. These two factors will be very important in our research and the dataset was picked with this in mind. All data comes from the NBA offical website however it has been scraped into a csv file for usability. A link to the data is provided below along with a code book.
+
+https://github.com/fica2658/Labs-For-Feeling-Dangerous.git
+
+WINS_RPM (Wins above replacment): measures the amount of wins a player has contriubted.
+MPG (Minutes per game): the season average for minutes per game.
+SALARY_MILLIONS (Yearly Salary): Yearly Salary for each player in millions of dollars.
+
+
+### Team Findings
+```{r include=FALSE}
+#FIN 
+#EDA for Games Played vs. salary 
+ggplot(data=data1)+
+  geom_point(mapping=aes(x=GP, y=SALARY_MILLIONS))+
+  geom_smooth(mapping=aes(x=GP, y=SALARY_MILLIONS))
+  
+  ##data is to clumped to make assumptions, GP not a good factor
+  summary(data1$GP)
+```
+
+```{r, include=FALSE}
+#FIN
+#EDA for minutes per game vs. salary
+ggplot(data=data1)+
+  geom_point(mapping=aes(x=MPG, y=SALARY_MILLIONS))+
+  geom_smooth(mapping=aes(x=MPG, y=SALARY_MILLIONS))
+
+#code for anaylzing value based on mpg  
+  
+  ##avg salary 7.3
+  ##avg mpg 21.5
+  ##avg wins 2.86
+  ##med wins 1.4
+summary(data1$MPG)
+summary(data1$SALARY_MILLIONS)
+summary(data1$WINS_RPM)
+
+  ##avg salary= 10.5 if mpg>21
+min_above <-data1 %>% filter(MPG>= 21.57)
+
+data1 %>% filter(MPG>= 21.57) %>% summarise(mean_data=mean(SALARY_MILLIONS))
+
+  ##creates group of players who play more than average and are paid less than average
+minutesSalary <-data1 %>% filter(MPG>= 21.57 & SALARY_MILLIONS<=10.5) 
+
+
+  
+  ##visualization of group
+ggplot(data=minutesSalary)+
+  geom_point(mapping=aes(x=MPG, y=SALARY_MILLIONS))+
+  geom_smooth(mapping=aes(x=MPG, y=SALARY_MILLIONS))
+
+  ##further filtering based on graph results
+
+summary(minutesSalary$MPG) #avg mpg for this group is 27.8
+summary(minutesSalary$SALARY_MILLIONS) #avg salary for this group is 4.85
+
+#creating even smaller group based on group average
+Finalminutes1<- minutesSalary %>% 
+  filter(MPG>= 27.78 & SALARY_MILLIONS<=4.851) %>% arrange(MPG) 
+
+
+##filters out truly worse than avg players using group avg of holistic stat 
+Finalminutes2<- Finalminutes1 %>% filter(WINS_RPM>=2.86) 
+
+
+##seeing who makes the most, and who is most benefitial 
+leastPaid <- Finalminutes2 %>% 
+  select(PLAYER, POSITION, MPG, SALARY_MILLIONS, WINS_RPM) %>% 
+  arrange(SALARY_MILLIONS)
+leastPaid
+
+Best <- leastPaid %>% arrange(desc(WINS_RPM))
+Best
+
+
+## Further filtering undervalued group to show the top 3
+min_above %>% filter(WINS_RPM>10)  #10/342 .03 percent of players have winshare>10 
+Finalminutes3<- leastPaid %>% filter(WINS_RPM>10) 
+Finalminutes3
+
+```
+
+```{r}
+#FIN
+ggplot(min_above,aes(x=SALARY_MILLIONS,y=MPG))+
+  geom_point() +
+  geom_smooth(se=F, color="grey") +
+  geom_point(Finalminutes3, mapping=aes(x=SALARY_MILLIONS,y=MPG, color=PLAYER))+
+labs(title = "Salary vs. MPG for the 2017 NBA Season",
+       subtitle = "Most undervalued players are shown in color",
+       caption = "Source: NBA.com", 
+       x = "Salary (Millions)", y = "Minutes per Game")
+```
+
+It was determined that Giannis Antetokounmpo, Nikola Jokic, and Rudy Gobert were the most undervalued players for the 2017-2018 regular season. This can be attributed to the fact that they all play well above average minutes and all have very good advanced statistics. It is interesting because these three players are  all international and under twenty five. This trend was seen in general as it was found that those who were considered undervalued were almost always under 25. Unsuprisingly, we saw a direct relationship between salary and minutes with a indirect relationship between age and minutes. Those seen as undervalued did not follow the trend for salary however and were often making much less per minute played than others in the leauge.
+
+### Conclusion and Recommendation
+
+We would reccomend that NBA front offices focus their scouting reports on players under 25 as NBA contract rules often limit the amount of salary younger players recieve. It would also be smart for General Managers to look abroad for new talent as the three most undervalued players were all foreign. By utilizing over-seas talent, teams can pay a fraction of the cost for quality players. 
+
+### Ethical Implications
+
+Our data and findings could be used to identify the most overvalued players in the leauge. With that imformation it is likely teams would try to correctly value these players causing their value to decrease and as such losing them money. While this may affect some players in the leauge, those who are undervalued will in turn be recognized and have their value increased so this should not be seen as problem. 
+
+#### Jake
+
+### Individual Question
+
+How do the salaries vary for the six players who average the highest points per game? In addition, what is the relationship between minutes played per game and averaged points for different positions across the NBA?
+
+
+```{r, include=FALSE}
+point10 <- data1 %>% filter(POINTS >= 10)
+pos <- point10 %>% filter(POSITION=="C"  | POSITION == "PG" | POSITION == "SF")
+Tseven <- data1 %>% filter(POINTS >=27)
+```
+
+### Plots
+```{r, echo=FALSE}
+p <- ggplot(data= Tseven, aes(x=PLAYER , y=SALARY_MILLIONS, fill=PLAYER))+
+  geom_bar(stat="identity")+
+  ggtitle('Salaries for Players with 26PPG or more in 2017')+
+  xlab('Athletes')+
+  ylab('Salary in Millions')+
+  scale_fill_discrete(name="Delay") +
+  theme(axis.text.x = element_text(angle = 30))
+p + scale_fill_brewer(palette="Blues")
+points <- ggplot(data=pos)+
+  geom_point(mapping=aes(x=MP, y=POINTS, colour=POSITION))+
+  geom_smooth(mapping=aes(x=MP, y=POINTS, colour=POSITION))
+print(points + labs(title="Points vs Minutes Players (averaging 10PPG+)",
+                    y="Points per game", x = "Minutes Played"))
+age <- ggplot(data=pos)+
+  geom_point(mapping=aes(x=MP, y=AGE, colour=POSITION))+
+  geom_smooth(mapping=aes(x=MP, y=AGE, colour=POSITION))
+print(age + labs(title="Age vs. Minutes Players (averaging 10PPG+)",
+                    y="Age", x = "Minutes Played"))
+```
+
+### Findings and Contributions
+To begin, I wanted to narrow the scope of my individual findings towards the best players is in the NBA; the players who are scoring 10 points or more per game. Then I filtered for different sizes of NBA player including the samllest, medium and the largest. To be more specific, point gaurd, small forward, and  center. I then ran minutes played aginst the age of those players and points per game in the 2017 season. I easily see the correlation I set color for position a geom to the position.
+
+I found that Isiah Thomas is highly under paid compared to the 5 other players who average more than 6 points per game. I also found that as minutes played increases centers points increases but for point gaurds there is diminishing returns on points. Finally I found that when age is higher for centers their minutes played drops significantly compared to the smaller point gaurds and small forwards, which is what I would expect for the big guys
+
+----------------------------------
+
+#### Fin Carlson
+
+### Individual Question
+
+Which players are most undervalued as measured by their minutes played?
+
+### Plots
+
+```{r include=FALSE}
+#EDA for Games Played vs. salary
+ggplot(data=data1)+
+  geom_point(mapping=aes(x=GP, y=SALARY_MILLIONS))+
+  geom_smooth(mapping=aes(x=GP, y=SALARY_MILLIONS))
+  
+  ##data is to clumped to make assumptions, GP not a good factor
+  summary(data1$GP)
+```
+
+```{r, include=FALSE}
+#EDA for minutes per game vs. salary
+ggplot(data=data1)+
+  geom_point(mapping=aes(x=MPG, y=SALARY_MILLIONS))+
+  geom_smooth(mapping=aes(x=MPG, y=SALARY_MILLIONS))
+
+#code for anaylzing value based on mpg  
+  
+  ##avg salary 7.3
+  ##avg mpg 21.5
+  ##avg wins 2.86
+  ##med wins 1.4
+summary(data1$MPG)
+summary(data1$SALARY_MILLIONS)
+summary(data1$WINS_RPM)
+
+  ##avg salary= 10.5 if mpg>21
+min_above <-data1 %>% filter(MPG>= 21.57)
+
+data1 %>% filter(MPG>= 21.57) %>% summarise(mean_data=mean(SALARY_MILLIONS))
+
+  ##creates group of players who play more than average and are paid less than average
+minutesSalary <-data1 %>% filter(MPG>= 21.57 & SALARY_MILLIONS<=10.5) 
+
+
+  
+  ##visualization of group
+ggplot(data=minutesSalary)+
+  geom_point(mapping=aes(x=MPG, y=SALARY_MILLIONS))+
+  geom_smooth(mapping=aes(x=MPG, y=SALARY_MILLIONS))
+
+  ##further filtering based on graph results
+
+summary(minutesSalary$MPG) #avg mpg for this group is 27.8
+summary(minutesSalary$SALARY_MILLIONS) #avg salary for this group is 4.85
+
+#creating even smaller group based on group average
+Finalminutes1<- minutesSalary %>% 
+  filter(MPG>= 27.78 & SALARY_MILLIONS<=4.851) %>% arrange(MPG) 
+
+
+##filters out truly worse than avg players using group avg of holistic stat 
+Finalminutes2<- Finalminutes1 %>% filter(WINS_RPM>=2.86) 
+
+
+##seeing who makes the most, and who is most benefitial 
+leastPaid <- Finalminutes2 %>% 
+  select(PLAYER, POSITION, MPG, SALARY_MILLIONS, WINS_RPM) %>% 
+  arrange(SALARY_MILLIONS)
+leastPaid
+
+Best <- leastPaid %>% arrange(desc(WINS_RPM))
+Best
+
+
+## Further filtering undervalued group to show the top 3
+min_above %>% filter(WINS_RPM>10)  #10/342 .03 percent of players have winshare>10 
+Finalminutes3<- leastPaid %>% filter(WINS_RPM>10) 
+Finalminutes3
+
+```
+
+```{r, echo=FALSE}
+  ##visualization of undervalued group vs. total (mpg>21)
+ggplot(min_above,aes(x=SALARY_MILLIONS,y=MPG))+
+  geom_point() +
+  geom_smooth(se=F, color="grey") +
+  geom_point(data=Finalminutes2,colour='red')+
+labs(title = "Salary vs. MPG for the 2017 NBA Season",
+       subtitle = "Undervalue group highlited in red",
+       caption = "Source: NBA.com", 
+       x = "Salary (Millions)", y = "Minutes per Game") 
+
+    ##visualization of undervalued group with top 3 highlited (mpg>21)
+ggplot(Finalminutes2,aes(x=SALARY_MILLIONS,y=MPG))+
+  geom_point() +
+  geom_point(Finalminutes3, mapping=aes(x=SALARY_MILLIONS,y=MPG, color=PLAYER))+
+  labs(title = "Salary vs. MPG for the Under Valued Group ",
+       subtitle = "Those in color are most undervalued (wins above replacment > 10)",
+       caption = "Source: NBA.com", 
+       x = "Salary (Millions)", y = "Minutes per Game") 
+   
+
+#Under Valued Players are mostly younger.
+ggplot(min_above,aes(x=AGE,y=MPG))+
+  geom_point() +
+  geom_smooth(se=F, color="grey") +
+  geom_point(data=Finalminutes2,colour='red')+
+labs(title = "Age vs. MPG for the 2017 NBA Season",
+       subtitle = "Undervalue group highlited in red",
+       caption = "Source: NBA.com", 
+       x = "Age", y = "Minutes per Game") 
+
+```
+
+### Findings
+
+My first graph highlights the group of players I determined as undervaluled as shown by the red clustering. I determined this by finding average levels for players and filtering by those who were above the average. While my analysis was focused on salary and minutes played I also filtered by Wins above RPM as a means of assessing the talent of my smaller groups. I found 10 Wins above RPM to be the 97 percentile for the overall data and used this as my benchmark for the most undervalued of those seen in red. This is shown in my second graph and from this I determined Giannis Antentokounmpo, Nikola Jokic, and Rudy Gobert as the most undervalued players for the 2017 NBA season. My final graph shows that those in the undervalue group tend to be younger. This is likely due to the salary rules in the NBA that prevent large contracts for newer players.
+
+### Contributions
+
+For this lab I found the dataset for our team and performed basic tidying so that it could be loaded and worked with through a template I created. I then conducted my analysis on the MPG vs. salary and in doing so created three plots to help visualize my results. I further completed our teams section for Overall Objective as well as Dataset Description. Using my plots, I anwsered our teams question and provided both the findings as well as the Recommendation. Finally, I was responsible for organizing, knitting, and submitting our final lab report.
+
+----------------------------------------------------------------
+
+#### Nahom
+
+### Individual Question
+
+### Plots
+
+```{r}
+
+```
+
+### Findings
+
+
+### Contributions
+
+
+-----------------------------------
+
+
+#### Chun
+
+### Individual Question
+How to value the SG player?
+
+Since I don't really watch basketball game, so, from what my understanding, SG is a position to get all the points. To see if it is correct, I want to compare FG., 3P., 2P., FT. and POINTS between SG and overall players.
+
+```{r}
+SG=data1%>%filter(POSITION=='SG')%>%arrange(SALARY_MILLIONS)
+summary(SG$FG.)#mean=0.4123
+summary(SG$`3P.`)#mean=0.3531
+summary(SG$`2P.`)#mean=0.4553
+summary(SG$FT.)#mean=0.7896
+summary(SG$POINTS)#mean=9.625
+summary(data1$FG.)#mean=0.4461
+summary(data1$`3P.`)#mean=0.3070
+summary(data1$`2P.`)#mean=0.4867
+summary(data1$FT.)#mean=0.7485
+summary(data1$POINTS)#mean=9.446
+```
+
+From the data above, we can see that SG should have a better 3-Point skill and ability to get points than the other players.
+
+Next, I want to see what effect the value of a SG player. I will acreat a plot to compare multiple variables.
+
+```{r echo=FALSE}
+###Plots
+ggplot(SG,aes(x=SALARY_MILLIONS,y=`3P.`))+
+  geom_point() +
+  geom_smooth()
+ggplot(SG,aes(x=SALARY_MILLIONS,y=`3P`))+
+  geom_point() +
+  geom_smooth()
+ggplot(SG,aes(x=SALARY_MILLIONS,y=`3PA`))+
+  geom_point() +
+  geom_smooth()
+ggplot(SG,aes(x=SALARY_MILLIONS,y=AGE))+
+  geom_point() +
+  geom_smooth()
+   
+ggplot(SG,aes(x=SALARY_MILLIONS,y=POINTS))+
+  geom_point() +
+  geom_smooth()
+ggplot(SG,aes(x=SALARY_MILLIONS,y=W))+
+  geom_point() +
+  geom_smooth()
+```
+
+From the chart above, we can see that most of the variables and the salary will increases linearly together. But ones these variables like 3P., Wins 3PA, 3P reach their threshold, the relation will break. However, from POINTS vs SALARY_MILLIONS plot, we can see that SG who has higher points gets higher salary.
+ 

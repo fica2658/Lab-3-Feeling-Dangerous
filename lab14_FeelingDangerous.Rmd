@@ -1,0 +1,92 @@
+---
+title: "lab # Feeling Dangerous"
+author: "Fin,Nahom,Chun,Jake"
+date: "#/#/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+```
+# Team Section
+
+### Overall Question
+
+### Team Plots
+
+```{r}
+```
+
+### Conclusion
+ 
+# Individual Section 
+
+#### Jake
+
+### Individual Question
+
+### Tools I Used
+
+### Plots 
+```{r}
+```
+
+### Findings and Contributions
+
+----------------------------------
+
+#### Fin Carlson
+
+### Individual Question
+
+### Tools I Used
+
+### Plots 
+
+```{r}
+
+```
+ 
+### Findings
+
+### Contributions 
+
+----------------------------------------------------------------
+
+#### Nahom
+
+### Individual Question
+
+### Tools I Used
+
+### Plots
+
+```{r}
+
+```
+
+### Findings
+
+
+### Contributions
+
+
+-----------------------------------
+
+#### Chun
+
+### Individual Question
+
+### Tools I Used
+
+### Plots  
+
+```{r}
+
+```
+
+### Findings
+
+
+### Contributions
+ 

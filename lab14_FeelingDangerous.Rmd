@@ -271,16 +271,26 @@ Coaches can say that being a fast paced team leads to more wins as the players w
 
 ### Individual Question
 
+Does RPM effect salary? Real Plus Minus (RPM) is the player’s average impact in terms of net point differential per 100 offensive and defensive possessions. In this way we can easily value a player by this variable. However, sometimes other outside reasons will hugely effect players RPM for example player X aways play well when player Y stay beside him. So, RPM can be inaccurate to value players. Point here is to hom much RPM effect salary.
+
 ### Tools I Used
-
+lm function
 ### Plots  
-
 ```{r}
+S.M=mean(data1$SALARY_MILLIONS)
+SALARY = data1%>%filter(SALARY_MILLIONS>S.M)
 
+SR = lm(SALARY_MILLIONS ~ RPM, data = SALARY)
+coef(SR)
+svr = ggplot(data=SALARY)+
+  geom_point(mapping=aes(x=RPM, y=SALARY_MILLIONS, colour=POSITION))+
+  geom_smooth(mapping=aes(x=RPM, y=SALARY_MILLIONS, colour=POSITION))+
+  geom_abline(intercept = SR$coefficients[1], slope = SR$coefficients[2], colour = "green", size = .8)+
+  facet_grid(vars(POSITION))
+print(svr)
 ```
-
 ### Findings
-
+From the graph, we can see that players with better RPM receive a beter salary. So we can conclude that RPM hugely affect players value and how much they can receive as payment.
 
 ### Contributions
- 
+ For this lab, I worked on my own individual sections.

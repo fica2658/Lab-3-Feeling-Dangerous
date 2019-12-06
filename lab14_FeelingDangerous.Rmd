@@ -235,17 +235,32 @@ For this lab I created a template markdown to be used by our team. I then comple
 #### Nahom
 
 ### Individual Question
+How does pace affect player's scoring/point production of players from teams with the most wins form the western conference in that season, this questions can help coaches better understand if being a faster paced team help generate more points. 
 
 ### Tools I Used
-
-### Plots
-
+I used the lm function
 ```{r}
+mins_nba <- nba %>% filter(MP >= 20)
+team <- mins_nba %>% filter (TEAM=="OKC" | TEAM=="HOU"|TEAM=="GS" )
+
+OKC <- mins_nba %>% filter (TEAM=="OKC")
+GS <- mins_nba %>% filter (TEAM=="GS")
+HOU <- mins_nba %>% filter (TEAM=="HOU")
+
+regresh <- lm(PACE ~ POINTS, data = team)
+coef(regresh)
+OKCs <- lm(PACE ~ POINTS, data = OKC)
+coef(OKCs)
+GSs <- lm(PACE ~ POINTS, data = GS)
+coef(GSs)
+HOUs <- lm(PACE ~ POINTS, data = HOU)
+coef(HOUs)
 
 ```
 
-### Findings
 
+### Findings
+Coaches can say that being a fast paced team leads to more wins as the players with the most points per pace and fastest paced team of the three came from the team with the most wins also the team with the second most points per pace came second in pace .
 
 ### Contributions
 

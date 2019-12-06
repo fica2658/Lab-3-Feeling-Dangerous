@@ -1,23 +1,30 @@
 ---
-title: "lab 14 Feeling Dangerous"
+title: "lab # Feeling Dangerous"
 author: "Fin,Nahom,Chun,Jake"
-date: "12/4/2019"
+date: "#/#/2019"
 output: html_document
 ---
-
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(dplyr)
 library(stringr)
 library(modelr)
-
 #loading and tidying data
 data <- read.csv("nba_2017_nba_players_with_salary.csv")
 data <- data %>% select(2:39)
 data1 <- data %>% rename_at(vars(starts_with("X")), 
                                         funs(str_remove(., "X")))
 data1 <-as_tibble(data1)
+
+point10 <- data1 %>% filter(POINTS >= 10)
+pos <- point10 %>% filter(POSITION=="C"  | POSITION == "PG" | POSITION == "SF")
+center <- point10 %>% filter(POSITION=="C")
+pg <- point10 %>% filter(POSITION=="PG")
+sf <- point10 %>% filter(POSITION=="SF")
+Tseven <- data1 %>% filter(POINTS >=27)
+
 ```
+
 # Team Section
 
 ### Overall Question and Its Importance
@@ -32,6 +39,7 @@ Our teams objective is to determine the most overvalued and undervalued players 
 The dataset being anaylzed contains the 2017-2018 season averages for each player in the NBA. 
 
 ### Team Findings
+
 ```{r include=FALSE}
 #FIN 
 #EDA for Games Played vs. salary 
@@ -49,7 +57,6 @@ ggplot(data=data1)+
 ggplot(data=data1)+
   geom_point(mapping=aes(x=MPG, y=SALARY_MILLIONS))+
   geom_smooth(mapping=aes(x=MPG, y=SALARY_MILLIONS))
-
 #code for anaylzing value based on mpg  
   
   ##avg salary 7.3
@@ -59,57 +66,42 @@ ggplot(data=data1)+
 summary(data1$MPG)
 summary(data1$SALARY_MILLIONS)
 summary(data1$WINS_RPM)
-
   ##avg salary= 10.5 if mpg>21
 min_above <-data1 %>% filter(MPG>= 21.57)
-
 data1 %>% filter(MPG>= 21.57) %>% summarise(mean_data=mean(SALARY_MILLIONS))
-
   ##creates group of players who play more than average and are paid less than average
 minutesSalary <-data1 %>% filter(MPG>= 21.57 & SALARY_MILLIONS<=10.5) 
-
-
   
   ##visualization of group
 ggplot(data=minutesSalary)+
   geom_point(mapping=aes(x=MPG, y=SALARY_MILLIONS))+
   geom_smooth(mapping=aes(x=MPG, y=SALARY_MILLIONS))
-
   ##further filtering based on graph results
-
 summary(minutesSalary$MPG) #avg mpg for this group is 27.8
 summary(minutesSalary$SALARY_MILLIONS) #avg salary for this group is 4.85
-
 #creating even smaller group based on group average
 Finalminutes1<- minutesSalary %>% 
   filter(MPG>= 27.78 & SALARY_MILLIONS<=4.851) %>% arrange(MPG) 
-
-
 ##filters out truly worse than avg players using group avg of holistic stat 
 Finalminutes2<- Finalminutes1 %>% filter(WINS_RPM>=2.86) 
-
-
 ##seeing who makes the most, and who is most benefitial 
 leastPaid <- Finalminutes2 %>% 
   select(PLAYER, POSITION, MPG, SALARY_MILLIONS, WINS_RPM) %>% 
   arrange(SALARY_MILLIONS)
 leastPaid
-
 Best <- leastPaid %>% arrange(desc(WINS_RPM))
 Best
-
-
 ## Further filtering undervalued group to show the top 3
 min_above %>% filter(WINS_RPM>10)  #10/342 .03 percent of players have winshare>10 
 Finalminutes3<- leastPaid %>% filter(WINS_RPM>10) 
 Finalminutes3
-
 ```
+
 ### Team Plots
+
 ```{r}
 regresh0 <- lm(MPG ~ SALARY_MILLIONS, data = pos)
 coef(regresh0)
-
 ggplot(min_above,aes(x=SALARY_MILLIONS,y=MPG))+
   geom_point() +
   geom_smooth(se=F, color="grey") +
@@ -120,20 +112,25 @@ labs(title = "Salary vs. MPG for the 2017 NBA Season",
        caption = "Source: NBA.com", 
        x = "Salary (Millions)", y = "Minutes per Game")
 ```
+
 ### Conclusion
+
 After applying a linear model to Minutes per Game and Salary we found that Nikola Jokic falls below the line of best fit. The linear regression line over predicts Jokic’s salary while the non linear fitted line under predicts his salary. From our linear regression, we can interpret the relationship between salary and minutes as an increase in salary by a million dollars will increase the minutes played by about 12 seconds or .2 mintues.
 
 #### Jake
 
 ### Individual Question
+
 How does minutes played affect points per game? Break it down by position: what is the difference between the smallest and tallest players (centers and point gaurds)?
 
 How does age affect minutes played for centers? Since they have a lot bigger bodies, they tend to get tired quicker and generally retire before other positions in the NBA.
 
 ### Tools I Used
+
 I used the lm function to get the coefficents and residuals for my linear regression. I onnly ran two variables against each other and I did not plot a graoh on the residuals but just the different variables.
 
 ### Plots
+
 ```{r, echo=FALSE}
 point10 <- data1 %>% filter(POINTS >= 10)
 pos <- point10 %>% filter(POSITION=="C"  | POSITION == "PG" | POSITION == "SF")
@@ -141,20 +138,15 @@ center <- point10 %>% filter(POSITION=="C")
 pg <- point10 %>% filter(POSITION=="PG")
 sf <- point10 %>% filter(POSITION=="SF")
 Tseven <- data1 %>% filter(POINTS >=27)
-
 # lm for the coefficents and residuals
 regresh <- lm(POINTS ~ MP, data = pos)
 coef(regresh)
-
 centers <- lm(POINTS ~ MP, data = center)
 coef(centers)
-
 pgs <- lm(POINTS ~ MP, data = pg)
 coef(pgs)
-
 sfs <- lm(POINTS ~ MP, data = sf)
 coef(regresh)
-
 points <- ggplot(data=pos)+
   geom_point(mapping=aes(x=MP, y=POINTS, colour=POSITION))+
   geom_abline(intercept = regresh$coefficients[1], slope = regresh$coefficients[2], colour = "yellow", size = 2) +
@@ -162,13 +154,14 @@ points <- ggplot(data=pos)+
 print(points + labs(title="Points vs Minutes Played (averaging 10PPG+)",
                     y="Points per game", x = "Minutes Played"))
 ```
+
 ### Findings 
+
 You can interpret this linear regression anlaysis such that; if there is a one minute increase in time played per game, you can expect an .94 more points per game. For Centers you can expect points pergame to increase .75 points for every minute increase. And for point gaurds you can expect points to increase 1.23 for every minute.
 
 ```{r, echo=FALSE}
 regresh2 <- lm(AGE ~ MP, data = center)
 coef(regresh2)
-
 age <- ggplot(data=center)+
   geom_point(mapping=aes(x=MP, y=AGE, colour=POSITION))+
   geom_smooth(mapping=aes(x=MP, y=AGE, colour=POSITION))+
@@ -176,10 +169,13 @@ age <- ggplot(data=center)+
 print(age + labs(title="Age vs. Minutes Players (averaging 10PPG+)",
                     y="Age", x = "Minutes Played"))
 ```
+
 ### Findings 
+
 You can interpret this linear regression anlaysis such that; with a one minute increase in minutes played, you can expect an increase in age by about a month for the average center in the NBA.
 
 ### Contributions
+
 For this lab I went back into one of our previous labs and ran linear regressions on different data sets. I completed our team plot and completed the findings for our team. This included my interpretaion of the linear regression model I ran.
 
 ----------------------------------
@@ -188,17 +184,51 @@ For this lab I went back into one of our previous labs and ran linear regression
 
 ### Individual Question
 
+For this lab I investigated the relationship between a players Wins RPM vs. their salary. I wanted to further understand the relatuonship and fit a model to predict salary based on Wins RPM. I think this is interesting as it uses a very wholestic statistic to assign value for a player. This would be a rudimentary way for General managers to decide if a player is under or over valued by using a players Wins RPM with the model and seeing how the predicted salary matches the players actual salary.
+
 ### Tools I Used
+```{r, include=FALSE}
+finRegresh <- lm(SALARY_MILLIONS ~ WINS_RPM, data = data1)
+
+grid <- data1 %>% 
+  select(PLAYER, WINS_RPM, SALARY_MILLIONS) 
+
+
+ grid<- grid %>% 
+   add_predictions(finRegresh) %>%
+   add_residuals(finRegresh)
+```
+
+To anwser my question I used a simple linear model with the regreshion equation "SALARY_MILLIONS ~ WINS_RPM" from the modelr package with the data described earlier. I generated two graphs from this model, one that shows the predicted salary for every player, and one that shows the residuals for the model.
 
 ### Plots 
 
-```{r}
+```{r, warning=FALSE}
+ggplot(data=grid) +
+  geom_point(mapping = aes(x=WINS_RPM, y=SALARY_MILLIONS))+
+  geom_line(mapping = aes(x=WINS_RPM, y=pred), color="red")+
+  labs(title = "Predicting Player Salary Based on Wins RPM",
+       subtitle = "Red line shows linear model")+
+  xlab("Wins RPM")+
+  ylab("Salary (Millions)")
 
+ggplot(data=grid) +
+  geom_point(mapping = aes(x=WINS_RPM, y=resid))+
+  geom_smooth(mapping = aes(x=WINS_RPM, y=resid), color="red")+
+  labs(title = "Residuals for linear Model",
+       subtitle = "Red line shows average residuals")+
+  xlab("Wins RPM")+
+  ylab("Residuals")
 ```
  
 ### Findings
 
+ I can conclude that there exists a positive relationship between 
+Wins RPM and salary. Above my model can be found and from it I could predict the salary for any player given their Wins RPM. Based on the graph of the residuals, it seems the model is fairly accurate although some underlying factor may still exist. It is hard to tell if the residuals form any patter although they seem mostly random to me, indicating their are no further confounding factors. In general the models suffers from a lack of data for predictions above a Win RPM of 10. The model was trained on all of the data provided and as such should be tested against different data to further confirm to usefullness.
+
 ### Contributions 
+
+For this lab I created a template markdown to be used by our team. I then completed my indiuval section and looked over the work for our team to ensure it was correct.
 
 ----------------------------------------------------------------
 

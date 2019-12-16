@@ -1,0 +1,99 @@
+---
+title: "lab 15 Feeling Dangerous"
+author: "Fin Carlson,Nahom,Chun,Jake"
+date: "12/13/2019"
+output: html_document
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(stringr)
+library(modelr)
+
+data <- read_excel("/Users/fin/Desktop/Data_Science/Fourteen_Data.xls")
+
+View(data)
+
+```
+
+# Team Section
+
+### Domain Expert, Overall Question and Dataset Description
+
+### Team Findings and Recommendation
+
+### Team Plots
+
+-------------------------------------------
+
+#### Fin
+
+### Individual Question
+
+### Tools I Used
+
+### Findings, Recommendations, and Implications
+
+### Plots
+
+-------------------------------------------
+
+#### Jake
+
+### Individual Question
+
+### Tools I Used
+
+### Findings, Recommendations, and Implications
+
+### Plots
+
+-------------------------------------------
+
+#### Chun
+
+### Individual Question
+
+### Tools I Used
+
+### Findings, Recommendations, and Implications
+
+### Plots
+
+-------------------------------------------
+
+#### Nahom
+
+### Individual Question
+
+### Tools I Used
+
+### Findings, Recommendations, and Implications
+
+### Plots
+
+-------------------------------------------
+
+# Reflections 
+
+#### Team
+
+#### Fin
+
+#### Jake
+
+#### Chun
+
+#### Nahom
+
+-------------------------------------------
+
+# Contributions 
+
+#### Fin
+
+#### Jake
+
+#### Chun
+
+#### Nahom

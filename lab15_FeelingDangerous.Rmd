@@ -78,6 +78,11 @@ I used lm function, filter and mutate functions as well as ggplot functions.
 Theres is a weak correaltion between the elevation and the tarffic as seen on the graph. 
 
 ### Plots
+```{r}
+library(tidyverse)
+peaks <- read.csv("/Users/olio/Downloads/Data Science 2019/Lab 15/fourteener.csv")
+head(peaks)
+```
 
 ```{r }
 peaks %>% filter(fourteener == "Y") %>% mutate(Avg.Traffic = (Traffic.High + Traffic.Low)/2)

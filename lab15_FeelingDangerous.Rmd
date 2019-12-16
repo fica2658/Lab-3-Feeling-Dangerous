@@ -123,15 +123,53 @@ ggplot(data = model_resid)+
 
 -------------------------------------------
 
+
 #### Chun
 
 ### Individual Question
+I want to know what is the relation between difficulty with the traffic average. We all know that the difficulty of hiking is not just about how far you walked but also how high the mountain is. So I want to know how strong the relation ship between traffic length and difficulty.
 
+###Plot
+```{r}
+c.data = read_csv("fourteener.csv")
+
+c.data$Difficulty = as.character(c.data$Difficulty)
+c.data$Difficulty[which(c.data$Difficulty=="Class 1")] = "1.5"
+c.data$Difficulty[which(c.data$Difficulty=="Class 2")] = "2.5"
+c.data$Difficulty[which(c.data$Difficulty=="Class 3")] = "3.5"
+c.data$Difficulty[which(c.data$Difficulty=="Class 4")] = "4.5"
+c.data$Difficulty[which(c.data$Difficulty=="Hard Class 2")] = "2.8"
+c.data$Difficulty[which(c.data$Difficulty=="Easy Class 3")] = "3.2"
+c.data$Difficulty[which(c.data$Difficulty=="Hard Class 3")] = "3.8"
+c.data$Difficulty = as.numeric(c.data$Difficulty)
+names(c.data)[names(c.data) == "Mountain Range"] = "MR"
+Avg = c.data %>% mutate(T.avg = (`Traffic Low`+ `Traffic High`)/2)%>%arrange(Difficulty)
+C1 = Avg%>% filter(Difficulty <=2)
+c11=mean(C1$T.avg)
+
+C2 = Avg%>% filter(Difficulty <=3)%>% filter(Difficulty > 2)
+c22=mean(C2$T.avg)
+
+C3 = Avg%>% filter(Difficulty <=4)%>% filter(Difficulty > 3)
+c33=mean(C3$T.avg)
+
+C4 = Avg%>% filter(Difficulty <=5) %>% filter(Difficulty > 4)
+c44=mean(C4$T.avg)
+
+new=data.frame(x=c(1:4), y=c(c11, c22, c33, c44))
+SR = lm(y ~ x, data = new)
+coef(SR)
+plot= ggplot(data=new)+
+  geom_point(mapping=aes(x, y))+
+  geom_smooth(mapping=aes(x, y))+
+  geom_abline(intercept = SR$coefficients[1], slope = SR$coefficients[2], colour = "green", size = .8)
+print(plot)
+```
 ### Tools I Used
+lm funtion, coefficient, replace characters with numbericals.
 
 ### Findings, Recommendations, and Implications
-
-### Plots
+I find that there is a strong relationship between difficulty and avg. traffic. Longer the avg. traffic, harder the difficulty(1 as the hardest).
 
 -------------------------------------------
 
@@ -199,6 +237,7 @@ This class has helped foster my passion for statistics and greatly influenced my
 #### Jake
 
 #### Chun
+This class helped me how to use R to analyse the data. And it is interesting. I really like the way to discuss with my teammate together to solve the problem from various data.
 
 #### Nahom
 
@@ -215,5 +254,6 @@ For this lab I worked with Jake to create and organize our final document for tu
 #### Jake
 
 #### Chun
+For this lab, I worked on how to deal with the relationship between difficulty and traffic lenght to help the overall question.
 
 #### Nahom

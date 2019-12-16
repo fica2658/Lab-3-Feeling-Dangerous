@@ -75,7 +75,7 @@ I used lm function, filter and mutate functions as well as ggplot functions.
 
 ### Findings, Recommendations, and Implications
 
-Theres is a weak correaltion between the elevation and the tarffic. 
+Theres is a weak correaltion between the elevation and the tarffic as seen on the graph. 
 
 ### Plots
 

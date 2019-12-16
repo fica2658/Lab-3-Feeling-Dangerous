@@ -9,6 +9,11 @@ library(tidyverse)
 library(readxl)
 library(stringr)
 library(modelr)
+
+data <- read_excel("/Users/fin/Desktop/Data_Science/Fourteen_Data.xls")
+
+View(data)
+
 ```
 
 # Team Section
@@ -23,91 +28,13 @@ library(modelr)
 
 #### Fin
 
-```{r Fin_SetUp, include=FALSE}
-data <- read_excel("/Users/fin/Desktop/Data_Science/Fourteen_Data.xls")
-data <- data %>% rename('Elevation_Gain'='Elevation Gain_ft', 
-                        'Mountain_Range'='Mountain Range',
-                        'Standard_Route'= 'Standard Route')
-data <- data %>% mutate(Traffic_Average=
-                          (`Traffic Low`+ `Traffic High`)/2)
-
-data1 <- read_excel("/Users/fin/Desktop/Data_Science/Colorado_Map.xlsx")
-
-model <- lm(Traffic_Average ~ Lat * Long , data = data)
-
-model_data <- add_predictions(data, model) %>% 
-  select(`Mountain Peak`, Lat, Long, 
-         Traffic_Average, pred) 
-
-model_resid <- add_residuals(data, model) %>%
-  select(`Mountain Peak`, Lat, Long,
-         Traffic_Average, resid) 
-```
-
 ### Individual Question
-
-I investigated the relationship between the location of a Fourteener and it's average traffic. I think this question is interesting as it will allow those who would like to experience hikes that are more untouched by human activity to choose the correct mountains. It would seem that the mountains further away from civilization would have less activity thus why I choose these variables.
 
 ### Tools I Used
 
-I started by renaming much of the data set for easier handling and by using the mutate function to find the average amount of traffic for each mountain as calculated from the traffic max and min. I then plotted the location of each mountain along with its range and some reference points for the Colorado border to better visualize how the mountains were laid out spatially. Finally, I created a linear model by using the lm() function with the regression equation "Traffic_Average ~ Lat * Long". This allowed me to assess the relationship between location and traffic while also creating a rudimentary tool to predict traffic if given latitude and longitude. Below you can find graphs with the model predictions overlayed with real data as well as plots of residuals. I did not have enough data to further test my model after having trained it and this should be noted when considering it's accuracy.
-
 ### Findings, Recommendations, and Implications
 
-I conclude that location and traffic do seem to have a quantifiable relationship with no other interfering variables. Looking at the plots of the residuals it would seem as if there is no pattern, indicating that latitude and longitude are the most important variables for determining traffic. When looking at the models overlayed with the data it can be seen that they clearly capture general shape and seem fairly accurate. 
-
-I further conclude that more southern mountains have overall less traffic. As latitude increases, there is a positive relationship with Traffic_Average and rises steadily. There is less of a relationship for the mountains east to west as their longitudes are much closer grouped than their latitudes but some increase is seen at longitude of 106 degrees West. This could be explained by the larger towns of Breckinridge, Dillion, and the Vail that fall at this longitude.
-
-I would recommend that those who would like to hike in more untouched locations should try the mountains in the southern parts of the state as they on average have lower amounts of traffic. This recommendation could eventually lead to a shift in traffic such that the results described above are no longer accurate.
-
 ### Plots
-
-```{r, echo=FALSE, warning=FALSE, message = FALSE}
-
-ggplot(data = data1)+
-  geom_point(data = data, mapping = aes(x=Long, y=Lat, color=Mountain_Range))+
-  geom_point(mapping = aes(x=Long_BR, y=Lat_BR))+
-  geom_point(mapping = aes(x=Long_UR, y=Lat_UR))+
-  geom_point(mapping = aes(x=Long_BL, y=Lat_BL))+
-  geom_point(mapping = aes(x=Long_UL, y=Lat_UL))+
-  labs(title = "Location And Range For Fourteeners In Colorado",
-       subtitle = "Black Dots Represent Corners of Colorado border")+
-  xlab("Longitude")+
-  ylab("Latitude")
-
-
-ggplot(data=data)+
-  geom_point(mapping = aes(x=Lat, y=Traffic_Average))+
-  geom_smooth(data=model_data, mapping = aes(x=Lat, y=pred), color="red")+
-    labs(title = "Latitudes Effect on Average Traffic for Colorado's Fourteeners",
-       subtitle = "Red line shows model's predictions")+
-  xlab("Latitude")+
-  ylab("Traffic Average")
-
-ggplot(data=data)+
-  geom_point(mapping = aes(x=Long, y=Traffic_Average))+
-  geom_smooth(data=model_data, mapping = aes(x=Long, y=pred), color="red")+
-  labs(title = "Longitude Effect on Average Traffic for Colorado's Fourteeners",
-       subtitle = "Red line shows model's predictions")+
-  xlab("Longitude")+
-  ylab("Traffic Average")
-
-ggplot(data = model_resid)+
-  geom_point(mapping = aes(x=Lat, y=resid))+
-  geom_abline(slope = 0, intercept = 0, color="red")+
-  labs(title = "Residuals for Traffic ~ Location (Latitude) Model")+
-  xlab("Latitude")+
-  ylab("Residual")
-
-ggplot(data = model_resid)+
-  geom_point(mapping = aes(x=Long, y=resid))+
-  geom_abline(slope = 0, intercept = 0, color="red")+
-  labs(title = "Residuals for Traffic ~ Location (Longitude) Model")+
-  xlab("Longitude")+
-  ylab("Residual")
-
-
-```
 
 -------------------------------------------
 
@@ -136,14 +63,52 @@ ggplot(data = model_resid)+
 -------------------------------------------
 
 #### Nahom
+The domian expert is a PM at Colorado Department of Natural Resources that is asking if the elvation of the peaks affect the traffic?
+
 
 ### Individual Question
+Is there a direct correlation between Elevation of a peak and its traffic? 
+
 
 ### Tools I Used
+I used lm function, filter and mutate functions as well as ggplot functions.  
 
 ### Findings, Recommendations, and Implications
 
+Theres is a weak correaltion between the elevation and the tarffic. 
+
 ### Plots
+
+```{r }
+peaks %>% filter(fourteener == "Y") %>% mutate(Avg.Traffic = (Traffic.High + Traffic.Low)/2)
+
+Avg.Peak <- mutate(peaks, Avg.Traffic = (Traffic.High + Traffic.Low)/2)
+```
+
+```{r }
+ggplot(data=peaks, aes(x= Elevation_ft , y= Traffic.Low )) +
+  geom_line()+
+  geom_point()
+
+ggplot(data=peaks, aes(x= Elevation_ft , y= Traffic.High)) +
+  geom_line()+
+  geom_point()
+
+Avg.Lm <-lm(Elevation_ft ~ Avg.Traffic, data =Avg.Peak)
+coef(Avg.Lm) ##Intercept =1.412605e+04
+            ##Avg.Traffic = 4.183450e-03
+regresh <- lm(Elevation_ft ~ Avg.Traffic, data = Avg.Peak)
+coef(regresh)
+
+ggplot(data=Avg.Peak, aes(x= Elevation_ft , y= Avg.Traffic)) +
+  geom_line()+
+  geom_point() + 
+  geom_abline(intercept = regresh$coef[1], slope = regresh$coef[2], colours(red))+
+  ggtitle(label = "Correlation between Peak elevation and Average Traffic")
+
+par(mfcol = c(2,2))
+
+```
 
 -------------------------------------------
 
@@ -151,29 +116,20 @@ ggplot(data = model_resid)+
 
 #### Team
 
-Originally our goal as team was -
-"As a team our main goal is to be able to communicate effectively and pusheach other for team success rather than individual success. Another goal is to be able to model real life data sciences problems and insights."
-
-Reflecting back on this, we feel as though we accomplished this goal rather well. As a team we were able to communicate to ensure assignments were completed on time. We also did very well on tRAT assesment in part because every one in the team was committed to studying. If we could go back in time we would better figure out github as it seems like a very powerful tool that we failed to fully use. We are also glad that we created a groupchat as we used it often. 
-
 #### Fin
-
-This class has helped foster my passion for statistics and greatly influenced my 5 year plan. While I was already pursuing a degree in applied mathematics, I am now planning on focusing on data science related topics as I complete the rest of my degree. I hope to graduate and find a job as an entry level data scientist before returning  to school for further education. I learned the basics of R and Rstudio through this class and will continue to use both of these tools as I move forward with my education. I also improved my ability to manage a group and ensure that other's work is complete and satisfactory. Much of this semester was spent working on my ability to work efficiently and effectively in a team. If I could go back to the beginning of the semester, I would tell myself to take the readings more seriously as the book is incredibly helpful. Starting early and completing all of the exercise ensures you have a solid understanding of all topics in the class. I would have stopped worrying about my teammates effort and work much earlier as it had little effect on my overall grade.
-
 
 #### Jake
 
 #### Chun
 
 #### Nahom
+My goals have not changed as my goals requrire me to graduate from college. In this course I have gained a good understanding of R and new statistical functions. One thing I could've done more reading the course book as it contains alot of usefull examples for R.  
 
 -------------------------------------------
 
 # Contributions 
 
 #### Fin
-
-For this lab I worked with Jake to create and organize our final document for turn in. A team question first had to be decided on along with a dataset and domain expert for the data. I then completed my individual sections by answering my subquestion and I added reflections for both myself and the team before submitting my work to be turned it by Jake.
 
 #### Jake
 

@@ -337,9 +337,6 @@ geom_boxplot()+
 ### Findings
 Based on calculations and the graph fans can conclude that the point gaurd position is the least efficent positions as on averge point gaurds have 50.29% eFGs which is the lowest of all 5 positions which is logical as point gaurds have higher player useage and dominate the ball.
 
-### Contributions
-
-
 -----------------------------------
 
 

@@ -301,15 +301,41 @@ For this lab I found the dataset for our team and performed basic tidying so tha
 #### Nahom
 
 ### Individual Question
-
+How does point gaurd's eFG% compare to other positions?
 ### Plots
 
 ```{r}
+nba <- nba %>% filter (POSITION== "PG" | POSITION== "SG" |POSITION== "SF" | POSITION== "PF" | POSITION== "C" )
+#point gaurds that played more than 25 mins.
+meanT<- mean(nba$`eFG%`)#= 0.4993
+y=(meanT/mean) # =0.993
 
+PGnba<- nba %>% filter(POSITION== "PG") %>% filter(MPG >=25)%>% arrange(`eFG%`)
+mean<-mean(PGnba$`eFG%`) #= 0.5029
+
+
+SGnba<- nba %>% filter(POSITION== "SG") %>% filter(MPG >=25)%>% arrange(`eFG%`)
+mean2<-mean(SGnba$`eFG%`) #= 0.514
+
+SFnba<- nba %>% filter(POSITION== "SF") %>% filter(MPG >=25)%>% arrange(`eFG%`)
+mean3<-mean(SFnba$`eFG%`) #= 0.511
+
+PFnba<- nba %>% filter(POSITION== "PF") %>% filter(MPG >=25)%>% arrange(`eFG%`)
+mean4<-mean(PFnba$`eFG%`) #= 0.515
+
+Cnba<- nba %>% filter(POSITION== "C") %>% filter(MPG >=25)%>% arrange(`eFG%`)
+mean5<-mean(Cnba$`eFG%`) #= 0.552
+```
+```{r}
+ggplot(nba, aes(x=POSITION, y= `eFG%`))+
+geom_boxplot()+
+  labs(title = "Position vs. Effective Field Goal Percentage",
+       caption = "Source: NBA.com", 
+       x = "Position", y = "Effective Field Goal Percentage")
 ```
 
 ### Findings
-
+Based on calculations and the graph fans can conclude that the point gaurd position is the least efficent positions as on averge point gaurds have 50.29% eFGs which is the lowest of all 5 positions which is logical as point gaurds have higher player useage and dominate the ball.
 
 ### Contributions
 
